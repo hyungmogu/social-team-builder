@@ -1,5 +1,16 @@
 {% extends 'layout.html' %}
 
+{% block body_actions_bar %}
+  <div class="circle--actions--bar">
+    <nav class="bounds">
+      <ul class="circle--pill--list">
+        <li><a class="selected" href="applications.html">Applications</a></li>
+        <li><a href="profile.html">Profile</a></li>
+      </ul>
+    </nav>
+  </div>
+{% endblock %}
+
 {% block body_content %}
   <div class="bounds circle--page">
     <div class="circle--page--header grid-100">
@@ -72,6 +83,8 @@
           </tr>
         </tbody>
       </table>
+
     </div>
+
   </div>
 {% endblock %}
