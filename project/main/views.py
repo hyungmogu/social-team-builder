@@ -5,4 +5,5 @@ from django.shortcuts import render
 
 # Temporary. Will be replaced with serializer once developed.
 def home(request):
+
     return render(request, 'main/home.html')

@@ -20,6 +20,7 @@ from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'', include('main.urls')),
+    url(r'', include('accounts.urls', namespace='accounts')),
 ]
 
 # this is done to include css files
