@@ -5,10 +5,10 @@ from django.shortcuts import render
 
 
 def login(request):
-    return render(request, 'signin.html')
+    return render(request, 'accounts/signin.html')
 
 def logout(request):
     pass
 
 def sign_up(request):
-    return render(request, 'sign_up.html')
+    return render(request, 'accounts/signup.html')

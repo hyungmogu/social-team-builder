@@ -19,7 +19,7 @@ def project(request, project_pk):
 def project_edit(request, project_pk):
     return render(request, 'main/project_edit.html')
 
-def project_create(request, project_pk):
+def project_create(request):
     return render(request, 'main/project_create.html')
 
 def search(request):
