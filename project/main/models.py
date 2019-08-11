@@ -10,3 +10,9 @@ class Project(models.Model):
     timeline = models.CharField(max_length=255)
     applicant_requirements = models.CharField(max_length=255)
     description = models.TextField()
+
+
+class Position(models.Model):
+    name = models.CharField(max_length=255)
+    description = models.TextField()
+    related_skills = models.ManyToManyField('Skill')
