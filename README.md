@@ -1,6 +1,6 @@
-# THPWD11 - Pug or Ugh
+# THPWD12 - Social Team Builder
 
-This is the twelveth project to team tree house's Python Web Tech Degree.
+This is the final project to team tree house's Python Web Tech Degree.
 
 ## Deliverables / Objectives
 
