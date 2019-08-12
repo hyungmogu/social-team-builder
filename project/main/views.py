@@ -1,7 +1,7 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.core.urlresolvers import reverse
 
-from . import models
+from . import models, forms
 # Create your views here.
 
 
@@ -23,7 +23,11 @@ def project(request, pk):
     })
 
 def project_edit(request, pk):
-    return render(request, 'main/project_edit.html')
+    project = get_object_or_404(models.Project, pk=pk)
+
+    return render(request, 'main/project_edit.html', {
+        'project': project
+    })
 
 def project_create(request):
     return render(request, 'main/project_create.html')
