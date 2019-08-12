@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 
 
 from . import models
@@ -15,16 +15,20 @@ def home(request):
         'project_needs': project_needs
     })
 
-def profile(request, user_pk):
+def project(request, pk):
+    project = get_object_or_404(models.Project, pk=pk)
+
+    return render(request, 'main/project.html', {
+        "project": project
+    })
+
+def profile(request, pk):
     return render(request, 'main/profile.html')
 
-def profile_edit(request, user_pk):
+def profile_edit(request, pk):
     return render(request, 'main/profile_edit.html')
 
-def project(request, project_pk):
-    return render(request, 'main/project.html')
-
-def project_edit(request, project_pk):
+def project_edit(request, pk):
     return render(request, 'main/project_edit.html')
 
 def project_create(request):
@@ -33,5 +37,5 @@ def project_create(request):
 def search(request):
     return render(request, 'main/search.html')
 
-def applications(request):
+def applications(request, pk):
     return render(request, 'main/applications.html')

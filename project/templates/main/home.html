@@ -37,7 +37,7 @@
         </thead>
         <tbody>
           {% for project in projects %}
-            <tr class="clickable-row" data-href="{% url 'project' project_pk=project.pk %}">
+            <tr class="clickable-row" data-href="{% url 'project' pk=project.pk %}">
               <td>
                 <h3>{{ project.title }}</h3>
               </td>
@@ -45,14 +45,6 @@
                 <span class="secondary-label">{{ project.needs.all|join:", " }}</span>
               </td>
             </tr>
-            <!-- <tr class="clickable-row" data-href="project.html">
-              <td>
-                <h3>Twitter Client</h3>
-              </td>
-              <td class="circle--cell--right">
-                <span class="secondary-label">Designer</span>
-              </td>
-            </tr> -->
           {% endfor %}
         </tbody>
       </table>
