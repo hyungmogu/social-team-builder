@@ -12,5 +12,5 @@ urlpatterns = [
     url(r'^projects/create/$', views.project_create, name="project_create"),
     url(r'^search/$', views.search, name="search"),
     url(r'^applications/(?P<pk>\d+)/$', views.applications, name="application"),
-    url(r'^$', views.home, name="home"),
+    url(r'^$', views.HomeView.as_view(), name="home"),
 ]

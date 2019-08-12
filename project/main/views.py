@@ -1,19 +1,25 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.core.urlresolvers import reverse
+from django.views.generic import TemplateView
 
-from . import models, forms
+from . import models
 # Create your views here.
 
 
-# Temporary. Will be replaced with serializer once developed.
-def home(request):
-    projects = models.Project.objects.all()
-    project_needs = models.Project.objects.order_by('needs').values('needs__name').distinct()
+# Temporary. Will be replaced with class based views once developed.
+class HomeView(TemplateView):
+    template_name = 'main/home.html'
 
-    return render(request, 'main/home.html', {
-        'projects': projects,
-        'project_needs': project_needs
-    })
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        projects = models.Project.objects.all()
+        project_needs = models.Project.objects.order_by('needs').values('needs__name').distinct()
+
+        context['projects'] = projects
+        context['project_needs'] = project_needs
+
+        return context
 
 def project(request, pk):
     project = get_object_or_404(models.Project, pk=pk)
