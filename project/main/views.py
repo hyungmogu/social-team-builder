@@ -1,5 +1,5 @@
-from django.shortcuts import render, get_object_or_404
-
+from django.shortcuts import render, get_object_or_404, redirect
+from django.core.urlresolvers import reverse
 
 from . import models
 # Create your views here.
@@ -22,17 +22,25 @@ def project(request, pk):
         "project": project
     })
 
-def profile(request, pk):
-    return render(request, 'main/profile.html')
-
-def profile_edit(request, pk):
-    return render(request, 'main/profile_edit.html')
-
 def project_edit(request, pk):
     return render(request, 'main/project_edit.html')
 
 def project_create(request):
     return render(request, 'main/project_create.html')
+
+def project_delete(request, pk):
+    """Removes a project from model"""
+    try:
+        obj = models.Project.objects.get(pk=pk)
+        obj.delete()
+    finally:
+        return redirect(reverse('home'))
+
+def profile(request, pk):
+    return render(request, 'main/profile.html')
+
+def profile_edit(request, pk):
+    return render(request, 'main/profile_edit.html')
 
 def search(request):
     return render(request, 'main/search.html')
