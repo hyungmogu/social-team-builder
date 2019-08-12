@@ -25,6 +25,15 @@
         }
     },
     {
+        "pk":2,
+        "model":"main.Position",
+        "fields":{
+            "name": "Front End Developer",
+            "description": "This is a great position as well!",
+            "related_skills": [1]
+        }
+    },
+    {
         "pk":1,
         "model":"main.Project",
         "fields":{
@@ -32,6 +41,18 @@
             "user": 1,
             "needs": [1],
             "timeline": "10 days",
+            "applicant_requirements": "Test",
+            "description": "This is a test description"
+        }
+    },
+    {
+        "pk":2,
+        "model":"main.Project",
+        "fields":{
+            "title": "Test Project",
+            "user": 1,
+            "needs": [1,2],
+            "timeline": "20 days",
             "applicant_requirements": "Test",
             "description": "This is a test description"
         }
