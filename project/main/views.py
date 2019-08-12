@@ -1,6 +1,8 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from django.core.urlresolvers import reverse
-from django.views.generic import TemplateView
+from django.core.urlresolvers import reverse, reverse_lazy
+from django.views.generic import (
+    TemplateView, DetailView, UpdateView,
+    CreateView, DeleteView)
 
 from . import models
 # Create your views here.
@@ -21,30 +23,27 @@ class HomeView(TemplateView):
 
         return context
 
-def project(request, pk):
-    project = get_object_or_404(models.Project, pk=pk)
+class ProjectDetailView(DetailView):
+    model = models.Project
+    template_name = 'main/project.html'
 
-    return render(request, 'main/project.html', {
-        "project": project
-    })
+class ProjectEditView(UpdateView):
+    fields = (
+        'title', 'needs', 'timeline',
+        'applicant_requirements', 'description')
+    model = models.Project
+    template_name = 'main/project_edit.html'
 
-def project_edit(request, pk):
-    project = get_object_or_404(models.Project, pk=pk)
+class ProjectCreateView(CreateView):
+    fields = (
+        'title', 'needs', 'timeline',
+        'applicant_requirements', 'description')
+    model = models.Project
+    template_name = 'main/project_create.html'
 
-    return render(request, 'main/project_edit.html', {
-        'project': project
-    })
-
-def project_create(request):
-    return render(request, 'main/project_create.html')
-
-def project_delete(request, pk):
-    """Removes a project from model"""
-    try:
-        obj = models.Project.objects.get(pk=pk)
-        obj.delete()
-    finally:
-        return redirect(reverse('home'))
+class ProjectDeleteView(DeleteView):
+    model = models.Project
+    success_url = reverse_lazy('home')
 
 def profile(request, pk):
     return render(request, 'main/profile.html')
