@@ -1,0 +1,39 @@
+[
+    {
+        "pk":1,
+        "model":"auth.User",
+        "fields":{
+            "username":"test",
+            "email": "test@example.com",
+            "password": "12345"
+        }
+    },
+    {
+        "pk": 1,
+        "model": "main.Skill",
+        "fields": {
+            "name": "Swift"
+        }
+    },
+    {
+        "pk":1,
+        "model":"main.Position",
+        "fields":{
+            "name": "iOS Developer",
+            "description": "It's a great position",
+            "related_skills": [1]
+        }
+    },
+    {
+        "pk":1,
+        "model":"main.Project",
+        "fields":{
+            "title": "Twitter Client",
+            "user": 1,
+            "needs": [1],
+            "timeline": "10 days",
+            "applicant_requirements": "Test",
+            "description": "This is a test description"
+        }
+    }
+]
