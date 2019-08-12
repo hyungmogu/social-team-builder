@@ -8,7 +8,7 @@ class Project(models.Model):
     user = models.ForeignKey('auth.User')
     needs = models.ManyToManyField('Position')
     timeline = models.CharField(max_length=255)
-    applicant_requirements = models.CharField(max_length=255)
+    applicant_requirements = models.TextField()
     description = models.TextField()
 
     def __str__(self):
