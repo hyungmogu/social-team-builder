@@ -4,6 +4,8 @@
         "model":"auth.User",
         "fields":{
             "username":"test",
+            "first_name": "Test",
+            "last_name":"User",
             "email": "test@example.com",
             "password": "12345"
         }
