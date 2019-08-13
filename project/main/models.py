@@ -18,7 +18,7 @@ class Project(models.Model):
 class Position(models.Model):
     name = models.CharField(max_length=255)
     description = models.TextField()
-    related_skills = models.ManyToManyField('Skill')
+    related_skills = models.ManyToManyField('Skill', blank=True)
 
     def __str__(self):
         return self.name

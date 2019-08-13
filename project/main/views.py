@@ -38,15 +38,42 @@ class ProjectEditView(UpdateView):
 class ProjectCreateView(CreateView):
     model = models.Project
     form_project = forms.ProjectForm
-    form_positions = formset_factory(forms.PositionForm)
+    # form_positions = formset_factory(forms.PositionForm)
 
     template_name = 'main/project_create.html'
 
     def get(self, request):
         return render(request, self.template_name, {
-            'form_project': self.form_project,
-            "form_positions":self.form_positions
+            'form_project': self.form_project(prefix='project')
+            # "form_positions":self.form_positions(prefix='positions')
         })
+
+    def post(self, request, *args, **kwargs):
+        """Creates Project on save"""
+        # fetch and validate project data
+        # fetch and validate position data
+        # form_positions = self.form_positions(data=request.POST, prefix="positions")
+        form_project = self.form_project(request.POST,prefix='project')
+
+        if form_project.is_valid():
+            project = form_project.save(commit=False)
+            project.user = request.user
+            project.save()
+
+            return redirect('project', pk=project.pk)
+
+        # if form_positions.is_valid():
+        #     print('Hello positions!')
+
+
+        # if form_project.is_valid() and form_positions.is_valid():
+        #     print('hello world!')
+
+        return render(request, self.template_name, {
+            'form_project': form_project
+            # "form_positions": form_positions
+        })
+
 
 class ProjectDeleteView(DeleteView):
     model = models.Project

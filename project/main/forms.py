@@ -8,9 +8,11 @@ class ProjectForm(forms.ModelForm):
     description = forms.CharField(widget=forms.Textarea(attrs={'placeholder': 'Project description...'}))
     timeline = forms.CharField(widget=forms.Textarea(attrs={'placeholder': 'Time estimate','class': 'circle--textarea--input'}))
     applicant_requirements = forms.CharField(widget=forms.Textarea(attrs={'class': 'circle--textarea--input'}))
+    needs = forms.ModelMultipleChoiceField(queryset=Position.objects, required=False)
+
     class Meta:
+        exclude = ('user','needs',)
         model = Project
-        exclude = ()
 
 
 class PositionForm(forms.ModelForm):
