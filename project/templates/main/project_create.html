@@ -30,8 +30,14 @@
             {{ form_positions.management_form }}
             {% for form_position in form_positions %}
               <li>
-                {{ form_position.title }}
+                {{ form_position.name }}
+                {% for error in form_position.name.errors %}
+                  <div>{{ error }}</div>
+                {% endfor %}
                 {{ form_position.description }}
+                {% for error in form_position.description.errors %}
+                  <div>{{ error }}</div>
+                {% endfor %}
                 <a class="circle--clone--add">Add Position</a>
                 <a class="circle--clone--remove">Remove</a>
               </li>
