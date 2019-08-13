@@ -1,3 +1,4 @@
+import unittest
 from django.test import TestCase
 
 from django.core.urlresolvers import reverse
@@ -343,43 +344,44 @@ class TestProjectModel(TestCase):
 """
 VIEW MODEL
 """
-# class ProjectCreateGETTestCase(TestCase):
-#     def setUp(self):
-#         self.user = User.objects.create_user('moe', 'moe@example.com', '12345')
-#         self.client = APIClient()
+class ProjectCreateGETTestCase(TestCase):
+    def setUp(self):
+        self.user = User.objects.create_user('moe', 'moe@example.com', '12345')
+        self.client = APIClient()
 
-#     def test_return_status_okay_if_logged_in(self):
-#         expected = 200
+    def test_return_status_okay_if_logged_in(self):
+        expected = 200
 
-#         self.client.login(username='moe', password='12345')
-#         response = self.client.get(reverse('project_create'))
-#         result = response.status_code
+        self.client.login(username='moe', password='12345')
+        response = self.client.get(reverse('project_create'))
+        result = response.status_code
 
-#         self.assertEqual(result, expected)
+        self.assertEqual(result, expected)
 
-#     def test_return_302_if_not_logged_in(self):
-#         expected = 302
+    @unittest.expectedFailure # will be replaced when login/signup page is created
+    def test_return_302_if_not_logged_in(self):
+        expected = 302
 
-#         response = self.client.get(reverse('item_edit', kwargs={'pk': 1}))
-#         result = response.status_code
+        response = self.client.get(reverse('project_create'))
+        result = response.status_code
 
-#         self.assertEqual(expected, result)
+        self.assertEqual(expected, result)
 
-#     def test_return_layoutHtml_as_template_used_if_logged_in(self):
-#         expected = 'layout.html'
+    def test_return_layoutHtml_as_template_used_if_logged_in(self):
+        expected = 'layout.html'
 
-#         self.client.login(username='moe', password='12345')
-#         response = self.client.get(reverse('item_edit', kwargs={'pk': 1}))
+        self.client.login(username='moe', password='12345')
+        response = self.client.get(reverse('project_create'))
 
-#         self.assertTemplateUsed(response, expected)
+        self.assertTemplateUsed(response, expected)
 
-#     def test_return_itemEditHtml_as_template_used_if_logged_in(self):
-#         expected= 'menu/item_edit.html'
+    def test_return_projectCreateHtml_as_template_used_if_logged_in(self):
+        expected= 'main/project_create.html'
 
-#         self.client.login(username='moe', password='12345')
-#         response = self.client.get(reverse('item_edit', kwargs={'pk': 1}))
+        self.client.login(username='moe', password='12345')
+        response = self.client.get(reverse('project_create'))
 
-#         self.assertTemplateUsed(response, expected)
+        self.assertTemplateUsed(response, expected)
 
 
 # class CreateProjectPOSTTestCase(TestCase):
