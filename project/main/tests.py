@@ -397,6 +397,30 @@ class TestProjectModel(TestCase):
 # -----------
 
 """
+/accounts/sign_up (GET)
+"""
+class SignUpGETRequestTestCase(TestCase):
+    def setUp(self):
+        self.resp = self.client.get(reverse('accounts:sign_up'))
+
+    def test_returns_status_200_on_visit(self):
+        expected = 200
+
+        result = self.resp.status_code
+
+        self.assertEqual(expected, result)
+
+    def test_return_layoutHTML_as_template_used(self):
+        expected = 'layout.html'
+
+        self.assertTemplateUsed(self.resp, expected)
+
+    def test_return_signinHTML_as_template_used(self):
+        expected = 'accounts/signup.html'
+
+        self.assertTemplateUsed(self.resp, expected)
+
+"""
 /projects/create
 """
 class ProjectCreateGETTestCase(TestCase):
