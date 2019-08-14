@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.core.urlresolvers import reverse, reverse_lazy
-from django.forms import formset_factory
+from django.forms.models import modelformset_factory
 from django.views.generic import (
     TemplateView, DetailView, UpdateView,
     CreateView, DeleteView)
@@ -17,10 +17,10 @@ class HomeView(TemplateView):
         context = super().get_context_data(**kwargs)
 
         projects = models.Project.objects.all()
-        project_needs = models.Project.objects.order_by('needs').values('needs__name').distinct()
+        # project_needs = models.Project.objects.order_by('needs').values('needs__name').distinct()
 
         context['projects'] = projects
-        context['project_needs'] = project_needs
+        # context['project_needs'] = project_needs
 
         return context
 
@@ -38,7 +38,7 @@ class ProjectEditView(UpdateView):
 class ProjectCreateView(CreateView):
     model = models.Project
     form_project = forms.ProjectForm
-    form_positions = formset_factory(forms.PositionForm)
+    form_positions = forms.PositionFormSet
 
     template_name = 'main/project_create.html'
 
@@ -50,8 +50,8 @@ class ProjectCreateView(CreateView):
 
     def post(self, request, *args, **kwargs):
         """Creates Project on save"""
-        form_positions = self.form_positions(data=request.POST, prefix="positions")
         form_project = self.form_project(request.POST,prefix='project')
+        form_positions = self.form_positions(request.POST, prefix="positions")
 
         if form_project.is_valid() and form_positions.is_valid():
             project = form_project.save(commit=False)
@@ -62,7 +62,7 @@ class ProjectCreateView(CreateView):
 
             for position in positions:
                 position.project = project
-                project.save()
+                position.save()
 
             return redirect('project', pk=project.pk)
 
