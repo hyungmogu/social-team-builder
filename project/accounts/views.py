@@ -19,8 +19,12 @@ class LoginView(FormView):
         login(self.request, form.get_user())
         return super().form_valid(form)
 
-def logout(request):
-    pass
+class LogOutView(RedirectView):
+    url = reverse_lazy('home')
+
+    def get(self, request, *args, **kwargs):
+        logout(request)
+        return super().get(request, *args, **kwargs)
 
 class SignUpView(CreateView):
     form_class = forms.SignUpForm
