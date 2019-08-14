@@ -25,4 +25,5 @@ PositionFormSet = inlineformset_factory(
     Project,
     Position,
     form=PositionForm,
-    fields=('name','description',))
+    fields=('name','description',),
+    extra=1)
