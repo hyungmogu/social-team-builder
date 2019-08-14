@@ -6,7 +6,7 @@ from django.views.generic import FormView, CreateView
 from . import forms
 
 class LoginView(FormView):
-    form_class = AuthenticationForm
+    form_class = forms.SignInForm
     success_url = reverse_lazy('profile')
     template_name = 'accounts/signin.html'
 
@@ -24,5 +24,5 @@ def logout(request):
 
 class SignUpView(CreateView):
     form_class = forms.SignUpForm
-    success_url = reverse_lazy('login')
+    success_url = reverse_lazy('accounts:login')
     template_name = 'accounts/signup.html'
