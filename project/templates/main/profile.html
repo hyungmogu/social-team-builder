@@ -4,8 +4,8 @@
   <div class="circle--actions--bar">
     <nav class="bounds">
       <ul class="circle--pill--list">
-        <li><a href="{% url 'applications' pk=user.pk %}">Applications</a></li>
-        <li><a class="selected" href="{% url 'profile' pk=user.pk %}">Profile</a></li>
+        <li><a href="{% url 'application' pk=user.pk %}">Applications</a></li>
+        <li><a class="selected" href="{% url 'profile' %}">Profile</a></li>
       </ul>
     </nav>
   </div>
@@ -18,7 +18,7 @@
         <h2>Profile</h2>
       </div>
       <div class="circle--fluid--cell circle--fluid--secondary">
-        <a class="button icon-on-left" href="{% url 'profile_edit' pk=user.pk %}">Edit</a>
+        <a class="button icon-on-left" href="{% url 'profile_edit' %}">Edit</a>
       </div>
     </div>
 
