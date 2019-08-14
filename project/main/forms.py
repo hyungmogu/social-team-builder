@@ -11,7 +11,6 @@ class ProjectForm(forms.ModelForm):
         exclude = ('user','needs',)
         model = Project
 
-
 class PositionForm(forms.ModelForm):
     name = forms.CharField(widget=forms.TextInput(attrs={'placeholder':'Position Title', 'class': 'circle--input--h3'}))
     description = forms.CharField(widget=forms.Textarea(attrs={'placeholder': 'Position description...'}))
@@ -19,7 +18,6 @@ class PositionForm(forms.ModelForm):
     class Meta:
         fields = ('name','description',)
         model = Position
-
 
 PositionFormSet = inlineformset_factory(
     Project,
