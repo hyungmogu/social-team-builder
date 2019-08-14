@@ -399,7 +399,7 @@ class TestProjectModel(TestCase):
 """
 /accounts/sign_up (GET)
 """
-class SignUpGETRequestTestCase(TestCase):
+class SignUpGETRequest(TestCase):
     def setUp(self):
         self.resp = self.client.get(reverse('accounts:sign_up'))
 
@@ -419,6 +419,46 @@ class SignUpGETRequestTestCase(TestCase):
         expected = 'accounts/signup.html'
 
         self.assertTemplateUsed(self.resp, expected)
+
+
+"""
+/accounts/sign_up (POST)
+"""
+class SignUpPOSTRequest(TestCase):
+    def setUp(self):
+        self.resp = self.client.post(reverse('accounts:sign_up'), {
+            'username': 'thisisatestpassword',
+            'password1': 'hello!234',
+            'password2': 'hello!234'
+        })
+
+    def test_return_to_sign_up_page_if_signup_unsuccessful(self):
+        expected = 'accounts/signup.html'
+
+        response1 = self.client.post(reverse('accounts:sign_up'), {
+            'username': 'hello',
+            'password1': 'hello1',
+            'password2': 'hello2'
+        })
+
+        response2 = self.client.post(reverse('accounts:sign_up'), {
+            'username': 'hel lo',
+            'password1': 'hello1',
+            'password2': 'hello1'
+        })
+
+        self.assertTemplateUsed(response1, expected)
+        self.assertTemplateUsed(response2, expected)
+
+    def test_return_user_model_with_count_of_1_if_signup_successful(self):
+        expected = 1
+
+        result = User.objects.all().count()
+
+        self.assertEqual(expected, result)
+
+    def test_return_to_login_page_if_signup_successful(self):
+        self.assertRedirects(self.resp, reverse('accounts:login'), fetch_redirect_response=True)
 
 """
 /projects/create
