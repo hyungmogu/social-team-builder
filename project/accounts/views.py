@@ -1,7 +1,8 @@
 from django.shortcuts import render
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.core.urlresolvers import reverse, reverse_lazy
-from django.views.generic import FormView, CreateView
+from django.contrib.auth import login, logout
+from django.views.generic import FormView, CreateView, RedirectView
 
 from . import forms
 

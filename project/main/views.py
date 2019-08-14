@@ -76,10 +76,10 @@ class ProjectDeleteView(DeleteView):
     model = models.Project
     success_url = reverse_lazy('home')
 
-def profile(request, pk):
+def profile(request):
     return render(request, 'main/profile.html')
 
-def profile_edit(request, pk):
+def profile_edit(request):
     return render(request, 'main/profile_edit.html')
 
 def search(request):
