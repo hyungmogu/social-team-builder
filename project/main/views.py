@@ -51,11 +51,30 @@ class ProjectEditView(UpdateView):
         project = models.Project.objects.get(pk=self.kwargs.get('pk'))
         positions = models.Position.objects.filter(project=project)
 
-        context['form_project'] = self.form_project(instance=project)
-        context['form_positions'] = self.form_positions(instance=project)
+        context['project'] = project
+        context['form_project'] = self.form_project(instance=project, prefix="project")
+        context['form_positions'] = self.form_positions(instance=project, prefix="positions")
 
         return context
 
+    def post(self, request, *args, **kwargs):
+        """Creates Project on save"""
+        project = self.model.objects.get(pk=self.kwargs.get('pk'))
+
+        form_project = self.form_project(instance=project, data=request.POST, prefix='project')
+        form_positions = self.form_positions(instance=project, data=request.POST, prefix="positions")
+
+        if form_project.is_valid() and form_positions.is_valid():
+            form_project.save()
+            form_positions.save()
+
+            return redirect('project', pk=project.pk)
+
+        return render(request, self.template_name, {
+            'project': project,
+            'form_project': form_project,
+            "form_positions": form_positions
+        })
 
 class ProjectCreateView(CreateView):
     model = models.Project

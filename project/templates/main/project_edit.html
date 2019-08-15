@@ -14,7 +14,7 @@
 
 {% block body_content %}
 <div class="bounds circle--page circle--article">
-    <form method="PUT">
+    <form method="POST">
       {% csrf_token %}
       <div class="grid-70">
         <div class="circle--article--body">
@@ -30,6 +30,7 @@
           <ul class="circle--group--list circle--clone--list">
             {{ form_positions.management_form }}
             {% for form_position in form_positions %}
+              {{ form_position.id }}
               <li>
                 {{ form_position.name }}
                 {% for error in form_position.name.errors %}
