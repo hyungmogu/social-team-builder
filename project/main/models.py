@@ -14,7 +14,7 @@ class Project(models.Model):
 
 class Position(models.Model):
     name = models.CharField(max_length=255)
-    project = models.ForeignKey('Project')
+    project = models.ForeignKey('Project', related_name="positions")
     description = models.TextField()
     related_skills = models.ManyToManyField('Skill', blank=True)
 
