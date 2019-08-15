@@ -1266,6 +1266,10 @@ pre, blockquote, dl, figure, table, p, ul, ol, form {
   text-align: right;
 }
 
+.align-center {
+  text-align: center;
+}
+
 /* line 30, ../sass/circle/core/utilities.sass */
 .positive {
   color: #54b26c;
