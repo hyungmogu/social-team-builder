@@ -13,9 +13,9 @@
 
 {% block body_content %}
   <div class="bounds circle--page circle--article">
-    <div class="grid-70">
-      <form method="POST">
-        {% csrf_token %}
+    <form method="POST">
+      {% csrf_token %}
+      <div class="grid-70">
         <div class="circle--article--body">
           {{ form_project.title }}
           {{ form_project.title.errors }}
@@ -46,9 +46,7 @@
           <button type="submit" class="button button-primary">Save Project</button>
         </div>
       </div>
-
       <div class="grid-25 grid-push-5">
-
         <div class="circle--secondary--module">
           <h3>Project Timeline</h3>
           {{ form_project.timeline }}
