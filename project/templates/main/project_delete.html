@@ -1,0 +1,12 @@
+{% extends 'layout.html' %}
+
+{% block body_content %}
+    <div class="bounds circle--page circle--article">
+        <form method="POST" class="align-center">
+            {% csrf_token %}
+            <h3>Are you sure you want to delete "{{ object }}"?</h3>
+            <input class="button button-text" type="submit" value="Confirm">
+            <a class="button button-primary" href="{% url 'project' pk=project.pk %}">Cancel</a>
+        </form>
+    </div>
+{% endblock %}

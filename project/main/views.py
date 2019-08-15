@@ -82,6 +82,7 @@ class ProjectCreateView(CreateView):
 
 class ProjectDeleteView(DeleteView):
     model = models.Project
+    template_name= 'main/project_delete.html'
     success_url = reverse_lazy('home')
 
 def profile(request):
