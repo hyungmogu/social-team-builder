@@ -28,6 +28,14 @@ class ProjectDetailView(DetailView):
     model = models.Project
     template_name = 'main/project.html'
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        project = models.Project.objects.prefetch_related('positions').get(pk=self.kwargs.get('pk'))
+        context['project'] = project
+
+        return context
+
 class ProjectEditView(UpdateView):
     fields = (
         'title', 'needs', 'timeline',

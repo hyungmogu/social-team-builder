@@ -28,10 +28,10 @@
         <h2>Positions</h2>
 
         <ul class="circle--group--list">
-          {% for need in project.needs.all %}
+          {% for position in project.positions.all %}
             <li>
-              <h3>{{ need.name }}</h3>
-              <p>{{ need.description }}</p>
+              <h3>{{ position.name }}</h3>
+              <p>{{ position.description }}</p>
               <a class="button button-primary">Apply</a>
             </li>
           {% endfor %}
@@ -44,8 +44,8 @@
       <div class="circle--secondary--module">
         <h3>Project Needs</h3>
         <ul class="circle--link--list">
-          {% for need in project.needs.all %}
-            <li><a>{{ need.name }}</a></li>
+          {% for position in project.positions.all %}
+            <li><a>{{ position.name }}</a></li>
           {% endfor %}
         </ul>
       </div>
