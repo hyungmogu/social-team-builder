@@ -1,5 +1,5 @@
 from django import forms
-from django.forms.models import inlineformset_factory
+from django.forms.models import modelformset_factory
 from .models import Project, Position, Skill
 
 class ProjectForm(forms.ModelForm):
@@ -7,8 +7,9 @@ class ProjectForm(forms.ModelForm):
     description = forms.CharField(widget=forms.Textarea(attrs={'placeholder': 'Project description...'}))
     timeline = forms.CharField(widget=forms.Textarea(attrs={'placeholder': 'Time estimate','class': 'circle--textarea--input'}))
     applicant_requirements = forms.CharField(widget=forms.Textarea(attrs={'class': 'circle--textarea--input'}))
+    needs = forms.ModelMultipleChoiceField(queryset=Position.objects, required=False)
     class Meta:
-        exclude = ('user','needs',)
+        fields = ('title','description', 'timeline', 'applicant_requirements',)
         model = Project
 
 class PositionForm(forms.ModelForm):
@@ -19,9 +20,7 @@ class PositionForm(forms.ModelForm):
         fields = ('name','description',)
         model = Position
 
-PositionFormSet = inlineformset_factory(
-    Project,
+PositionFormSet = modelformset_factory(
     Position,
-    form=PositionForm,
-    fields=('name','description',),
-    extra=1)
+    fields=('name','description',)
+)
