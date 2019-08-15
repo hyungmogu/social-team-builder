@@ -38,10 +38,24 @@ class ProjectDetailView(DetailView):
 
 class ProjectEditView(UpdateView):
     fields = (
-        'title', 'needs', 'timeline',
+        'title', 'timeline',
         'applicant_requirements', 'description')
     model = models.Project
+    form_project = forms.ProjectForm
+    form_positions = forms.PositionFormSet
     template_name = 'main/project_edit.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        project = models.Project.objects.get(pk=self.kwargs.get('pk'))
+        positions = models.Position.objects.filter(project=project)
+
+        context['form_project'] = self.form_project(instance=project)
+        context['form_positions'] = self.form_positions(instance=project)
+
+        return context
+
 
 class ProjectCreateView(CreateView):
     model = models.Project
