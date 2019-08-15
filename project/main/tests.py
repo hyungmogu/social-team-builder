@@ -503,7 +503,7 @@ class ProjectCreateGETTestCase(TestCase):
         self.assertTemplateUsed(response, expected)
 
 
-class CreateProjectPOSTTestCase(TestCase):
+class CreateProjectPOSTRequest(TestCase):
     def setUp(self):
 
         self.user = User.objects.create(
@@ -668,3 +668,78 @@ class CreateProjectPOSTTestCase(TestCase):
         }, follow=True)
 
         self.assertTemplateUsed(result, expected)
+
+
+
+"""
+/projects/delete
+"""
+class DeleteProjectGETRequest(TestCase):
+    def setUp(self):
+
+        self.user = User.objects.create(
+            username='test'
+        )
+        self.user.set_password('12345') # this approach used to avoid login returns False error
+        self.user.save()
+
+        self.project1 = Project.objects.create(
+            title='Test project 1',
+            user=self.user,
+            timeline='10 days',
+            applicant_requirements='Test requirement 1',
+            description='Test description 1'
+        )
+
+        self.project2 = Project.objects.create(
+            title='Test project 2',
+            user=self.user,
+            timeline='20 days',
+            applicant_requirements='Test requirement 2',
+            description='Test description 2'
+        )
+
+    def test_return_200_if_delete_while_logged_in(self):
+        expected = 200
+
+        self.client.login(username='test', password='12345')
+
+        response = self.client.get(reverse('project_delete', kwargs={
+            'pk': self.project1.pk
+        }))
+
+        result = response.status_code
+
+        self.assertEqual(expected, result)
+
+    @unittest.expectedFailure
+    def test_return_302_if_try_to_delete_while_not_logged_in(self):
+        expected = 302
+
+        response = self.client.get(reverse('project_delete', kwargs={
+            'pk': self.project1.pk
+        }))
+
+        result = response.status_code
+
+        self.assertEqual(expected, result)
+
+    def test_return_layoutHTML_as_template_used(self):
+        expected = 'layout.html'
+
+
+        response = self.client.get(reverse('project_delete', kwargs={
+            'pk': self.project1.pk
+        }))
+
+        self.assertTemplateUsed(response, expected)
+
+    def test_return_project_deleteHTML_as_template_used(self):
+        expected = 'main/project_delete.html'
+
+
+        response = self.client.get(reverse('project_delete', kwargs={
+            'pk': self.project1.pk
+        }))
+
+        self.assertTemplateUsed(response, expected)
