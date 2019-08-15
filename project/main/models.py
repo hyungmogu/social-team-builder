@@ -8,18 +8,19 @@ class Project(models.Model):
     timeline = models.CharField(max_length=255)
     applicant_requirements = models.TextField()
     description = models.TextField()
-    needs = models.ManyToManyField('Position', blank=True)
 
     def __str__(self):
         return self.title
 
 class Position(models.Model):
     name = models.CharField(max_length=255)
+    project = models.ForeignKey('Project')
     description = models.TextField()
     related_skills = models.ManyToManyField('Skill', blank=True)
 
     def __str__(self):
         return self.name
+
 
 class Skill(models.Model):
     name = models.CharField(max_length=255, unique=True)

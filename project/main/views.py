@@ -17,10 +17,10 @@ class HomeView(TemplateView):
         context = super().get_context_data(**kwargs)
 
         projects = models.Project.objects.all()
-        project_needs = models.Project.objects.order_by('needs').values('needs__name').distinct()
+        # project_needs = models.Project.objects.order_by('needs').values('needs__name').distinct()
 
         context['projects'] = projects
-        context['project_needs'] = project_needs
+        # context['project_needs'] = project_needs
 
         return context
 
