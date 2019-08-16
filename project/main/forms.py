@@ -24,5 +24,5 @@ PositionFormSet = inlineformset_factory(
     Position,
     form=PositionForm,
     fields=('name','description',),
-    extra=0,
+    extra=1,
     can_delete=True)
