@@ -40,7 +40,7 @@
                 {% for error in form_position.description.errors %}
                   <div>{{ error }}</div>
                 {% endfor %}
-                {{ form_position.DELETE }}
+                {{ form_position.DELETE.as_hidden }}
                 <a class="circle--clone--add">Add Position</a>
                 <a class="circle--clone--remove">Remove</a>
               </li>
