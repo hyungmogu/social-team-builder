@@ -1,0 +1,67 @@
+# UNIT 12 TODO LIST
+
+[]:Project Model
+    []: Change back Project model to contain 'need' field in mTm model
+
+[]:Profile Model
+    []: Create tests for profile model
+    []: Create profile model that extends from the abstract USER CLASS
+
+[]:User class (from USER Abstract class)
+    []: modify tests for the custom user Class
+    []: Create abstract user class
+
+[]:Filtering
+    []: Add filtering by keyword
+
+[]:Home Page
+    [x]: Change back Project model to contain need in mTM model
+
+[]:Project Page
+    [x]: Add '/project/{id}/delete/'
+    []: Add tests for '/project/{id}/delete/'
+    [x]: Add '/project/{id}/edit/'
+    []: Add tests for '/project/{id}/edit'
+    []: Fix issue where deleting a position results in validation error (returns missing field required)
+
+[]:Profile Page
+    []: Change to use generics
+    []: Create a model called Profile that extends from the abstract USER Class /
+    []: Create tests for GET request for profile page
+
+[]: Registration of an account
+    []: Create tests for '/accounts/signup' (GET, POST)
+    [x]: Create '/accounts/signup' (GET, POST)
+        - "The user should be able to sign up for an account."
+
+[]:Login
+    []: create abstract USER class for login by email
+    []: Create tests for '/accounts/login' (GET, POST)
+    [x]: Create '/accounts/login' (GET, POST)
+
+[x]:Logout
+    [x]:The user should be able to log out of his/her own account
+
+[]:Edit profile
+    []:The use should be able to edit his/her profile
+    []:The user should be able to use Markdown in the 'about me' part of the profile. This Markdown is rendered on his/her profile page.
+
+[]:Create Position
+    []: Create POSITION model with foreign key tied to POSITION model
+        - [x]: "The user should be able to create multiple positions for a project. Positions relate to a particular skill."
+        - []: "The user should be able to specify the positions where his/her project needs help with a name, a description, and related skill."
+        - []: "The user should be able to use use Markdown for the position description. This Markdown is rendered on the project page."
+
+==============================
+
+AUGUST 15th, 2019
+    GOAL:
+        - FINISH FIXING '/project/edit'
+            []: Complete 'Remove Position' functionality
+        - FINISH LOGIN
+            []: Improve to allow login by email
+        - FINISH FILTER FUNCTION (If have time)
+            []: Add filter by project needs
+            []: Add project filter for 'search project' functionality
+
+==============================
