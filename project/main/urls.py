@@ -10,7 +10,7 @@ urlpatterns = [
     url(r'^profile/edit/$', views.ProjectEditView.as_view(), name="profile_edit"),
     url(r'^profile/$', views.profile, name="profile"),
     url(r'^projects/create/$', views.ProjectCreateView.as_view(), name="project_create"),
-    url(r'^search/$', views.search, name="search"),
+    url(r'^search/by_position/$', views.SearchByPositionView.as_view(), name="search_position"),
     url(r'^applications/(?P<pk>\d+)/$', views.applications, name="application"),
     url(r'^$', views.HomeView.as_view(), name="home"),
 ]
