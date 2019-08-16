@@ -21,7 +21,7 @@
         <h4>Project Needs</h4>
         <ul class="circle--filter--list">
           {% for need in project_needs %}
-            <li><a>{{ need.name }}</a></li>
+            <li><a class="{% if search_position == need.name %} selected {% endif %}" href="/search/by_position?q={{ need.name }}">{{ need.name }}</a></li>
           {% endfor %}
         </ul>
       </div>
