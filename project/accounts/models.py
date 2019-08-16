@@ -4,7 +4,9 @@ from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
 
 
 class UserManager(BaseUserManager):
-    def create_user(self, email, password=None):
+    use_in_migrations = True
+
+    def create_user(self, email, username, password=None):
         if not email:
             raise ValueError("User must have a valid email address")
 
@@ -31,11 +33,12 @@ class UserManager(BaseUserManager):
 
 class User (AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(unique=True)
+    username = None
     is_employer = models.BooleanField(default=False)
 
     objects = UserManager()
 
-    USERNAME_FIELD = "email"
+    USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
 
     def __str__(self):
