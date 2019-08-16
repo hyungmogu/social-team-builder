@@ -1,10 +1,11 @@
 from django.db import models
+from django.conf import settings
 
 # Create your models here.
 
 class Project(models.Model):
     title = models.CharField(max_length=255)
-    user = models.ForeignKey('auth.User')
+    user = models.ForeignKey(settings.AUTH_USER_MODEL)
     timeline = models.CharField(max_length=255)
     applicant_requirements = models.TextField()
     description = models.TextField()
