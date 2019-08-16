@@ -57,9 +57,9 @@
 AUGUST 15th, 2019
     GOAL:
         - FINISH FIXING '/project/edit'
-            []: Complete 'Remove Position' functionality
+            [x]: Complete 'Remove Position' functionality
         - FINISH LOGIN
-            []: Improve to allow login by email
+            [x]: Improve to allow login by email
         - FINISH FILTER FUNCTION (If have time)
             []: Add filter by project needs
             []: Add project filter for 'search project' functionality
