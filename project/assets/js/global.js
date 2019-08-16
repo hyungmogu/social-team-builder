@@ -14,7 +14,8 @@ $( document ).ready(function() {
 
   $(".circle--clone--list").on("click", "li:not(:only-child) .circle--clone--remove", function(){
     var parent = $(this).parent("li");
-    parent.remove();
+    parent.find('input:checkbox').prop('checked', true);
+    parent.hide();
   });
 
   // Adds class to selected item
