@@ -120,12 +120,6 @@ class ProjectDeleteView(DeleteView):
     success_url = reverse_lazy('home')
 
 
-def profile(request):
-    return render(request, 'main/profile.html')
-
-def search(request):
-    return render(request, 'main/search.html')
-
 class SearchView(TemplateView):
     model = models.Project
     template_name = 'main/search.html'
