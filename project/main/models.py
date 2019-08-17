@@ -13,6 +13,18 @@ class Project(models.Model):
     def __str__(self):
         return self.title
 
+class Profile(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL)
+    first_name = models.CharField(max_length=255)
+    last_name = models.CharField(max_length=255)
+    projects = models.ForeignKey(Project)
+    short_bio = models.TextField(blank=True)
+    profile_image = models.ImageField(upload_to='profile_images', null=True, blank=True)
+    skills = models.TextField()
+
+    def __str__(self):
+        return self.name
+
 class Position(models.Model):
     name = models.CharField(max_length=255)
     project = models.ForeignKey('Project', related_name="positions")
@@ -28,3 +40,5 @@ class Skill(models.Model):
 
     def __str__(self):
         return self.name
+
+
