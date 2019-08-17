@@ -217,5 +217,13 @@ class ProfileEditView(UpdateView):
             "form_skills": form_skills
         })
 
-def applications(request):
-    return render(request, 'main/applications.html')
+
+class ApplicationsView(TemplateView):
+    model = models.Application
+    template_name = 'main/applications.html'
+
+    def get(self, request):
+        applications = self.model.objects.filter(user=request.user)
+        return render(request, self.template_name, {
+            'applications': applications
+        })
