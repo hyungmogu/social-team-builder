@@ -1,56 +1,76 @@
 # UNIT 12 TODO LIST
 
-[]:Project Model
-    []: Change back Project model to contain 'need' field in mTm model
-
-[]:Profile Model
-    []: Create tests for profile model
-    []: Create profile model that extends from the abstract USER CLASS
-
-[]:User class (from USER Abstract class)
-    []: modify tests for the custom user Class
-    []: Create abstract user class
-
-[]:Filtering
-    []: Add filtering by keyword
-
 []:Home Page
-    [x]: Change back Project model to contain need in mTM model
+    []: Add endpoint
+        []: '/'
 
 []:Project Page
-    [x]: Add '/project/{id}/delete/'
-    []: Add tests for '/project/{id}/delete/'
-    [x]: Add '/project/{id}/edit/'
-    []: Add tests for '/project/{id}/edit'
-    []: Fix issue where deleting a position results in validation error (returns missing field required)
+    []: Add endpoints
+        []: '/projects/{id}/delete/'
+        []: '/projects/{id}/edit'
+        []: '/projects/create'
+            [x]: "The user should be able to create multiple positions for a project. Positions relate to a particular skill."
+            []: "The user should be able to specify the positions where his/her project needs help with a name, a description, and related skill."
+            []: "The user should be able to use use Markdown for the position description. This Markdown is rendered on the project page."
+
+    []: Add tests for the endpoints
+        []: '/projects/{id}/delete/'
+        []: '/projects/{id}/edit'
+        []: '/projects/create'
 
 []:Profile Page
-    []: Change to use generics
-    []: Create a model called Profile that extends from the abstract USER Class /
-    []: Create tests for GET request for profile page
+    []: Add endpoints
+        []: '/profile/'
+        []: '/profile/edit'
+    []: Add tests for the endpoints
+        []: '/profile/'
+        []: '/profile/edit'
 
-[]: Registration of an account
-    []: Create tests for '/accounts/signup' (GET, POST)
-    [x]: Create '/accounts/signup' (GET, POST)
-        - "The user should be able to sign up for an account."
+[]: Signup Page
+    []: Add endpoint
+        [x]: '/accounts/signup'
+    []: Add tests for the endpoints
+        []: '/accounts/signup'
 
-[]:Login
-    []: create abstract USER class for login by email
-    []: Create tests for '/accounts/login' (GET, POST)
-    [x]: Create '/accounts/login' (GET, POST)
+[]: Login Page
+    []: Add endpoint
+        [x]: '/accounts/login'
+    []: Add tests for the endpoints
+        []: '/accounts/login'
 
-[x]:Logout
-    [x]:The user should be able to log out of his/her own account
+[]:Logout
+    []: Add endpoint
+        [x]: '/accounts/logout'
+    []: Add tests for the endpoints
+        []: '/accounts/logout'
 
-[]:Edit profile
-    []:The use should be able to edit his/her profile
-    []:The user should be able to use Markdown in the 'about me' part of the profile. This Markdown is rendered on his/her profile page.
 
-[]:Create Position
-    []: Create POSITION model with foreign key tied to POSITION model
-        - [x]: "The user should be able to create multiple positions for a project. Positions relate to a particular skill."
-        - []: "The user should be able to specify the positions where his/her project needs help with a name, a description, and related skill."
-        - []: "The user should be able to use use Markdown for the position description. This Markdown is rendered on the project page."
+# ======
+# FUNCTIONALITIES
+# ======
+
+[]: Search projects
+    []: Create ability to search projects based on words in the titles or descriptions.
+        - The search is case-insensitive
+
+[x]: Filter projects
+    [x]: Create a filter function that allows user to filter projects by the positions they need
+
+[]: Apply for a position
+    []: Create a function allowing user to apply for a position in a project
+
+
+
+==============================
+
+AUGUST 16th, 2019 / AUGUST 17th, 2019 (Part 1)
+    GOAL:
+        - FINISH Profile page
+            []: Add '/profile/'
+            []: Add '/profile/edit'
+        - FINISH FILTER FUNCTION
+            [x]: Add '/search/by_position/'
+            []: Add '/search/by_project/'
 
 ==============================
 
