@@ -163,11 +163,38 @@ class ProfileView(TemplateView):
     model = models.Profile
     template_name = 'main/profile.html'
 
+    def get(self, request):
+        try:
+            profile = self.model.objects.get(user=request.user)
+        except models.Profile.DoesNotExist:
+            profile = self.model.objects.create(user=request.user)
+
+        return render(request, self.template_name, {
+            'profile': profile
+        })
+
 class ProfileEditView(UpdateView):
     fields = ('name', 'short_bio', 'profile_image')
     model = models.Profile
+    form_profile = forms.ProfileForm
+    form_user_projects = forms.UserProjectForm
+    form_skills =  forms.SkillForm
     template_name = 'main/profile_edit.html'
 
+    def get_object(self):
+        obj = get_object_or_404(self.model, user=self.request.user)
+        return obj
 
-def applications(request, pk):
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        profile = models.Profile.objects.get(user=self.request.user)
+
+        context['form_profile'] = self.form_profile(instance=profile, prefix="profile")
+        context['form_user_projects'] = self.form_user_projects(instance=profile, prefix="user_projects")
+        context['form_skills'] = self.form_skills(instance=profile, prefix="skills")
+
+        return context
+
+def applications(request):
     return render(request, 'main/applications.html')
