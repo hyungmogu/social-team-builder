@@ -1,6 +1,6 @@
 from django import forms
 from django.forms.models import inlineformset_factory
-from .models import Project, Position, Skill
+from .models import Project, Position, Skill, Profile, UserProject
 
 class ProjectForm(forms.ModelForm):
     title = forms.CharField(widget=forms.TextInput(attrs={'placeholder':'Project Title', 'class': 'circle--input--h1'}))
@@ -18,6 +18,21 @@ class PositionForm(forms.ModelForm):
     class Meta:
         fields = ('name','description',)
         model = Position
+
+class ProfileForm(forms.ModelForm):
+    class Meta:
+        fields = ('name', 'short_bio', 'profile_image')
+        model = Profile
+
+class SkillForm(forms.ModelForm):
+    class Meta:
+        fields = ('name',)
+        model = Skill
+
+class UserProjectForm(forms.ModelForm):
+    class Meta:
+        fields = ('name', 'url',)
+        model = UserProject
 
 PositionFormSet = inlineformset_factory(
     Project,
