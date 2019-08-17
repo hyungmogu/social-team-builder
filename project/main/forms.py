@@ -33,6 +33,8 @@ class SkillForm(forms.ModelForm):
         model = Skill
 
 class UserProjectForm(forms.ModelForm):
+    name = forms.CharField(widget=forms.TextInput(attrs={'placeholder':'Name'}))
+    url = forms.CharField(widget=forms.URLInput(attrs={'placeholder':'Url'}))
     class Meta:
         fields = ('name', 'url',)
         model = UserProject
@@ -51,5 +53,14 @@ SkillFormSet = inlineformset_factory(
     Skill,
     form=SkillForm,
     fields=('name',),
+    extra=1,
+    can_delete=True)
+
+
+UserProjectFormSet = inlineformset_factory(
+    Profile,
+    UserProject,
+    form=UserProjectForm,
+    fields=('name', 'url',),
     extra=1,
     can_delete=True)
