@@ -1,16 +1,6 @@
 from django.db import models
+from django.utils import timezone
 from django.conf import settings
-
-# Create your models here.
-
-class Application(models.Model):
-    user = models.ForeignKey(settings.AUTH_USER_MODEL)
-    profile = models.ForeignKey('Profile', related_name="applications")
-    project = models.ForeignKey('Project', related_name="applications")
-    position = models.ForeignKey('Position', related_name="applications")
-
-    def __str__(self):
-        return "[{}] - {} {}".format(profile, project, position)
 
 class Project(models.Model):
     title = models.CharField(max_length=255)
@@ -53,5 +43,25 @@ class Skill(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class Application(models.Model):
+    APPLICATION_STATUS_CHOICES = [
+        ('P', 'Pending'),
+        ('R', 'Rejected'),
+        ('A', 'Accepted')
+    ]
+
+    user = models.ForeignKey(settings.AUTH_USER_MODEL)
+    profile = models.ForeignKey('Profile', related_name="applications")
+    project = models.ForeignKey('Project', related_name="applications")
+    position = models.ForeignKey('Position', related_name="applications")
+
+    applied_date = models.DateTimeField(default=timezone.now)
+    status = models.CharField(max_length=1, choices=APPLICATION_STATUS_CHOICES, default='P')
+
+    def __str__(self):
+        return "[{}] - {} {}".format(profile, project, position)
+
 
 
