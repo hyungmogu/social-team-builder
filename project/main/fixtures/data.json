@@ -1,11 +1,8 @@
 [
     {
         "pk":1,
-        "model":"auth.User",
+        "model":"accounts.User",
         "fields":{
-            "username":"test",
-            "first_name": "Test",
-            "last_name":"User",
             "email": "test@example.com",
             "password": "12345"
         }
@@ -19,29 +16,10 @@
     },
     {
         "pk":1,
-        "model":"main.Position",
-        "fields":{
-            "name": "iOS Developer",
-            "description": "It's a great position",
-            "related_skills": [1]
-        }
-    },
-    {
-        "pk":2,
-        "model":"main.Position",
-        "fields":{
-            "name": "Front End Developer",
-            "description": "This is a great position as well!",
-            "related_skills": [1]
-        }
-    },
-    {
-        "pk":1,
         "model":"main.Project",
         "fields":{
             "title": "Twitter Client",
             "user": 1,
-            "needs": [1],
             "timeline": "10 days",
             "applicant_requirements": "Test",
             "description": "This is a test description"
@@ -53,10 +31,41 @@
         "fields":{
             "title": "Test Project",
             "user": 1,
-            "needs": [1,2],
             "timeline": "20 days",
             "applicant_requirements": "Test",
             "description": "This is a test description"
+        }
+    },
+    {
+        "pk":1,
+        "model":"main.Position",
+        "fields":{
+            "name": "iOS Developer",
+            "description": "It's a great position",
+            "project": 1,
+            "related_skills": [1]
+        }
+    },
+    {
+        "pk":2,
+        "model":"main.Position",
+        "fields":{
+            "name": "Front End Developer",
+            "description": "This is a great position as well!",
+            "project": 1,
+            "related_skills": [1]
+        }
+    },
+    {
+        "pk":1,
+        "model":"main.Profile",
+        "fields":{
+            "first_name": "Hyungmo",
+            "last_name": "Gu",
+            "projects": [1,2],
+            "user": 1,
+            "short_bio": "This is moe's profile",
+            "skills": "Django, python, css, html"
         }
     }
 ]
