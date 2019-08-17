@@ -119,11 +119,9 @@ class ProjectDeleteView(DeleteView):
     template_name= 'main/project_delete.html'
     success_url = reverse_lazy('home')
 
+
 def profile(request):
     return render(request, 'main/profile.html')
-
-def profile_edit(request):
-    return render(request, 'main/profile_edit.html')
 
 def search(request):
     return render(request, 'main/search.html')
@@ -171,13 +169,11 @@ class ProfileView(TemplateView):
     model = models.Profile
     template_name = 'main/profile.html'
 
-    def get(self, request):
+class ProfileEditView(UpdateView):
+    fields = ('name', 'short_bio', 'profile_image')
+    model = models.Profile
+    template_name = 'main/profile_edit.html'
 
-        profile = get_object_or_404(self.model, user=request.user)
-
-        return render(request, self.template_name, {
-            'profile': profile
-        })
 
 def applications(request, pk):
     return render(request, 'main/applications.html')
