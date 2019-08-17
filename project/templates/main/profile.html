@@ -24,7 +24,7 @@
     </div>
 
     <div class="grid-70">
-      <h1>{{ profile.first_name }} {{ profile.last_name }}</h1>
+      <h1>{{ profile.name }}</h1>
       <div class="circle--article--body">
         {{ profile.short_bio | linebreaks }}
       </div>
@@ -58,11 +58,11 @@
     <div class="grid-25 grid-push-5">
 
       <div class="circle--secondary--module">
-        <div class="circle--primary--avatar">
-          {% if profile.profile_image %}
-              <img class="circle--primary--avatar " src="/media/{{ profile.avatar }}"/>
-          {% endif %}
-        </div>
+        {% if profile.profile_image %}
+          <img class="circle--primary--avatar " src="/media/{{ profile.profile_image }}"/>
+        {% else %}
+          <div class="circle--primary--avatar"></div>
+        {% endif %}
       </div>
 
       <div class="circle--secondary--module">
