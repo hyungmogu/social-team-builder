@@ -50,7 +50,7 @@
 # ======
 
 []: Search projects
-    []: Create ability to search projects based on words in the titles or descriptions.
+    [x]: Create ability to search projects based on words in the titles or descriptions.
         - The search is case-insensitive
 
 [x]: Filter projects
@@ -58,8 +58,6 @@
 
 []: Apply for a position
     []: Create a function allowing user to apply for a position in a project
-
-
 
 ==============================
 
@@ -70,7 +68,7 @@ AUGUST 16th, 2019 / AUGUST 17th, 2019 (Part 1)
             []: Add '/profile/edit'
         - FINISH FILTER FUNCTION
             [x]: Add '/search/by_position/'
-            []: Add '/search/by_project/'
+            [x]: Add '/search/by_project/'
 
 ==============================
 
