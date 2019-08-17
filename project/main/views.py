@@ -178,7 +178,7 @@ class ProfileEditView(UpdateView):
     model = models.Profile
     form_profile = forms.ProfileForm
     form_user_projects = forms.UserProjectForm
-    form_skills =  forms.SkillForm
+    form_skills =  forms.SkillFormSet
     template_name = 'main/profile_edit.html'
 
     def get_object(self):

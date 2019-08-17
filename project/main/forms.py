@@ -27,6 +27,7 @@ class ProfileForm(forms.ModelForm):
         model = Profile
 
 class SkillForm(forms.ModelForm):
+    name = forms.CharField(widget=forms.TextInput(attrs={'placeholder':'Skill'}))
     class Meta:
         fields = ('name',)
         model = Skill
@@ -41,5 +42,14 @@ PositionFormSet = inlineformset_factory(
     Position,
     form=PositionForm,
     fields=('name','description',),
+    extra=1,
+    can_delete=True)
+
+
+SkillFormSet = inlineformset_factory(
+    Profile,
+    Skill,
+    form=SkillForm,
+    fields=('name',),
     extra=1,
     can_delete=True)

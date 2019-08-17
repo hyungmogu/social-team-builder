@@ -79,11 +79,14 @@
           <div class="circle--secondary--module">
             <h4>My Skills</h4>
             <ul class="circle--clone--list">
-              <li>
-                <input type="text" placeholder="Skill" />
-                <a class="circle--clone--add">Add Skill</a>
-                <a class="circle--clone--remove">Remove</a>
-              </li>
+              {% for form_skill in form_skills %}
+                <li>
+                  {{ form_skill.name }}
+                  {{ form_skill.name.errors }}
+                  <a class="circle--clone--add">Add Skill</a>
+                  <a class="circle--clone--remove">Remove</a>
+                </li>
+              {% endfor %}
             </ul>
           </div>
 
