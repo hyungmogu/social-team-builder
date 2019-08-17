@@ -17,7 +17,7 @@ class Project(models.Model):
 class UserProject(models.Model):
     name= models.CharField(max_length=255)
     url = models.URLField()
-    profile = ForeignKey('Profile', related_name="user_projects")
+    profile = models.ForeignKey('Profile', related_name="user_projects")
 
 class Profile(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, related_name='profile')
@@ -38,10 +38,9 @@ class Position(models.Model):
     def __str__(self):
         return self.name
 
-
 class Skill(models.Model):
     name = models.CharField(max_length=255, unique=True)
-    profile = ForeignKey('Profile', related_name="skills")
+    profile = models.ForeignKey('Profile', related_name="skills")
 
     def __str__(self):
         return self.name
