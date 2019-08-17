@@ -5,7 +5,7 @@
     <div class="circle--page--header circle--fluid">
       <div class="circle--fluid--cell circle--fluid--primary">
         <h2>Search</h2>
-        <p>Search research for: <span class="secondary-label">sass</span></p>
+        <p>Search research for: <span class="secondary-label">{{ search_term }}</span></p>
       </div>
       <div class="circle--fluid--cell circle--fluid--secondary">
         <a class="button button-primary icon-on-left" href="project_new.html">
@@ -21,15 +21,9 @@
       <div class="circle--filter circle--secondary--module">
         <h4>Project Needs</h4>
         <ul class="circle--filter--list">
-          <li><a class="selected">All Needs</a></li>
-          <li><a>Android Developer</a></li>
-          <li><a>Designer</a></li>
-          <li><a>Java Developer</a></li>
-          <li><a>PHP Developer</a></li>
-          <li><a>Python Developer</a></li>
-          <li><a>Rails Developer</a></li>
-          <li><a>WordPress Developer</a></li>
-          <li><a>iOS Developer</a></li>
+            {% for need in project_needs %}
+              <li><a href="/search/by_position?q={{ need.name }}">{{ need.name }}</a></li>
+            {% endfor %}
         </ul>
       </div>
     </div>
@@ -43,22 +37,16 @@
           </tr>
         </thead>
         <tbody>
-          <tr class="clickable-row" data-href="project.html">
-            <td>
-              <h3>Invoice Delivery Tool</h3>
-            </td>
-            <td class="circle--cell--right">
-              <span class="secondary-label">Rails Developer</span>
-            </td>
-          </tr>
-          <tr class="clickable-row" data-href="project.html">
-            <td>
-              <h3>Twitter Client</h3>
-            </td>
-            <td class="circle--cell--right">
-              <span class="secondary-label">Designer</span>
-            </td>
-          </tr>
+            {% for project in projects %}
+            <tr class="clickable-row" data-href="{% url 'project' pk=project.pk %}">
+              <td>
+                <h3>{{ project.title }}</h3>
+              </td>
+              <td class="circle--cell--right">
+                <span class="secondary-label">{{ project.positions.all|join:", " }}</span>
+              </td>
+            </tr>
+          {% endfor %}
         </tbody>
       </table>
 
