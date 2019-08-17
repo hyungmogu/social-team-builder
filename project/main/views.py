@@ -196,5 +196,26 @@ class ProfileEditView(UpdateView):
 
         return context
 
+    def post(self, request, *args, **kwargs):
+        """Creates Project on save"""
+        profile = self.model.objects.get(user=request.user)
+
+        form_profile = self.form_profile(request.POST, request.FILES, instance=profile, prefix='profile')
+        form_user_projects = self.form_user_projects(instance=profile, data=request.POST, prefix="user_projects")
+        form_skills = self.form_skills(instance=profile, data=request.POST, prefix="skills")
+
+        if form_profile.is_valid() and form_user_projects.is_valid() and form_skills.is_valid():
+            profile = form_profile.save()
+            form_user_projects.save()
+            form_skills.save()
+
+            return redirect('profile')
+
+        return render(request, self.template_name, {
+            'form_profile': form_profile,
+            "form_user_projects": form_user_projects,
+            "form_skills": form_skills
+        })
+
 def applications(request):
     return render(request, 'main/applications.html')
