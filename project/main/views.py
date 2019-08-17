@@ -1,5 +1,6 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.core.urlresolvers import reverse, reverse_lazy
+from django.db.models import Q
 from django.forms.models import modelformset_factory
 from django.views.generic import (
     TemplateView, DetailView, UpdateView,
@@ -126,6 +127,25 @@ def profile_edit(request):
 
 def search(request):
     return render(request, 'main/search.html')
+
+class SearchView(TemplateView):
+    model = models.Project
+    template_name = 'main/search.html'
+
+    def get(self, request):
+        # 1. fetch query params
+        search_term = request.GET.get('q', '')
+
+        # 2. filter projects based by title or description
+        projects = self.model.objects.prefetch_related('positions').filter(Q(title__icontains=search_term)|Q(description__icontains=search_term)).order_by('title')
+        project_needs = models.Position.objects.order_by('name').distinct()
+
+        # 3. return results on view
+        return render(request, self.template_name, {
+            'projects': projects,
+            'search_term': search_term,
+            'project_needs': project_needs
+        })
 
 class SearchByPositionView(ListView):
     model = models.Project
