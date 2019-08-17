@@ -166,5 +166,18 @@ class SearchByPositionView(ListView):
             'search_position': position
         })
 
+
+class ProfileView(TemplateView):
+    model = models.Profile
+    template_name = 'main/profile.html'
+
+    def get(self, request):
+
+        profile = get_object_or_404(self.model, user=request.user)
+
+        return render(request, self.template_name, {
+            'profile': profile
+        })
+
 def applications(request, pk):
     return render(request, 'main/applications.html')
