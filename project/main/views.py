@@ -163,11 +163,20 @@ class ProfileView(TemplateView):
     model = models.Profile
     template_name = 'main/profile.html'
 
+    def get(self, request):
+        try:
+            profile = self.model.objects.get(user=request.user)
+        except models.Profile.DoesNotExist:
+            profile = self.model.objects.create(user=request.user)
+
+        return render(request, self.template_name, {
+            'profile': profile
+        })
+
 class ProfileEditView(UpdateView):
     fields = ('name', 'short_bio', 'profile_image')
     model = models.Profile
     template_name = 'main/profile_edit.html'
 
-
-def applications(request, pk):
+def applications(request):
     return render(request, 'main/applications.html')
