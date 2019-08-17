@@ -16,6 +16,7 @@
   <div class="bounds circle--page">
     <form method="POST">
       {% csrf_token %}
+
       <div class="circle--page--header circle--fluid">
         <div class="circle--fluid--cell circle--fluid--primary">
           <h2>Profile</h2>
@@ -42,7 +43,8 @@
               </tr>
             </thead>
             <tbody>
-              <tr class="clickable-row" data-href="project.html">
+              <!-- TO BE DONE -->
+              <!-- <tr class="clickable-row" data-href="project.html">
                 <td>
                   <h3>Invoice Delivery Tool</h3>
                 </td>
@@ -57,7 +59,7 @@
                 <td class="circle--cell--right">
                   <span class="secondary-label">Designer</span>
                 </td>
-              </tr>
+              </tr> -->
             </tbody>
           </table>
         </div>
@@ -68,9 +70,10 @@
             <div class="circle--primary--avatar">
               <a class="button">
                 Upload Photo
-                <input type="file">
+                {{ form_profile.profile_image }}
               </a>
             </div>
+            {{ form_profile.profile_image.errors }}
           </div>
 
           <div class="circle--secondary--module">
