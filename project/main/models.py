@@ -21,8 +21,7 @@ class UserProject(models.Model):
 
 class Profile(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, related_name='profile')
-    first_name = models.CharField(max_length=255)
-    last_name = models.CharField(max_length=255)
+    name = models.CharField(max_length=255)
     short_bio = models.TextField(blank=True)
     profile_image = models.ImageField(upload_to='profile_images', null=True, blank=True)
 
