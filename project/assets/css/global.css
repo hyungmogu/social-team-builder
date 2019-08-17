@@ -1606,9 +1606,11 @@ li:only-child .circle--clone--remove {
   position: relative;
 }
 /* line 4, ../sass/circle/components/forms.sass */
-.circle--search input {
+.circle--search input,
+.circle--search form {
   margin: 0;
 }
+
 /* line 6, ../sass/circle/components/forms.sass */
 .circle--search button {
   height: 20px;
