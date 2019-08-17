@@ -1,4 +1,5 @@
 {% extends 'layout.html' %}
+{% load filters %}
 
 {% block body_actions_bar %}
   <div class="circle--actions--bar">
@@ -83,6 +84,7 @@
                 <li>
                   {{ form_skill.name }}
                   {{ form_skill.name.errors }}
+                  {{ form_skill.DELETE|add_class:'hidden' }}
                   <a class="circle--clone--add">Add Skill</a>
                   <a class="circle--clone--remove">Remove</a>
                 </li>
@@ -97,6 +99,7 @@
                 <li>
                   {{ form_user_project.name }}
                   {{ form_user_project.url }}
+                  {{ form_user_project.DELETE|add_class:'hidden' }}
                   <a class="circle--clone--add">Add Project</a>
                   <a class="circle--clone--remove">Remove</a>
                 </li>
