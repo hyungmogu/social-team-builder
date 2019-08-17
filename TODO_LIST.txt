@@ -2,13 +2,13 @@
 
 []:Home Page
     []: Add endpoint
-        []: '/'
+        [x]: '/'
 
 []:Project Page
     []: Add endpoints
-        []: '/projects/{id}/delete/'
-        []: '/projects/{id}/edit'
-        []: '/projects/create'
+        [x]: '/projects/{id}/delete/'
+        [x]: '/projects/{id}/edit'
+        [x]: '/projects/create'
             [x]: "The user should be able to create multiple positions for a project. Positions relate to a particular skill."
             []: "The user should be able to specify the positions where his/her project needs help with a name, a description, and related skill."
             []: "The user should be able to use use Markdown for the position description. This Markdown is rendered on the project page."
@@ -18,10 +18,20 @@
         []: '/projects/{id}/edit'
         []: '/projects/create'
 
+[]: Applications page
+    []: Add endpoints
+        []: '/applications'
+    []L Add tests for the endpoints
+        []: '/applications'
+
 []:Profile Page
     []: Add endpoints
         []: '/profile/'
+            []:
         []: '/profile/edit'
+            NOTE
+            []: Saving the profile with the skill that has been erased before causes program to complains that it already exists.
+            []: 'Past projects' still needs to be worked on.
     []: Add tests for the endpoints
         []: '/profile/'
         []: '/profile/edit'
@@ -59,16 +69,42 @@
 []: Apply for a position
     []: Create a function allowing user to apply for a position in a project
 
+
+==============================
+
+AUGUST 16th, 2019 / AUGUST 17th, 2019 (Part 2)
+    GOAL:
+        []: Applications page
+            []: Add endpoints
+                []: '/applications'
+
+        []: Apply for a position ('/profile/edit')
+            []: Create a function allowing user to apply for a position in a project
+
+
 ==============================
 
 AUGUST 16th, 2019 / AUGUST 17th, 2019 (Part 1)
     GOAL:
         - FINISH Profile page
-            []: Add '/profile/'
-            []: Add '/profile/edit'
+            [x]: Add '/profile/'
+            [x]: Add '/profile/edit'
         - FINISH FILTER FUNCTION
             [x]: Add '/search/by_position/'
             [x]: Add '/search/by_project/'
+
+==============================
+
+AUGUST 16th, 2019 / AUGUST 17th, 2019 (Part 1)
+    GOAL:
+        - FINISH Profile page
+            [x]: Add '/profile/'
+            [x]: Add '/profile/edit'
+        - FINISH FILTER FUNCTION
+            [x]: Add '/search/by_position/'
+            [x]: Add '/search/by_project/'
+
+        []: need to work on 'past projects' in '/profile' and '/profile/edits'
 
 ==============================
 
