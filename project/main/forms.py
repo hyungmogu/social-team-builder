@@ -22,6 +22,7 @@ class PositionForm(forms.ModelForm):
 class ProfileForm(forms.ModelForm):
     name = forms.CharField(widget=forms.TextInput(attrs={'placeholder':'Full Name', 'class': 'circle--input--h1'}))
     short_bio = forms.CharField(widget=forms.Textarea(attrs={'placeholder': 'Tell us about yourself...'}))
+    profile_image = forms.ImageField(widget=forms.FileInput)
     class Meta:
         fields = ('name', 'short_bio', 'profile_image')
         model = Profile
