@@ -1,7 +1,7 @@
 # UNIT 12 TODO LIST
 
-[]:Home Page
-    []: Add endpoint
+[x]:Home Page
+    [x]: Add endpoint
         [x]: '/'
 
 []:Project Page
@@ -10,7 +10,7 @@
         [x]: '/projects/{id}/edit'
         [x]: '/projects/create'
             [x]: "The user should be able to create multiple positions for a project. Positions relate to a particular skill."
-            []: "The user should be able to specify the positions where his/her project needs help with a name, a description, and related skill."
+            [x]: "The user should be able to specify the positions where his/her project needs help with a name, a description, and related skill."
             []: "The user should be able to use use Markdown for the position description. This Markdown is rendered on the project page."
 
     []: Add tests for the endpoints
@@ -20,14 +20,14 @@
 
 []: Applications page
     []: Add endpoints
-        []: '/applications'
+        [x]: '/applications'
     []L Add tests for the endpoints
         []: '/applications'
 
 []:Profile Page
     []: Add endpoints
-        []: '/profile/'
-            []:
+        [x]: '/profile/'
+            [x]:
         []: '/profile/edit'
             NOTE
             []: Saving the profile with the skill that has been erased before causes program to complains that it already exists.
@@ -37,19 +37,19 @@
         []: '/profile/edit'
 
 []: Signup Page
-    []: Add endpoint
+    [x]: Add endpoint
         [x]: '/accounts/signup'
     []: Add tests for the endpoints
         []: '/accounts/signup'
 
 []: Login Page
-    []: Add endpoint
+    [x]: Add endpoint
         [x]: '/accounts/login'
     []: Add tests for the endpoints
         []: '/accounts/login'
 
 []:Logout
-    []: Add endpoint
+    [x]: Add endpoint
         [x]: '/accounts/logout'
     []: Add tests for the endpoints
         []: '/accounts/logout'
@@ -59,15 +59,15 @@
 # FUNCTIONALITIES
 # ======
 
-[]: Search projects
+[x]: Search projects
     [x]: Create ability to search projects based on words in the titles or descriptions.
         - The search is case-insensitive
 
 [x]: Filter projects
     [x]: Create a filter function that allows user to filter projects by the positions they need
 
-[]: Apply for a position
-    []: Create a function allowing user to apply for a position in a project
+[x]: Apply for a position
+    [x]: Create a function allowing user to apply for a position in a project
 
 
 
@@ -76,11 +76,11 @@
 AUGUST 18th, 2019
     GOAL:
         [x]: Finish applicants page
-            []: Refine endpoints
-                []: '/applications'
-                    []: Create selectables on whether an applicant is approved, rejected, or pending
-        []: Finish '/profile' page
-            []: Add 'past projects' section
+            [x]: Refine endpoints
+                [x]: '/applications'
+                    [x]: Create selectables on whether an applicant is approved, rejected, or pending
+        [x]: Finish '/profile' page
+            [x]: Add 'past projects' section
         []: Finish permissions
 
 ==============================
