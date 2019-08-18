@@ -63,16 +63,20 @@
           </tr>
         </thead>
         <tbody>
-          {% for application in applications %}
-            <tr class="clickable-row" data-href="profile.html">
-              <td>
-                <h3>{{ application.profile.name }}</h3>
-                <p>{{ application.project.title }}</p>
-              </td>
-              <td class="circle--cell--right">
-                <span class="secondary-label">{{ application.position.name }}</span>
-              </td>
-            </tr>
+          {% for project in projects %}
+            {% for position in project.positions.all %}
+              {% for application in position.applications.all %}
+                <tr class="clickable-row" data-href="profile.html">
+                  <td>
+                    <h3>{{ application.profile.name }}</h3>
+                    <p>{{ application.project.title }}</p>
+                  </td>
+                  <td class="circle--cell--right">
+                    <span class="secondary-label">{{ application.position.name }}</span>
+                  </td>
+                </tr>
+              {% endfor %}
+            {% endfor %}
           {% endfor %}
         </tbody>
       </table>

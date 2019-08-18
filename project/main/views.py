@@ -219,11 +219,11 @@ class ProfileEditView(UpdateView):
 
 
 class ApplicationsView(TemplateView):
-    model = models.Application
+    model = models.Project
     template_name = 'main/applications.html'
 
     def get(self, request):
-        applications = self.model.objects.filter(user=request.user)
+        projects = self.model.objects.filter(user=request.user)
         return render(request, self.template_name, {
-            'applications': applications
+            'projects': projects
         })
