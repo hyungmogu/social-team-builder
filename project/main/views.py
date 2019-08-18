@@ -161,7 +161,7 @@ class SearchByPositionView(ListView):
         })
 
 
-class ProfileView(TemplateView):
+class ProfileView(LoginRequiredMixin, TemplateView):
     model = models.Profile
     template_name = 'main/profile.html'
 
@@ -175,7 +175,7 @@ class ProfileView(TemplateView):
             'profile': profile
         })
 
-class ProfileEditView(UpdateView):
+class ProfileEditView(LoginRequiredMixin, UpdateView):
     fields = ('name', 'short_bio', 'profile_image')
     model = models.Profile
     form_profile = forms.ProfileForm
@@ -222,7 +222,7 @@ class ProfileEditView(UpdateView):
         })
 
 
-class ApplicationSubmitView(CreateView):
+class ApplicationSubmitView(LoginRequiredMixin, CreateView):
     model = models.Application
 
     def get(self, request, *args, **kwargs):
@@ -253,7 +253,7 @@ class ApplicationSubmitView(CreateView):
             'pk': self.kwargs.get('project_pk')
         }))
 
-class ApplicationsView(TemplateView):
+class ApplicationsView(LoginRequiredMixin, TemplateView):
     model = models.Application
     template_name = 'main/applications.html'
 
@@ -269,8 +269,6 @@ class ApplicationsView(TemplateView):
             filtered_applicants = self.model.objects.filter(Q(project__title__iexact=q_project)&Q(project__user=request.user))
         elif q_proj_need:
             filtered_applicants = self.model.objects.filter(Q(project__user=request.user)&Q(position__applications__position__name__iexact=q_proj_need))
-        elif q_status:
-            filtered_applicants = self.model.objects.filter(Q(project__user=request.user)&Q(status__iexact=q_status))
         else:
             filtered_applicants = self.model.objects.filter(project__user=request.user)
 
@@ -286,7 +284,102 @@ class ApplicationsView(TemplateView):
             'form_status': form_status
         })
 
-class ApplicantEditView(UpdateView):
+
+class ApplicationsView(LoginRequiredMixin, TemplateView):
+    model = models.Application
+    template_name = 'main/applications.html'
+
+    def get(self, request):
+        form_status = forms.ApplicationForm()
+
+        # 1. get all types of queries
+        filtered_applicants = self.model.objects.filter(project__user=request.user)
+
+        my_projects = models.Project.objects.filter(user=request.user)
+        my_proj_needs = models.Position.objects.filter(Q(project__user=request.user)).distinct()
+        return render(request, self.template_name, {
+            'my_projects': my_projects,
+            'my_proj_needs': my_proj_needs,
+            'filtered_applicants': filtered_applicants,
+            'form_status': form_status
+        })
+
+class ApplicationsByProjectNeedView(LoginRequiredMixin, TemplateView):
+    model = models.Application
+    template_name = 'main/applications.html'
+
+    def get(self, request):
+        form_status = forms.ApplicationForm()
+
+        # 1. get all types of queries
+        q = request.GET.get('q', '')
+
+        if q:
+            filtered_applicants = self.model.objects.filter(Q(project__user=request.user)&Q(position__name__iexact=q))
+        else:
+            filtered_applicants = self.model.objects.filter(project__user=request.user)
+
+        my_projects = models.Project.objects.filter(user=request.user)
+        my_proj_needs = models.Position.objects.filter(Q(project__user=request.user)).distinct()
+        return render(request, self.template_name, {
+            'q': q,
+            'my_projects': my_projects,
+            'my_proj_needs': my_proj_needs,
+            'filtered_applicants': filtered_applicants,
+            'form_status': form_status
+        })
+
+class ApplicationsByProjectView(LoginRequiredMixin, TemplateView):
+    model = models.Application
+    template_name = 'main/applications.html'
+
+    def get(self, request):
+        form_status = forms.ApplicationForm()
+
+        # 1. get all types of queries
+        q = request.GET.get('q', '')
+
+        if q:
+            filtered_applicants = self.model.objects.filter(Q(project__title__iexact=q)&Q(project__user=request.user))
+        else:
+            filtered_applicants = self.model.objects.filter(project__user=request.user)
+
+        my_projects = models.Project.objects.filter(user=request.user)
+        my_proj_needs = models.Position.objects.filter(Q(project__user=request.user)).distinct()
+        return render(request, self.template_name, {
+            'q': q,
+            'my_projects': my_projects,
+            'my_proj_needs': my_proj_needs,
+            'filtered_applicants': filtered_applicants,
+            'form_status': form_status
+        })
+
+class ApplicationsByStatusView(LoginRequiredMixin, TemplateView):
+    model = models.Application
+    template_name = 'main/applications.html'
+
+    def get(self, request):
+        form_status = forms.ApplicationForm()
+
+        # 1. get all types of queries
+        q = request.GET.get('q', '')
+
+        if q:
+            filtered_applicants = self.model.objects.filter(Q(project__user=request.user)&Q(status__iexact=q))
+        else:
+            filtered_applicants = self.model.objects.filter(project__user=request.user)
+
+        my_projects = models.Project.objects.filter(user=request.user)
+        my_proj_needs = models.Position.objects.filter(Q(project__user=request.user)).distinct()
+        return render(request, self.template_name, {
+            'q': q,
+            'my_projects': my_projects,
+            'my_proj_needs': my_proj_needs,
+            'filtered_applicants': filtered_applicants,
+            'form_status': form_status
+        })
+
+class ApplicantEditView(LoginRequiredMixin, UpdateView):
     model = models.Application
     template_name = 'main/applications.html'
 
