@@ -4,6 +4,7 @@ import main.views as views
 
 # API endpoints
 urlpatterns = [
+    url(r'^projects/(?P<project_pk>\d+)/positions/(?P<position_pk>\d+)/apply/$', views.ApplicationSubmitView.as_view(), name="apply"),
     url(r'^projects/(?P<pk>\d+)/delete/$', views.ProjectDeleteView.as_view(), name="project_delete"),
     url(r'^projects/(?P<pk>\d+)/edit/$', views.ProjectEditView.as_view(), name="project_edit"),
     url(r'^projects/(?P<pk>\d+)/$', views.ProjectDetailView.as_view(), name="project"),

@@ -1,10 +1,11 @@
 from django.shortcuts import render, get_object_or_404, redirect
+from django.contrib import messages
 from django.core.urlresolvers import reverse, reverse_lazy
 from django.db.models import Q
 from django.forms.models import modelformset_factory
 from django.views.generic import (
     TemplateView, DetailView, UpdateView,
-    CreateView, DeleteView, ListView)
+    CreateView, DeleteView, ListView, RedirectView)
 
 from . import models, forms
 # Create your views here.
@@ -217,6 +218,37 @@ class ProfileEditView(UpdateView):
             "form_skills": form_skills
         })
 
+
+class ApplicationSubmitView(CreateView):
+    model = models.Application
+
+    def get(self, request, *args, **kwargs):
+        # 1. fetch project position and user
+        user = self.request.user
+        project = get_object_or_404(models.Project, pk=self.kwargs.get('project_pk'))
+        position = get_object_or_404(models.Position, pk=self.kwargs.get('position_pk'))
+        profile= get_object_or_404(models.Profile, user=self.request.user)
+
+        # 2. try to fetch application. if application exists, then raise error message
+        application = self.model.objects.filter(user=user,project=project,position=position)
+
+        # 3. if application does not exist, then create an application, set it to pending, and
+        if not application:
+            application = self.model.objects.create(
+                user=user,
+                profile=profile,
+                position=position,
+                project=project
+            )
+
+            messages.add_message(request, messages.SUCCESS, 'Application has been submitted!')
+        else:
+            # 3. if application exists, then add error message
+            messages.add_message(request, messages.ERROR, 'Application has already been submitted!')
+
+        return redirect(reverse('project', kwargs={
+            'pk': self.kwargs.get('project_pk')
+        }))
 
 class ApplicationsView(TemplateView):
     model = models.Project
