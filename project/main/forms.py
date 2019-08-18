@@ -42,9 +42,9 @@ class UserProjectForm(forms.ModelForm):
 
 class ApplicationForm(forms.Form):
     APPLICATION_STATUS_CHOICES = [
-        ('P', 'Pending'),
-        ('R', 'Rejected'),
-        ('A', 'Accepted')
+        ('Pending', 'Pending'),
+        ('Rejected', 'Rejected'),
+        ('Accepted', 'Accepted')
     ]
     status = forms.ChoiceField(choices=APPLICATION_STATUS_CHOICES)
 

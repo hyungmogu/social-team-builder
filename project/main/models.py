@@ -52,7 +52,7 @@ class Application(models.Model):
     position = models.ForeignKey('Position', related_name="applications")
 
     applied_date = models.DateTimeField(default=timezone.now)
-    status = models.CharField(max_length=1, default='P')
+    status = models.CharField(max_length=255, default='Pending')
 
     def __str__(self):
         return "[{}] - {} {}".format(profile, project, position)
