@@ -251,27 +251,30 @@ class ApplicationSubmitView(CreateView):
         }))
 
 class ApplicationsView(TemplateView):
-    model = models.Project
+    model = models.Application
     template_name = 'main/applications.html'
 
     def get(self, request):
         # 1. get all types of queries
         q_project = request.GET.get('q_project', '')
-        q_project_needs = request.GET.get('q_proj_needs', '')
+        q_proj_need = request.GET.get('q_proj_need', '')
         q_status = request.GET.get('q_status', '')
 
         if q_project:
-            filtered_projects = self.model.objects.filter(Q(title__iexact=q_project))
-        # elif q_project_needs:
-        #     filtered_projects = self.model.objects.filter(Q(positions__name__iexact=q_project_needs)&Q(user=request.user))
+            filtered_applicants = self.model.objects.filter(Q(project__title__iexact=q_project)&Q(project__user=request.user))
+        elif q_proj_need:
+            filtered_applicants = self.model.objects.filter(Q(project__user=request.user)&Q(position__applications__position__name__iexact=q_proj_need))
         # elif q_status:
         #     filtered_projects = self.model.objects.filter(Q(applications__status__iexact=q_status)&Q(user=request.user))
         else:
-            filtered_projects = self.model.objects.filter(user=request.user)
+            filtered_applicants = self.model.objects.filter(project__user=request.user)
 
-        my_projects = self.model.objects.filter(user=request.user)
+        my_projects = models.Project.objects.filter(user=request.user)
+        my_proj_needs = models.Position.objects.filter(Q(project__user=request.user)).distinct()
         return render(request, self.template_name, {
             'q_project': q_project,
+            'q_proj_need': q_proj_need,
             'my_projects': my_projects,
-            'filtered_projects': filtered_projects
+            'my_proj_needs': my_proj_needs,
+            'filtered_applicants': filtered_applicants
         })
