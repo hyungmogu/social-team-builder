@@ -70,15 +70,29 @@
     []: Create a function allowing user to apply for a position in a project
 
 
+
+==============================
+
+AUGUST 18th, 2019
+    GOAL:
+        [x]: Finish applicants page
+            []: Refine endpoints
+                []: '/applications'
+                    []: Create selectables on whether an applicant is approved, rejected, or pending
+        []: Finish '/profile' page
+            []: Add 'past projects' section
+        []: Finish permissions
+
 ==============================
 
 AUGUST 16th, 2019 / AUGUST 17th, 2019 (Part 2)
     GOAL:
-        []: Applications page
-            []: Add endpoints
+        [x]: Applications page
+            [x]: Add endpoints
                 []: '/applications'
-
-        []: Apply for a position ('/project/{id}/')
+                    NOTE
+                    - Need to create selectables on whether an applicant is approved, rejected, or pending
+        [x]: Apply for a position ('/project/{id}/')
             [x]: Create a function allowing user to apply for a position in a project
 
 ==============================
