@@ -55,18 +55,29 @@
         <thead>
           <tr>
             <th>Applicant</th>
-            <th class="circle--cell--right">Applicant Position</th>
+            <th class="circle--cell--right" width="30%">Applicant Position</th>
+            <th class="circle--cell--right">Status</th>
+            <th class="circle--cell--right">Action</th>
           </tr>
         </thead>
         <tbody>
             {% for applicant in filtered_applicants %}
-              <tr class="clickable-row" data-href="{% url 'profile' pk=applicant.profile.pk %}">
-                <td>
+              <tr class="clickable-row">
+                <td data-href="{% url 'profile' pk=applicant.profile.pk %}">
                   <h3>{{ applicant.profile.name }}</h3>
                   <p>{{ applicant.project.title }}</p>
                 </td>
                 <td class="circle--cell--right">
                   <span class="secondary-label">{{ applicant.position.name }}</span>
+                </td>
+                <td class="text-center">
+                  <form id="app-status-{{ forloop.counter }}" action="#" class="margin-0" method="POST">
+                    {% csrf_token %}
+                    {{ form_status.status }}
+                  </form>
+                </td>
+                <td class="text-center">
+                  <span class="secondary-label"><button form="app-status-{{ forloop.counter }}">Save</button></span>
                 </td>
               </tr>
             {% endfor %}
