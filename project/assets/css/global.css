@@ -2119,3 +2119,9 @@ input[type="email"].circle--input--h6, input[type="number"].circle--input--h6, i
 .hidden {
   display: none !important;
 }
+.text-center {
+  text-align: center;
+}
+.margin-0 {
+  margin: 0;
+}
