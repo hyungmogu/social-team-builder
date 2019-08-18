@@ -255,7 +255,23 @@ class ApplicationsView(TemplateView):
     template_name = 'main/applications.html'
 
     def get(self, request):
-        projects = self.model.objects.filter(user=request.user)
+        # 1. get all types of queries
+        q_project = request.GET.get('q_project', '')
+        q_project_needs = request.GET.get('q_proj_needs', '')
+        q_status = request.GET.get('q_status', '')
+
+        if q_project:
+            filtered_projects = self.model.objects.filter(Q(title__iexact=q_project))
+        # elif q_project_needs:
+        #     filtered_projects = self.model.objects.filter(Q(positions__name__iexact=q_project_needs)&Q(user=request.user))
+        # elif q_status:
+        #     filtered_projects = self.model.objects.filter(Q(applications__status__iexact=q_status)&Q(user=request.user))
+        else:
+            filtered_projects = self.model.objects.filter(user=request.user)
+
+        my_projects = self.model.objects.filter(user=request.user)
         return render(request, self.template_name, {
-            'projects': projects
+            'q_project': q_project,
+            'my_projects': my_projects,
+            'filtered_projects': filtered_projects
         })
