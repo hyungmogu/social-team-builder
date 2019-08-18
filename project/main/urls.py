@@ -13,6 +13,7 @@ urlpatterns = [
     url(r'^profile/(?P<pk>\d+)/$', views.ProfileView.as_view() , name="profile"),
     url(r'^search/by_position/$', views.SearchByPositionView.as_view(), name="search_position"),
     url(r'^search/$', views.SearchView.as_view(), name="search"),
+    url(r'^applications/applicants/(?P<pk>\d+)/edit/$', views.ApplicantEditView.as_view(), name="applicant_edit"),
     url(r'^applications/$', views.ApplicationsView.as_view(), name="applications"),
     url(r'^$', views.HomeView.as_view(), name="home"),
 ]
