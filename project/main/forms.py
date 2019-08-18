@@ -1,6 +1,6 @@
 from django import forms
 from django.forms.models import inlineformset_factory
-from .models import Project, Position, Skill, Profile, UserProject
+from .models import Project, Position, Skill, Profile, UserProject, Application
 
 class ProjectForm(forms.ModelForm):
     title = forms.CharField(widget=forms.TextInput(attrs={'placeholder':'Project Title', 'class': 'circle--input--h1'}))
@@ -39,6 +39,15 @@ class UserProjectForm(forms.ModelForm):
     class Meta:
         fields = ('name', 'url',)
         model = UserProject
+
+class ApplicationForm(forms.Form):
+    APPLICATION_STATUS_CHOICES = [
+        ('P', 'Pending'),
+        ('R', 'Rejected'),
+        ('A', 'Accepted')
+    ]
+    status = forms.ChoiceField(choices=APPLICATION_STATUS_CHOICES)
+
 
 PositionFormSet = inlineformset_factory(
     Project,

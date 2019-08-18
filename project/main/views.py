@@ -257,6 +257,8 @@ class ApplicationsView(TemplateView):
     template_name = 'main/applications.html'
 
     def get(self, request):
+        form_status = forms.ApplicationForm()
+
         # 1. get all types of queries
         q_project = request.GET.get('q_project', '')
         q_proj_need = request.GET.get('q_proj_need', '')
@@ -279,5 +281,6 @@ class ApplicationsView(TemplateView):
             'q_status': q_status,
             'my_projects': my_projects,
             'my_proj_needs': my_proj_needs,
-            'filtered_applicants': filtered_applicants
+            'filtered_applicants': filtered_applicants,
+            'form_status': form_status
         })
