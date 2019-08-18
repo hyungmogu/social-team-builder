@@ -284,3 +284,18 @@ class ApplicationsView(TemplateView):
             'filtered_applicants': filtered_applicants,
             'form_status': form_status
         })
+
+class ApplicantEditView(UpdateView):
+    model = models.Application
+    template_name = 'main/applications.html'
+
+    def post(self, request, *args, **kwargs):
+        # 1. Get applicant
+        applicant = self.model.objects.get(pk=self.kwargs.get('pk'))
+        applicant.status = request.POST['status']
+
+        applicant.save()
+        messages.add_message(request, messages.INFO, "Application status has been changed successfully")
+
+        # 4. redirect user back to appication page
+        return redirect(reverse('applications'))
