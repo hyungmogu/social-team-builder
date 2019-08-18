@@ -78,9 +78,8 @@ AUGUST 16th, 2019 / AUGUST 17th, 2019 (Part 2)
             []: Add endpoints
                 []: '/applications'
 
-        []: Apply for a position ('/profile/edit')
-            []: Create a function allowing user to apply for a position in a project
-
+        []: Apply for a position ('/project/{id}/')
+            [x]: Create a function allowing user to apply for a position in a project
 
 ==============================
 
