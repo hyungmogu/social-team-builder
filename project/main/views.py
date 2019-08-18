@@ -1,4 +1,5 @@
 from django.shortcuts import render, get_object_or_404, redirect
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib import messages
 from django.core.urlresolvers import reverse, reverse_lazy
 from django.db.models import Q
@@ -38,7 +39,7 @@ class ProjectDetailView(DetailView):
 
         return context
 
-class ProjectEditView(UpdateView):
+class ProjectEditView(LoginRequiredMixin, UpdateView):
     fields = (
         'title', 'timeline',
         'applicant_requirements', 'description')
@@ -78,7 +79,7 @@ class ProjectEditView(UpdateView):
             "form_positions": form_positions
         })
 
-class ProjectCreateView(CreateView):
+class ProjectCreateView(LoginRequiredMixin, CreateView):
     model = models.Project
     form_project = forms.ProjectForm
     form_positions = forms.PositionFormSet
@@ -115,7 +116,7 @@ class ProjectCreateView(CreateView):
         })
 
 
-class ProjectDeleteView(DeleteView):
+class ProjectDeleteView(LoginRequiredMixin, DeleteView):
     model = models.Project
     template_name= 'main/project_delete.html'
     success_url = reverse_lazy('home')
