@@ -21,10 +21,10 @@
       <div class="circle--filter circle--secondary--module">
         <h4>Status</h4>
         <ul class="circle--filter--list">
-          <li><a class="selected">All Applications</a></li>
-          <li><a>New Applications</a></li>
-          <li><a>Accepted</a></li>
-          <li><a>Rejected</a></li>
+          <li><a href="{% url 'applications' %}" class="{% if q_status = '' %} selected {% endif %}">All Applications</a></li>
+          <li><a href="{% url 'applications' %}?q_status=P" class="{% if q_status == 'P' %} selected {% endif %}">New Applications</a></li>
+          <li><a href="{% url 'applications' %}?q_status=A" class="{% if q_status == 'A' %} selected {% endif %}">Accepted</a></li>
+          <li><a href="{% url 'applications' %}?q_status=R" class="{% if q_status == 'R' %} selected {% endif %}">Rejected</a></li>
         </ul>
       </div>
 

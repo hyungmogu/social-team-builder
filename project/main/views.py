@@ -264,8 +264,8 @@ class ApplicationsView(TemplateView):
             filtered_applicants = self.model.objects.filter(Q(project__title__iexact=q_project)&Q(project__user=request.user))
         elif q_proj_need:
             filtered_applicants = self.model.objects.filter(Q(project__user=request.user)&Q(position__applications__position__name__iexact=q_proj_need))
-        # elif q_status:
-        #     filtered_projects = self.model.objects.filter(Q(applications__status__iexact=q_status)&Q(user=request.user))
+        elif q_status:
+            filtered_applicants = self.model.objects.filter(Q(project__user=request.user)&Q(status__iexact=q_status))
         else:
             filtered_applicants = self.model.objects.filter(project__user=request.user)
 
@@ -274,6 +274,7 @@ class ApplicationsView(TemplateView):
         return render(request, self.template_name, {
             'q_project': q_project,
             'q_proj_need': q_proj_need,
+            'q_status': q_status,
             'my_projects': my_projects,
             'my_proj_needs': my_proj_needs,
             'filtered_applicants': filtered_applicants
