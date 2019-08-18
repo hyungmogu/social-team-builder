@@ -4,11 +4,12 @@ from django.core.urlresolvers import reverse, reverse_lazy
 from django.contrib.auth import login, logout
 from django.views.generic import FormView, CreateView, RedirectView
 
-from . import forms
+import main.models as mainModel
+from . import forms, models
 
 class LoginView(FormView):
     form_class = forms.SignInForm
-    success_url = reverse_lazy('profile')
+    success_url = reverse_lazy('home')
     template_name = 'accounts/signin.html'
 
     def get_form(self, form_class=None):
@@ -31,3 +32,16 @@ class SignUpView(CreateView):
     form_class = forms.SignUpForm
     success_url = reverse_lazy('accounts:login')
     template_name = 'accounts/signup.html'
+
+    def form_valid(self, form):
+        self.create_user_profile(form)
+        return super().form_valid(form)
+
+    def create_user_profile(self, form):
+        user = form.save()
+        mainModel.Profile.objects.create(
+            user=user
+        )
+
+
+

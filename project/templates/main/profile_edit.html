@@ -6,7 +6,7 @@
     <nav class="bounds">
       <ul class="circle--pill--list">
         <li><a href="{% url 'applications' %}">Applications</a></li>
-        <li><a class="selected" href="{% url 'profile' %}">Profile</a></li>
+        <li><a class="selected" href="{% url 'profile' pk=user.profile.pk %}">Profile</a></li>
       </ul>
     </nav>
   </div>

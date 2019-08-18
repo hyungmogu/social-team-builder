@@ -164,9 +164,9 @@ class ProfileView(TemplateView):
     model = models.Profile
     template_name = 'main/profile.html'
 
-    def get(self, request):
+    def get(self, request, pk):
         try:
-            profile = self.model.objects.get(user=request.user)
+            profile = self.model.objects.get(pk=pk)
         except models.Profile.DoesNotExist:
             profile = self.model.objects.create(user=request.user)
 
@@ -210,7 +210,9 @@ class ProfileEditView(UpdateView):
             form_user_projects.save()
             form_skills.save()
 
-            return redirect('profile')
+            return redirect(reverse('profile', kwargs={
+                'pk': profile.pk
+            }))
 
         return render(request, self.template_name, {
             'form_profile': form_profile,
