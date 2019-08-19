@@ -4,7 +4,7 @@
   <div class="circle--actions--bar">
     <div class="bounds">
       <div class="grid-100">
-        <a class="button button-primary" href="{% url 'project_create' %}">Save Project</a>
+        <button class="button button-primary" form="form--project--create" type="submit">Save Project</button>
         <a class="button button-text" href="{% url 'home' %}">Discard</a>
       </div>
     </div>
@@ -13,7 +13,7 @@
 
 {% block body_content %}
   <div class="bounds circle--page circle--article">
-    <form method="POST">
+    <form id="form--project--create" method="POST">
       {% csrf_token %}
       <div class="grid-70">
         <div class="circle--article--body">
