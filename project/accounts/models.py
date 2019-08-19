@@ -24,7 +24,7 @@ class UserManager(BaseUserManager):
             password
         )
 
-        user.is_staff = True
+        user.is_employer = True
         user.is_superuser = True
         user.save()
 
