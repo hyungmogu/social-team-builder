@@ -44,23 +44,16 @@
               </tr>
             </thead>
             <tbody>
-              <!-- TO BE DONE -->
-              <!-- <tr class="clickable-row" data-href="project.html">
-                <td>
-                  <h3>Invoice Delivery Tool</h3>
-                </td>
-                <td class="circle--cell--right">
-                  <span class="secondary-label">Rails Developer</span>
-                </td>
-              </tr>
-              <tr class="clickable-row" data-href="project.html">
-                <td>
-                  <h3>Twitter Client</h3>
-                </td>
-                <td class="circle--cell--right">
-                  <span class="secondary-label">Designer</span>
-                </td>
-              </tr> -->
+              {% for project in projects %}
+                <tr class="clickable-row" data-href="{% url 'project' pk=project.pk %}">
+                  <td>
+                    <h3>{{ project.title }}</h3>
+                  </td>
+                  <td class="circle--cell--right">
+                    <span class="secondary-label">{{ project.positions.all|join:", " }}</span>
+                  </td>
+                </tr>
+              {% endfor %}
             </tbody>
           </table>
         </div>
