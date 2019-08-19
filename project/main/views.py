@@ -171,8 +171,13 @@ class ProfileView(LoginRequiredMixin, TemplateView):
         except models.Profile.DoesNotExist:
             profile = self.model.objects.create(user=request.user)
 
+        projects = models.Project.objects.filter(
+            applications__profile__user=request.user,
+            applications__status='Accepted')
+
         return render(request, self.template_name, {
-            'profile': profile
+            'profile': profile,
+            'projects': projects
         })
 
 class ProfileEditView(LoginRequiredMixin, UpdateView):
