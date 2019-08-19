@@ -188,6 +188,13 @@ class ProfileEditView(LoginRequiredMixin, UpdateView):
     form_skills =  forms.SkillFormSet
     template_name = 'main/profile_edit.html'
 
+    def get_past_projects(self):
+        projects = models.Project.objects.filter(
+            applications__profile__user=self.request.user,
+            applications__status='Accepted')
+
+        return projects
+
     def get_object(self):
         obj = get_object_or_404(self.model, user=self.request.user)
         return obj
@@ -195,8 +202,10 @@ class ProfileEditView(LoginRequiredMixin, UpdateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
-        profile = models.Profile.objects.get(user=self.request.user)
+        profile = self.model.objects.get(user=self.request.user)
+        projects = self.get_past_projects()
 
+        context['projects'] = projects
         context['form_profile'] = self.form_profile(instance=profile, prefix="profile")
         context['form_user_projects'] = self.form_user_projects(instance=profile, prefix="user_projects")
         context['form_skills'] = self.form_skills(instance=profile, prefix="skills")
@@ -206,6 +215,7 @@ class ProfileEditView(LoginRequiredMixin, UpdateView):
     def post(self, request, *args, **kwargs):
         """Creates Project on save"""
         profile = self.model.objects.get(user=request.user)
+        projects = self.get_past_projects()
 
         form_profile = self.form_profile(request.POST, request.FILES, instance=profile, prefix='profile')
         form_user_projects = self.form_user_projects(instance=profile, data=request.POST, prefix="user_projects")
@@ -223,7 +233,8 @@ class ProfileEditView(LoginRequiredMixin, UpdateView):
         return render(request, self.template_name, {
             'form_profile': form_profile,
             "form_user_projects": form_user_projects,
-            "form_skills": form_skills
+            "form_skills": form_skills,
+            "projects": projects
         })
 
 
