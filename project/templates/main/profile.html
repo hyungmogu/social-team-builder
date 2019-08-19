@@ -39,18 +39,16 @@
         </thead>
         <tbody>
           <!-- WILL COMEBACK -->
-          <!-- {% for project in profile.projects.all %}
-            {% if project.end_date|utc < now|utc %}
-              <tr class="clickable-row" data-href="{% url 'project' pk=project.pk %}">
-                <td>
-                  <h3>{{ project.title }}</h3>
-                </td>
-                <td class="circle--cell--right">
-                  <span class="secondary-label">{{ project.positions.all|join:", " }}</span>
-                </td>
-              </tr>
-            {% endif %}
-          {% endfor %} -->
+          {% for project in projects %}
+            <tr class="clickable-row" data-href="{% url 'project' pk=project.pk %}">
+              <td>
+                <h3>{{ project.title }}</h3>
+              </td>
+              <td class="circle--cell--right">
+                <span class="secondary-label">{{ project.positions.all|join:", " }}</span>
+              </td>
+            </tr>
+          {% endfor %}
         </tbody>
       </table>
     </div>
