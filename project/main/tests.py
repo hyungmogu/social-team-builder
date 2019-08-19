@@ -13,9 +13,9 @@ from .models import Project, Skill, Position
 # MODEL TESTS
 # -----------
 
-"""
-USER MODEL
-"""
+# """
+# USER MODEL
+# """
 class UserModelTestCase(TestCase):
     def setUp(self):
         self.user1 = User.objects.create(
@@ -397,6 +397,31 @@ class TestProjectModel(TestCase):
 # -----------
 
 """
+/accounts/sign_in (GET)
+"""
+class LoginGETRequest(TestCase):
+    def setUp(self):
+        self.resp = self.client.get(reverse('accounts:login'))
+
+    def test_returns_status_200_on_visit(self):
+        expected = 200
+
+        result = self.resp.status_code
+
+        self.assertEqual(expected, result)
+
+    def test_return_layoutHTML_as_template_used(self):
+        expected = 'layout.html'
+
+        self.assertTemplateUsed(self.resp, expected)
+
+    def test_return_signinHTML_as_template_used(self):
+        expected = 'accounts/signin.html'
+
+        self.assertTemplateUsed(self.resp, expected)
+
+
+"""
 /accounts/sign_up (GET)
 """
 class SignUpGETRequest(TestCase):
@@ -459,6 +484,31 @@ class SignUpPOSTRequest(TestCase):
 
     def test_return_to_login_page_if_signup_successful(self):
         self.assertRedirects(self.resp, reverse('accounts:login'), fetch_redirect_response=True)
+
+"""
+/accounts/sign_up (GET)
+"""
+class SignUpGETRequest(TestCase):
+    def setUp(self):
+        self.resp = self.client.get(reverse('accounts:sign_up'))
+
+    def test_returns_status_200_on_visit(self):
+        expected = 200
+
+        result = self.resp.status_code
+
+        self.assertEqual(expected, result)
+
+    def test_return_layoutHTML_as_template_used(self):
+        expected = 'layout.html'
+
+        self.assertTemplateUsed(self.resp, expected)
+
+    def test_return_signupHTML_as_template_used(self):
+        expected = 'accounts/signup.html'
+
+        self.assertTemplateUsed(self.resp, expected)
+
 
 """
 /projects/create
