@@ -291,6 +291,7 @@ class ApplicationsView(LoginRequiredMixin, TemplateView):
 
     def get(self, request):
         form_status = forms.ApplicationForm()
+        redirect = ''
 
         # 1. get all types of queries
         filtered_applicants = self.model.objects.filter(project__user=request.user)
@@ -301,7 +302,8 @@ class ApplicationsView(LoginRequiredMixin, TemplateView):
             'my_projects': my_projects,
             'my_proj_needs': my_proj_needs,
             'filtered_applicants': filtered_applicants,
-            'form_status': form_status
+            'form_status': form_status,
+            'redirect': redirect
         })
 
 class ApplicationsByProjectNeedView(LoginRequiredMixin, TemplateView):
@@ -310,6 +312,7 @@ class ApplicationsByProjectNeedView(LoginRequiredMixin, TemplateView):
 
     def get(self, request):
         form_status = forms.ApplicationForm()
+        redirect = 'proj_need'
 
         # 1. get all types of queries
         q = request.GET.get('q', '')
@@ -326,7 +329,8 @@ class ApplicationsByProjectNeedView(LoginRequiredMixin, TemplateView):
             'my_projects': my_projects,
             'my_proj_needs': my_proj_needs,
             'filtered_applicants': filtered_applicants,
-            'form_status': form_status
+            'form_status': form_status,
+            'redirect': redirect
         })
 
 class ApplicationsByProjectView(LoginRequiredMixin, TemplateView):
@@ -335,6 +339,7 @@ class ApplicationsByProjectView(LoginRequiredMixin, TemplateView):
 
     def get(self, request):
         form_status = forms.ApplicationForm()
+        redirect='project'
 
         # 1. get all types of queries
         q = request.GET.get('q', '')
@@ -351,7 +356,8 @@ class ApplicationsByProjectView(LoginRequiredMixin, TemplateView):
             'my_projects': my_projects,
             'my_proj_needs': my_proj_needs,
             'filtered_applicants': filtered_applicants,
-            'form_status': form_status
+            'form_status': form_status,
+            'redirect': redirect
         })
 
 class ApplicationsByStatusView(LoginRequiredMixin, TemplateView):
@@ -360,6 +366,7 @@ class ApplicationsByStatusView(LoginRequiredMixin, TemplateView):
 
     def get(self, request):
         form_status = forms.ApplicationForm()
+        redirect='status'
 
         # 1. get all types of queries
         q = request.GET.get('q', '')
@@ -376,7 +383,8 @@ class ApplicationsByStatusView(LoginRequiredMixin, TemplateView):
             'my_projects': my_projects,
             'my_proj_needs': my_proj_needs,
             'filtered_applicants': filtered_applicants,
-            'form_status': form_status
+            'form_status': form_status,
+            'redirect': redirect
         })
 
 class ApplicantEditView(LoginRequiredMixin, UpdateView):
@@ -384,6 +392,9 @@ class ApplicantEditView(LoginRequiredMixin, UpdateView):
     template_name = 'main/applications.html'
 
     def post(self, request, *args, **kwargs):
+        redirect_path = request.GET.get('redirect','')
+        q = request.GET.get('q','')
+
         # 1. Get applicant
         applicant = self.model.objects.get(pk=self.kwargs.get('pk'))
         applicant.status = request.POST['status']
@@ -391,5 +402,12 @@ class ApplicantEditView(LoginRequiredMixin, UpdateView):
         applicant.save()
         messages.add_message(request, messages.INFO, "Application status has been changed successfully")
 
+        if redirect:
+            path = 'applications_' + redirect_path
+        else:
+            path = 'applications'
+
         # 4. redirect user back to appication page
+        if q:
+            return redirect(reverse(path) + '?q=' + q)
         return redirect(reverse('applications'))

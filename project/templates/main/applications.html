@@ -74,7 +74,7 @@
                   {{ applicant.status }}
                 </td>
                 <td class="circle--cell--right">
-                    <form action="{% url 'applicant_edit' pk=applicant.pk %}" class="margin-0" method="POST">
+                    <form action="{% url 'applicant_edit' pk=applicant.pk %}?redirect={{redirect}}&q={{q}}" class="margin-0" method="POST">
                       {% csrf_token %}
                       <span class="display-inline">{{ form_status.status }}</span>
                       <button type="submit">Save</button>
