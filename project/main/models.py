@@ -38,7 +38,7 @@ class Position(models.Model):
         return self.name
 
 class Skill(models.Model):
-    name = models.CharField(max_length=255, unique=True)
+    name = models.CharField(max_length=255, unique=False)
     profile = models.ForeignKey('Profile', related_name="skills")
 
     def __str__(self):
