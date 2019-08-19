@@ -6,8 +6,23 @@ $( document ).ready(function() {
   //Cloner for infinite input lists
   $(".circle--clone--list").on("click", ".circle--clone--add", function(){
     var parent = $(this).parent("li");
+    // find the ul element
     var copy = parent.clone();
+
+    // find the total value of form
+    var totalFormVal =  parseInt(parent.parent().find('input[name$=TOTAL_FORMS]').attr('value'));
+
+    // find all input and text-area.  change name and id to format PREFIX-{TOTALFORM}-FIELD_VAR_NAME
+    copy.find('input, textarea').each(function() {
+        var name = $(this).attr('name').replace('-' + (totalFormVal-1) + '-', '-' + totalFormVal + '-');
+        var id = 'id_' + name;
+        $(this).attr({'name': name, 'id': id}).val('').attr('checked');
+    });
+
     parent.after(copy);
+
+    // update totalFormVal to avoid "data tempered" error
+    parent.parent().find('input[name$=TOTAL_FORMS]').attr({'value': totalFormVal+1});
     copy.find("input, textarea, select").val("");
     copy.find("*:first-child").focus();
   });
