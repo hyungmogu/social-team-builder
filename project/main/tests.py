@@ -172,47 +172,73 @@ class TestProfileModel(TestCase):
 """
 SKILL MODEL
 """
-# class TestSkillModel(TestCase):
-#     def setUp(self):
-#         self.skill1 = Skill.objects.create(
-#             name="Swift",
-#         )
+class TestSkillModel(TestCase):
+    def setUp(self):
+        self.user1 = User.objects.create(
+            email='hyungmo@helloworld.com',
+            password='hello'
+        )
 
-#         self.skill2 = Skill.objects.create(
-#             name="Java"
-#         )
+        self.user2 = User.objects.create(
+            email='world@helloworld.com',
+            password='world'
+        )
 
-#     def test_return_skill_model_with_query_count_of_2(self):
-#         expected = 2
+        self.profile1 = Profile.objects.create(
+            user=self.user1,
+            name='Profile 1',
+            short_bio='Bio 1',
+            profile_image = 'image_1.png'
+        )
 
-#         result = Skill.objects.all().count()
+        self.profile2 = Profile.objects.create(
+            user=self.user2,
+            name='Profile 2',
+            short_bio='Bio 2',
+            profile_image = 'image_2.png'
+        )
 
-#         self.assertEqual(expected, result)
+        self.skill1 = Skill.objects.create(
+            name="Swift",
+            profile= self.profile1
+        )
 
-#     def test_return_name_swift_when_queried_with_pk_of_1(self):
-#         expected = "Swift"
+        self.skill2 = Skill.objects.create(
+            name="Java",
+            profile= self.profile2
+        )
 
-#         query = Skill.objects.get(pk=1)
-#         result = query.name
+    def test_return_skill_model_with_query_count_of_2(self):
+        expected = 2
 
-#         self.assertEqual(expected, result)
+        result = Skill.objects.all().count()
 
-#     def test_return_name_java_when_queried_with_pk_of_2(self):
-#         expected = "Java"
+        self.assertEqual(expected, result)
 
-#         query = Skill.objects.get(pk=2)
-#         result = query.name
+    def test_return_name_swift_when_queried_with_pk_of_1(self):
+        expected = "Swift"
 
-#         self.assertEqual(expected, result)
+        query = Skill.objects.get(pk=1)
+        result = query.name
 
-#     def test_return_skill_name_when_type_casted_as_str(self):
-#         expected = "Java"
+        self.assertEqual(expected, result)
+
+    def test_return_name_java_when_queried_with_pk_of_2(self):
+        expected = "Java"
+
+        query = Skill.objects.get(pk=2)
+        result = query.name
+
+        self.assertEqual(expected, result)
+
+    def test_return_skill_name_when_type_casted_as_str(self):
+        expected = "Java"
 
 
-#         query = Skill.objects.get(pk=2)
-#         result = str(query)
+        query = Skill.objects.get(pk=2)
+        result = str(query)
 
-#         self.assertEqual(expected, result)
+        self.assertEqual(expected, result)
 
 
 # """
