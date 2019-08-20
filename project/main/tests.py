@@ -2,7 +2,7 @@ import unittest
 from django.test import TestCase
 
 from django.core.urlresolvers import reverse
-from django.contrib.auth.models import User
+from accounts.models import User
 from rest_framework.test import APIClient
 
 from .models import Project, Skill, Position
@@ -19,12 +19,12 @@ from .models import Project, Skill, Position
 class UserModelTestCase(TestCase):
     def setUp(self):
         self.user1 = User.objects.create(
-            username='hello',
+            email='hyungmo@helloworld.com',
             password='hello'
         )
 
         self.user2 = User.objects.create(
-            username='world',
+            email='world@helloworld.com',
             password='world'
         )
 
@@ -35,30 +35,30 @@ class UserModelTestCase(TestCase):
 
         self.assertEqual(expected, result)
 
-    def test_return_hello_as_username_and_password_when_queried_with_pk_of_1(self):
-        expected_username = 'hello'
+    def test_return_hyungmo_as_email_and_password_when_queried_with_pk_of_1(self):
+        expected_email = 'hyungmo@helloworld.com'
         expected_password = 'hello'
 
         user = User.objects.get(pk=1)
-        result_username = user.username
+        result_email = user.email
         result_password = user.password
 
-        self.assertEqual(expected_username, result_username)
+        self.assertEqual(expected_email, result_email)
         self.assertEqual(expected_password, result_password)
 
-    def test_return_world_as_username_and_password_when_queried_with_pk_of_2(self):
-        expected_username = 'world'
+    def test_return_world_as_email_and_password_when_queried_with_pk_of_2(self):
+        expected_email = 'world@helloworld.com'
         expected_password = 'world'
 
         user = User.objects.get(pk=2)
-        result_username = user.username
+        result_email = user.email
         result_password = user.password
 
-        self.assertEqual(expected_username, result_username)
+        self.assertEqual(expected_email, result_email)
         self.assertEqual(expected_password, result_password)
 
-    def test_return_username_when_queried_object_is_type_casted(self):
-        expected = 'hello'
+    def test_return_email_when_queried_object_is_type_casted(self):
+        expected = 'hyungmo@helloworld.com'
 
         result = str(User.objects.get(pk=1))
 
