@@ -596,6 +596,45 @@ class LoginGETRequest(TestCase):
 
 
 """
+/accounts/login (POST)
+"""
+class LoginPOSTRequest(TestCase):
+    def setUp(self):
+        self.resp = self.client.post(reverse('accounts:sign_up'), {
+            'email': 'hello@example.com',
+            'password1': 'hello!234',
+            'password2': 'hello!234'
+        })
+
+    def test_return_to_sign_in_page_if_signup_unsuccessful(self):
+        expected = 'accounts/signin.html'
+
+        response1 = self.client.post(reverse('accounts:login'), {
+            'username': 'hello@example.com',
+            'password': 'hello1'
+        })
+
+        response2 = self.client.post(reverse('accounts:login'), {
+            'username': 'hello@ example.com',
+            'password': 'hello1'
+        })
+
+        self.assertTemplateUsed(response1, expected)
+        self.assertTemplateUsed(response2, expected)
+
+    @unittest.expectedFailure
+    def test_return_to_home_page_if_login_successful(self):
+        # NEEDS WORK
+        resp = self.client.post(reverse('accounts:login'), {
+            'username': 'hello@example.com',
+            'password': 'hello!234'
+        }, follow=True)
+
+        self.assertRedirects(resp, reverse('accounts:login'), fetch_redirect_response=False)
+
+
+
+"""
 /accounts/sign_up (GET)
 """
 class SignUpGETRequest(TestCase):
