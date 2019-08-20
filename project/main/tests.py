@@ -571,7 +571,7 @@ class TestProjectModel(TestCase):
 # -----------
 
 """
-/accounts/sign_in (GET)
+/accounts/login (GET)
 """
 class LoginGETRequest(TestCase):
     def setUp(self):
@@ -698,311 +698,320 @@ class SignUpPOSTRequest(TestCase):
     def test_return_to_login_page_if_signup_successful(self):
         self.assertRedirects(self.resp, reverse('accounts:login'), fetch_redirect_response=True)
 
-# """
-# /accounts/sign_up (GET)
-# """
-# class SignUpGETRequest(TestCase):
-#     def setUp(self):
-#         self.resp = self.client.get(reverse('accounts:sign_up'))
+"""
+/accounts/sign_up (GET)
+"""
+class SignUpGETRequest(TestCase):
+    def setUp(self):
+        self.resp = self.client.get(reverse('accounts:sign_up'))
 
-#     def test_returns_status_200_on_visit(self):
-#         expected = 200
+    def test_returns_status_200_on_visit(self):
+        expected = 200
 
-#         result = self.resp.status_code
+        result = self.resp.status_code
 
-#         self.assertEqual(expected, result)
+        self.assertEqual(expected, result)
 
-#     def test_return_layoutHTML_as_template_used(self):
-#         expected = 'layout.html'
+    def test_return_layoutHTML_as_template_used(self):
+        expected = 'layout.html'
 
-#         self.assertTemplateUsed(self.resp, expected)
+        self.assertTemplateUsed(self.resp, expected)
 
-#     def test_return_signupHTML_as_template_used(self):
-#         expected = 'accounts/signup.html'
+    def test_return_signupHTML_as_template_used(self):
+        expected = 'accounts/signup.html'
 
-#         self.assertTemplateUsed(self.resp, expected)
-
-
-# """
-# /projects/create
-# """
-# class ProjectCreateGETTestCase(TestCase):
-#     def setUp(self):
-#         self.user = User.objects.create_user('moe', 'moe@example.com', '12345')
-#         self.client = APIClient()
-
-#     def test_return_status_okay_if_logged_in(self):
-#         expected = 200
-
-#         self.client.login(username='moe', password='12345')
-#         response = self.client.get(reverse('project_create'))
-#         result = response.status_code
-
-#         self.assertEqual(result, expected)
-
-#     @unittest.expectedFailure # will be replaced when login/signup page is created
-#     def test_return_302_if_not_logged_in(self):
-#         expected = 302
-
-#         response = self.client.get(reverse('project_create'))
-#         result = response.status_code
-
-#         self.assertEqual(expected, result)
-
-#     def test_return_layoutHtml_as_template_used_if_logged_in(self):
-#         expected = 'layout.html'
-
-#         self.client.login(username='moe', password='12345')
-#         response = self.client.get(reverse('project_create'))
-
-#         self.assertTemplateUsed(response, expected)
-
-#     def test_return_projectCreateHtml_as_template_used_if_logged_in(self):
-#         expected= 'main/project_create.html'
-
-#         self.client.login(username='moe', password='12345')
-#         response = self.client.get(reverse('project_create'))
-
-#         self.assertTemplateUsed(response, expected)
+        self.assertTemplateUsed(self.resp, expected)
 
 
-# class CreateProjectPOSTRequest(TestCase):
-#     def setUp(self):
+"""
+/projects/create
+"""
+class ProjectCreateGETTestCase(TestCase):
+    def setUp(self):
+        self.user = User.objects.create_user(
+            username='moe',
+            email='moe@example.com',
+            password='12345'
+        )
+        self.client = APIClient()
 
-#         self.user = User.objects.create(
-#             username='test'
-#         )
-#         self.user.set_password('12345') # this approach used to avoid login returns False error
-#         self.user.save()
+    @unittest.expectedFailure
+    def test_return_status_okay_if_logged_in(self):
+        # NEEDS WORK
+        expected = 200
 
-#         self.project1 = Project.objects.create(
-#             title='Test project 1',
-#             user=self.user,
-#             timeline='10 days',
-#             applicant_requirements='Test requirement 1',
-#             description='Test description 1'
-#         )
+        res = self.client.login(username='moe@example.com', password='12345')
+        response = self.client.get(reverse('project_create'))
+        result = response.status_code
 
-#         self.project2 = Project.objects.create(
-#             title='Test project 2',
-#             user=self.user,
-#             timeline='20 days',
-#             applicant_requirements='Test requirement 2',
-#             description='Test description 2'
-#         )
+        self.assertEqual(result, expected)
 
-#         self.position1 = Position.objects.create(
-#             name='Test position 1',
-#             project=self.project1,
-#             description='Test description 1'
-#         )
+    def test_return_302_if_not_logged_in(self):
+        expected = 302
 
-#         self.position2 = Position.objects.create(
-#             name='Test position 2',
-#             project=self.project1,
-#             description='Test description 2'
-#         )
+        response = self.client.get(reverse('project_create'))
+        result = response.status_code
 
-#         self.position3 = Position.objects.create(
-#             name='Test position 3',
-#             project=self.project2,
-#             description='Test description 3'
-#         )
+        self.assertEqual(expected, result)
 
+    @unittest.expectedFailure
+    def test_return_layoutHtml_as_template_used_if_logged_in(self):
+        # NEEDS WORK
+        expected = 'layout.html'
 
+        self.client.login(username='moe', password='12345')
+        response = self.client.get(reverse('project_create'))
 
-#     @unittest.expectedFailure
-#     def test_return_302_if_try_to_create_while_not_logged_in(self):
-#         expected = 302
+        self.assertTemplateUsed(response, expected)
 
-#         response = self.client.post(reverse('project_create'), {
-#             'project-title': 'Test project 3',
-#             'project-user': self.user,
-#             'project-timeline': 'This is test timeline 3',
-#             'project-description':'This is test description 3',
-#             'project-applicant_requirements': 'This is test applicant requirements'
-#         })
-#         result = response.status_code
+    @unittest.expectedFailure
+    def test_return_projectCreateHtml_as_template_used_if_logged_in(self):
+        # Needs WORK
+        expected= 'main/project_create.html'
 
-#         self.assertEqual(expected, result)
+        self.client.login(username='moe', password='12345')
+        response = self.client.get(reverse('project_create'))
 
-#     @unittest.expectedFailure
-#     def test_return_login_page_if_try_to_create_while_not_logged_in(self):
-#         expected = 'accounts/signin.html'
-
-#         response = self.client.post(reverse('project_create'), {
-#             'project-title': 'Test project 3',
-#             'project-user': self.user,
-#             'project-timeline': 'This is test timeline 3',
-#             'project-description':'This is test description 3',
-#             'project-applicant_requirements': 'This is test applicant requirements'
-#         }, follow=True)
-
-#         self.assertTemplateUsed(response, expected)
+        self.assertTemplateUsed(response, expected)
 
 
-#     def test_retrun_projects_model_with_length_3_if_create_successful(self):
-#         expected = 3
+class CreateProjectPOSTRequest(TestCase):
+    def setUp(self):
 
-#         res = self.client.login(username='test', password='12345')
+        self.user = User.objects.create(
+            username='test'
+        )
+        self.user.set_password('12345') # this approach used to avoid login returns False error
+        self.user.save()
 
-#         response = self.client.post(reverse('project_create'), {
-#             'positions-TOTAL_FORMS': '1',
-#             'positions-INITIAL_FORMS': '0',
-#             'positions-MIN_NUM_FORMS': '0',
-#             'positions-MAX_NUM_FORMS': '1000',
-#             'positions-0-name': 'e',
-#             'positions-0-description': 'f',
-#             'project-title': 'Test project 3',
-#             'project-user': self.user,
-#             'project-timeline': 'This is test timeline 3',
-#             'project-description':'This is test description 3',
-#             'project-applicant_requirements': 'This is test applicant requirements'
-#         })
+        self.project1 = Project.objects.create(
+            title='Test project 1',
+            user=self.user,
+            timeline='10 days',
+            applicant_requirements='Test requirement 1',
+            description='Test description 1'
+        )
 
-#         result = Project.objects.all().count()
+        self.project2 = Project.objects.create(
+            title='Test project 2',
+            user=self.user,
+            timeline='20 days',
+            applicant_requirements='Test requirement 2',
+            description='Test description 2'
+        )
 
-#         self.assertEqual(expected, result)
+        self.position1 = Position.objects.create(
+            name='Test position 1',
+            project=self.project1,
+            description='Test description 1'
+        )
+
+        self.position2 = Position.objects.create(
+            name='Test position 2',
+            project=self.project1,
+            description='Test description 2'
+        )
+
+        self.position3 = Position.objects.create(
+            name='Test position 3',
+            project=self.project2,
+            description='Test description 3'
+        )
 
 
-#     def test_retrun_position_model_with_length_4_if_create_successful(self):
-#         expected = 4
 
-#         res = self.client.login(username='test', password='12345')
+    @unittest.expectedFailure
+    def test_return_302_if_try_to_create_while_not_logged_in(self):
+        expected = 302
 
-#         response = self.client.post(reverse('project_create'), {
-#             'positions-TOTAL_FORMS': '1',
-#             'positions-INITIAL_FORMS': '0',
-#             'positions-MIN_NUM_FORMS': '0',
-#             'positions-MAX_NUM_FORMS': '1000',
+        response = self.client.post(reverse('project_create'), {
+            'project-title': 'Test project 3',
+            'project-user': self.user,
+            'project-timeline': 'This is test timeline 3',
+            'project-description':'This is test description 3',
+            'project-applicant_requirements': 'This is test applicant requirements'
+        })
+        result = response.status_code
 
-#             'positions-0-name': 'e',
-#             'positions-0-description': 'f',
+        self.assertEqual(expected, result)
 
-#             'project-title': 'Test project 3',
-#             'project-user': self.user,
-#             'project-timeline': 'This is test timeline 3',
-#             'project-description':'This is test description 3',
-#             'project-applicant_requirements': 'This is test applicant requirements'
-#         })
+    @unittest.expectedFailure
+    def test_return_login_page_if_try_to_create_while_not_logged_in(self):
+        expected = 'accounts/signin.html'
 
-#         result = Position.objects.all().count()
+        response = self.client.post(reverse('project_create'), {
+            'project-title': 'Test project 3',
+            'project-user': self.user,
+            'project-timeline': 'This is test timeline 3',
+            'project-description':'This is test description 3',
+            'project-applicant_requirements': 'This is test applicant requirements'
+        }, follow=True)
 
-#         self.assertEqual(expected, result)
+        self.assertTemplateUsed(response, expected)
 
-#     def test_return_status_302_if_create_successful(self):
-#         expected = 302
 
-#         self.client.login(username='test', password='12345')
-#         res = self.client.post(reverse('project_create'), {
-#             'positions-TOTAL_FORMS': '1',
-#             'positions-INITIAL_FORMS': '0',
-#             'positions-MIN_NUM_FORMS': '0',
-#             'positions-MAX_NUM_FORMS': '1000',
-#             'positions-0-name': 'e',
-#             'positions-0-description': 'f',
-#             'project-title': 'Test project 3',
-#             'project-user': self.user,
-#             'project-timeline': 'This is test timeline 3',
-#             'project-description':'This is test description 3',
-#             'project-applicant_requirements': 'This is test applicant requirements'
-#         })
+    def test_retrun_projects_model_with_length_3_if_create_successful(self):
+        expected = 3
 
-#         result = res.status_code
+        res = self.client.login(username='test', password='12345')
 
-#         self.assertEqual(expected, result)
+        response = self.client.post(reverse('project_create'), {
+            'positions-TOTAL_FORMS': '1',
+            'positions-INITIAL_FORMS': '0',
+            'positions-MIN_NUM_FORMS': '0',
+            'positions-MAX_NUM_FORMS': '1000',
+            'positions-0-name': 'e',
+            'positions-0-description': 'f',
+            'project-title': 'Test project 3',
+            'project-user': self.user,
+            'project-timeline': 'This is test timeline 3',
+            'project-description':'This is test description 3',
+            'project-applicant_requirements': 'This is test applicant requirements'
+        })
 
-#     def test_return_projectHTML_as_template_used_if_create_successful(self):
-#         expected = 'main/project.html'
+        result = Project.objects.all().count()
 
-#         self.client.login(username='test', password='12345')
-#         result = self.client.post(reverse('project_create'), {
-#             'positions-TOTAL_FORMS': '1',
-#             'positions-INITIAL_FORMS': '0',
-#             'positions-MIN_NUM_FORMS': '0',
-#             'positions-MAX_NUM_FORMS': '1000',
-#             'positions-0-name': 'e',
-#             'positions-0-description': 'f',
-#             'project-title': 'Test project 3',
-#             'project-user': self.user,
-#             'project-timeline': 'This is test timeline 3',
-#             'project-description':'This is test description 3',
-#             'project-applicant_requirements': 'This is test applicant requirements'
-#         }, follow=True)
+        self.assertEqual(expected, result)
 
-#         self.assertTemplateUsed(result, expected)
+
+    def test_retrun_position_model_with_length_4_if_create_successful(self):
+        expected = 4
+
+        res = self.client.login(username='test', password='12345')
+
+        response = self.client.post(reverse('project_create'), {
+            'positions-TOTAL_FORMS': '1',
+            'positions-INITIAL_FORMS': '0',
+            'positions-MIN_NUM_FORMS': '0',
+            'positions-MAX_NUM_FORMS': '1000',
+
+            'positions-0-name': 'e',
+            'positions-0-description': 'f',
+
+            'project-title': 'Test project 3',
+            'project-user': self.user,
+            'project-timeline': 'This is test timeline 3',
+            'project-description':'This is test description 3',
+            'project-applicant_requirements': 'This is test applicant requirements'
+        })
+
+        result = Position.objects.all().count()
+
+        self.assertEqual(expected, result)
+
+    def test_return_status_302_if_create_successful(self):
+        expected = 302
+
+        self.client.login(username='test', password='12345')
+        res = self.client.post(reverse('project_create'), {
+            'positions-TOTAL_FORMS': '1',
+            'positions-INITIAL_FORMS': '0',
+            'positions-MIN_NUM_FORMS': '0',
+            'positions-MAX_NUM_FORMS': '1000',
+            'positions-0-name': 'e',
+            'positions-0-description': 'f',
+            'project-title': 'Test project 3',
+            'project-user': self.user,
+            'project-timeline': 'This is test timeline 3',
+            'project-description':'This is test description 3',
+            'project-applicant_requirements': 'This is test applicant requirements'
+        })
+
+        result = res.status_code
+
+        self.assertEqual(expected, result)
+
+    def test_return_projectHTML_as_template_used_if_create_successful(self):
+        expected = 'main/project.html'
+
+        self.client.login(username='test', password='12345')
+        result = self.client.post(reverse('project_create'), {
+            'positions-TOTAL_FORMS': '1',
+            'positions-INITIAL_FORMS': '0',
+            'positions-MIN_NUM_FORMS': '0',
+            'positions-MAX_NUM_FORMS': '1000',
+            'positions-0-name': 'e',
+            'positions-0-description': 'f',
+            'project-title': 'Test project 3',
+            'project-user': self.user,
+            'project-timeline': 'This is test timeline 3',
+            'project-description':'This is test description 3',
+            'project-applicant_requirements': 'This is test applicant requirements'
+        }, follow=True)
+
+        self.assertTemplateUsed(result, expected)
 
 
 
 # """
 # /projects/delete
 # """
-# class DeleteProjectGETRequest(TestCase):
-#     def setUp(self):
+class DeleteProjectGETRequest(TestCase):
+    def setUp(self):
 
-#         self.user = User.objects.create(
-#             username='test'
-#         )
-#         self.user.set_password('12345') # this approach used to avoid login returns False error
-#         self.user.save()
+        self.user = User.objects.create(
+            username='test'
+        )
+        self.user.set_password('12345') # this approach used to avoid login returns False error
+        self.user.save()
 
-#         self.project1 = Project.objects.create(
-#             title='Test project 1',
-#             user=self.user,
-#             timeline='10 days',
-#             applicant_requirements='Test requirement 1',
-#             description='Test description 1'
-#         )
+        self.project1 = Project.objects.create(
+            title='Test project 1',
+            user=self.user,
+            timeline='10 days',
+            applicant_requirements='Test requirement 1',
+            description='Test description 1'
+        )
 
-#         self.project2 = Project.objects.create(
-#             title='Test project 2',
-#             user=self.user,
-#             timeline='20 days',
-#             applicant_requirements='Test requirement 2',
-#             description='Test description 2'
-#         )
+        self.project2 = Project.objects.create(
+            title='Test project 2',
+            user=self.user,
+            timeline='20 days',
+            applicant_requirements='Test requirement 2',
+            description='Test description 2'
+        )
 
-#     def test_return_200_if_delete_while_logged_in(self):
-#         expected = 200
+    def test_return_200_if_delete_while_logged_in(self):
+        expected = 200
 
-#         self.client.login(username='test', password='12345')
+        self.client.login(username='test', password='12345')
 
-#         response = self.client.get(reverse('project_delete', kwargs={
-#             'pk': self.project1.pk
-#         }))
+        response = self.client.get(reverse('project_delete', kwargs={
+            'pk': self.project1.pk
+        }))
 
-#         result = response.status_code
+        result = response.status_code
 
-#         self.assertEqual(expected, result)
+        self.assertEqual(expected, result)
 
-#     @unittest.expectedFailure
-#     def test_return_302_if_try_to_delete_while_not_logged_in(self):
-#         expected = 302
+    @unittest.expectedFailure
+    def test_return_302_if_try_to_delete_while_not_logged_in(self):
+        expected = 302
 
-#         response = self.client.get(reverse('project_delete', kwargs={
-#             'pk': self.project1.pk
-#         }))
+        response = self.client.get(reverse('project_delete', kwargs={
+            'pk': self.project1.pk
+        }))
 
-#         result = response.status_code
+        result = response.status_code
 
-#         self.assertEqual(expected, result)
+        self.assertEqual(expected, result)
 
-#     def test_return_layoutHTML_as_template_used(self):
-#         expected = 'layout.html'
-
-
-#         response = self.client.get(reverse('project_delete', kwargs={
-#             'pk': self.project1.pk
-#         }))
-
-#         self.assertTemplateUsed(response, expected)
-
-#     def test_return_project_deleteHTML_as_template_used(self):
-#         expected = 'main/project_delete.html'
+    def test_return_layoutHTML_as_template_used(self):
+        expected = 'layout.html'
 
 
-#         response = self.client.get(reverse('project_delete', kwargs={
-#             'pk': self.project1.pk
-#         }))
+        response = self.client.get(reverse('project_delete', kwargs={
+            'pk': self.project1.pk
+        }))
 
-#         self.assertTemplateUsed(response, expected)
+        self.assertTemplateUsed(response, expected)
+
+    def test_return_project_deleteHTML_as_template_used(self):
+        expected = 'main/project_delete.html'
+
+
+        response = self.client.get(reverse('project_delete', kwargs={
+            'pk': self.project1.pk
+        }))
+
+        self.assertTemplateUsed(response, expected)
