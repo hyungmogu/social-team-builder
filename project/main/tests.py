@@ -1,5 +1,7 @@
 import unittest
 from django.test import TestCase
+from django.core.files import File
+from django.core.files.uploadedfile import SimpleUploadedFile
 
 from django.core.urlresolvers import reverse
 from accounts.models import User
@@ -7,7 +9,6 @@ from rest_framework.test import APIClient
 
 from .models import Project, Skill, Position, Profile
 # Create your tests here.
-
 
 # -----------
 # MODEL TESTS
@@ -70,6 +71,7 @@ PROFILE MODEL
 
 class TestProfileModel(TestCase):
     def setUp(self):
+
         self.user1 = User.objects.create(
             email='hyungmo@helloworld.com',
             password='hello'
@@ -83,13 +85,15 @@ class TestProfileModel(TestCase):
         self.profile1 = Profile.objects.create(
             user=self.user1,
             name='Profile 1',
-            short_bio='Bio 1'
+            short_bio='Bio 1',
+            profile_image = 'image_1.png'
         )
 
         self.profile2 = Profile.objects.create(
             user=self.user2,
             name='Profile 2',
-            short_bio='Bio 2'
+            short_bio='Bio 2',
+            profile_image = 'image_2.png'
         )
 
     def test_return_profiles_of_length_2_when_all_queried(self):
@@ -130,6 +134,15 @@ class TestProfileModel(TestCase):
 
         self.assertEqual(expected, result)
 
+    def test_return_profile_image_image_1_when_queried_with_pk_of_1(self):
+        expected = "image_1.png"
+
+        query = Profile.objects.get(pk=1)
+        result = query.profile_image.name
+
+        self.assertEqual(expected, result)
+
+
     def test_return_name_profile_2_when_queried_with_pk_of_2(self):
         expected = "Profile 2"
 
@@ -145,6 +158,15 @@ class TestProfileModel(TestCase):
         result = query.short_bio
 
         self.assertEqual(expected, result)
+
+    def test_return_profile_image_image_2_when_queried_with_pk_of_2(self):
+        expected = "image_2.png"
+
+        query = Profile.objects.get(pk=2)
+        result = query.profile_image.name
+
+        self.assertEqual(expected, result)
+
 
 
 """
