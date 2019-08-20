@@ -27,33 +27,6 @@ class Profile(models.Model):
     def __str__(self):
         return self.name
 
-
-class Membership(models.Model):
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, related_name="communities")
-    role = models.IntegerField(choices=MEMBERSHIP_CHOICES, default=1)
-
-    class Meta:
-        permissions = (
-            ("employer", "Employer"),
-            ("employee", "Employee")
-        )
-
-    def __str__(self):
-        return "{} is {}".format(
-            self.user.profile.name,
-            self.role
-        )
-
-    @property
-    def employer(self):
-        return self.user.filter(role=1).values_list("user", flat=True)
-
-    @property
-    def employee(self):
-        return self.user.filter(role=0).values_list("user", flat=True)
-
-
-
 class Position(models.Model):
     name = models.CharField(max_length=255)
     project = models.ForeignKey('Project', related_name="positions")
@@ -83,5 +56,32 @@ class Application(models.Model):
     def __str__(self):
         return "[{}] - {} {}".format(profile, project, position)
 
+MEMBERSHIP_CHOICES = [
+    ('employee', 'Employee'),
+    ('employee', 'Employer'),
+]
 
+# class Membership(models.Model):
+#     user = models.ForeignKey(settings.AUTH_USER_MODEL, related_name="communities")
+#     role = models.CharField(choices=MEMBERSHIP_CHOICES, default=1)
+
+#     class Meta:
+#         permissions = (
+#             ("employee", "Employee"),
+#             ("employer", "Employer")
+#         )
+
+#     def __str__(self):
+#         return "{} is {}".format(
+#             self.user.profile.name,
+#             self.role
+#         )
+
+#     @property
+#     def employer(self):
+#         return self.user.filter(role=1).values_list("user", flat=True)
+
+#     @property
+#     def employee(self):
+#         return self.user.filter(role=0).values_list("user", flat=True)
 

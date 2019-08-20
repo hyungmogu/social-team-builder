@@ -256,161 +256,189 @@ class TestSkillModel(TestCase):
         self.assertEqual(expected, result)
 
 
-# # """
-# # POSITION MODEL
-# # """
-# class TestPositionModel(TestCase):
-#     def setUp(self):
-#         self.user = User.objects.create(
-#             username='test',
-#             password='12345'
-#         )
+# """
+# POSITION MODEL
+# """
+class TestPositionModel(TestCase):
+    def setUp(self):
+        self.user1 = User.objects.create(
+            email='hyungmo@helloworld.com',
+            password='hello'
+        )
 
-#         self.skill1 = Skill.objects.create(
-#             name='Swift'
-#         )
+        self.user2 = User.objects.create(
+            email='world@helloworld.com',
+            password='world'
+        )
 
-#         self.skill2 = Skill.objects.create(
-#             name='Java'
-#         )
+        self.profile1 = Profile.objects.create(
+            user=self.user1,
+            name='Profile 1',
+            short_bio='Bio 1',
+            profile_image = 'image_1.png'
+        )
 
-#         self.skill3 = Skill.objects.create(
-#             name='C'
-#         )
+        self.profile2 = Profile.objects.create(
+            user=self.user2,
+            name='Profile 2',
+            short_bio='Bio 2',
+            profile_image = 'image_2.png'
+        )
 
-#         self.project1 = Project.objects.create(
-#             title='Test project 1',
-#             user=self.user,
-#             timeline='10 days',
-#             applicant_requirements='Test requirement 1',
-#             description='Test description 1'
-#         )
+        self.skill1 = Skill.objects.create(
+            name='Swift',
+            profile=self.profile1
+        )
 
-#         self.project2 = Project.objects.create(
-#             title='Test project 2',
-#             user=self.user,
-#             timeline='20 days',
-#             applicant_requirements='Test requirement 2',
-#             description='Test description 2'
-#         )
+        self.skill2 = Skill.objects.create(
+            name='Java',
+            profile=self.profile1
+        )
 
-#         self.position1 = Position.objects.create(
-#             name='Test position 1',
-#             project=self.project1,
-#             description='Test description 1'
-#         )
-#         self.position1.related_skills.add(self.skill1)
+        self.skill3 = Skill.objects.create(
+            name='C',
+            profile=self.profile2
+        )
 
-#         self.position2 = Position.objects.create(
-#             name='Test position 2',
-#             project=self.project2,
-#             description='Test description 2'
-#         )
-#         self.position2.related_skills.add(self.skill2)
-#         self.position2.related_skills.add(self.skill3)
+        self.project1 = Project.objects.create(
+            title='Test project 1',
+            user=self.user1,
+            timeline='10 days',
+            applicant_requirements='Test requirement 1',
+            description='Test description 1'
+        )
 
-#     def test_return_position_model_with_length_2(self):
-#         expected = 2
+        self.project2 = Project.objects.create(
+            title='Test project 2',
+            user=self.user2,
+            timeline='20 days',
+            applicant_requirements='Test requirement 2',
+            description='Test description 2'
+        )
 
-#         result = Position.objects.all().count()
+        self.position1 = Position.objects.create(
+            name='Test position 1',
+            project=self.project1,
+            description='Test description 1'
+        )
+        self.position1.related_skills.add(self.skill1)
+        self.position1.related_skills.add(self.skill2)
 
-#         self.assertEqual(result, expected)
+        self.position2 = Position.objects.create(
+            name='Test position 2',
+            project=self.project2,
+            description='Test description 2'
+        )
+        self.position2.related_skills.add(self.skill3)
 
+    def test_return_position_model_with_length_2(self):
+        expected = 2
 
-#     def test_return_name_test_position_1_given_pk_1(self):
-#         expected = 'Test position 1'
+        result = Position.objects.all().count()
 
-#         query = Position.objects.get(pk=1)
-#         result = query.name
-
-#         self.assertEqual(expected, result)
-
-#     def test_return_project_title_test_project_1_given_pk_1(self):
-#         expected = 'Test project 1'
-
-#         query = Position.objects.get(pk=1)
-#         result = query.project.title
-
-#         self.assertEqual(expected, result)
-
-#     def test_return_description_test_description_1_given_pk_1(self):
-#         expected = 'Test description 1'
-
-#         query = Position.objects.get(pk=1)
-#         result = query.description
-
-#         self.assertEqual(expected, result)
-
-#     def test_return_related_skills_with_length_1_given_pk_1(self):
-#         expected = 1
-
-#         query = Position.objects.get(pk=1)
-#         result = query.related_skills.count()
-
-#         self.assertEqual(expected, result)
-
-#     def test_return_swift_as_first_related_skill_given_pk_2(self):
-#         expected = 'Swift'
-
-#         query = Position.objects.get(pk=1)
-#         related_skills = query.related_skills.all()
-#         result = related_skills[0].name
-
-#         self.assertEqual(expected, result)
-
-#     def test_return_name_test_position_2_given_pk_2(self):
-#         expected = 'Test position 2'
-
-#         query = Position.objects.get(pk=2)
-#         result = query.name
-
-#         self.assertEqual(expected, result)
-
-#     def test_return_name_test_description_2_given_pk_2(self):
-#         expected = 'Test description 2'
-
-#         query = Position.objects.get(pk=2)
-#         result = query.description
-
-#         self.assertEqual(expected, result)
-
-#     def test_return_related_skills_with_length_2_given_pk_2(self):
-#         expected = 2
-
-#         query = Position.objects.get(pk=2)
-#         result = query.related_skills.count()
-
-#         self.assertEqual(expected, result)
-
-#     def test_return_Java_as_first_related_skill_given_pk_2(self):
-#         expected = 'Java'
-
-#         query = Position.objects.get(pk=2)
-#         related_skills = query.related_skills.all()
-#         result = related_skills[0].name
-
-#         self.assertEqual(expected, result)
+        self.assertEqual(result, expected)
 
 
-#     def test_return_C_as_first_related_skill_given_pk_2(self):
-#         expected = 'C'
+    def test_return_name_test_position_1_given_pk_1(self):
+        expected = 'Test position 1'
 
-#         query = Position.objects.get(pk=2)
-#         related_skills = query.related_skills.all()
-#         result = related_skills[1].name
+        query = Position.objects.get(pk=1)
+        result = query.name
 
-#         self.assertEqual(expected, result)
+        self.assertEqual(expected, result)
 
-#     def test_return_name_when_type_casted_as_str(self):
-#         expected = ''
+    def test_return_project_title_test_project_1_given_pk_1(self):
+        expected = 'Test project 1'
 
-#     def test_return_project_title_test_project_2_given_pk_1(self):
-#         expected = 'Test project 2'
+        query = Position.objects.get(pk=1)
+        result = query.project.title
 
-#         query = Position.objects.get(pk=2)
-#         result = query.project.title
+        self.assertEqual(expected, result)
 
-#         self.assertEqual(expected, result)
+    def test_return_description_test_description_1_given_pk_1(self):
+        expected = 'Test description 1'
+
+        query = Position.objects.get(pk=1)
+        result = query.description
+
+        self.assertEqual(expected, result)
+
+    def test_return_related_skills_with_length_2_given_pk_1(self):
+        expected = 2
+
+        query = Position.objects.get(pk=1)
+        result = query.related_skills.count()
+
+        self.assertEqual(expected, result)
+
+    def test_return_swift_as_first_related_skill_given_pk_1(self):
+        expected = 'Swift'
+
+        query = Position.objects.get(pk=1)
+        related_skills = query.related_skills.all()
+        result = related_skills[0].name
+
+        self.assertEqual(expected, result)
+
+
+    def test_return_Java_as_second_related_skill_given_pk_1(self):
+        expected = 'Java'
+
+        query = Position.objects.get(pk=1)
+        related_skills = query.related_skills.all()
+        result = related_skills[1].name
+
+        self.assertEqual(expected, result)
+
+    def test_return_name_test_position_2_given_pk_2(self):
+        expected = 'Test position 2'
+
+        query = Position.objects.get(pk=2)
+        result = query.name
+
+        self.assertEqual(expected, result)
+
+    def test_return_name_test_description_2_given_pk_2(self):
+        expected = 'Test description 2'
+
+        query = Position.objects.get(pk=2)
+        result = query.description
+
+        self.assertEqual(expected, result)
+
+    def test_return_related_skills_with_length_2_given_pk_2(self):
+        expected = 1
+
+        query = Position.objects.get(pk=2)
+        result = query.related_skills.count()
+
+        self.assertEqual(expected, result)
+
+    def test_return_C_as_first_related_skill_given_pk_2(self):
+        expected = 'C'
+
+        query = Position.objects.get(pk=2)
+        related_skills = query.related_skills.all()
+        result = related_skills[0].name
+
+        self.assertEqual(expected, result)
+
+    def test_return_name_when_type_casted_as_str(self):
+        expected = 'Test position 1'
+
+        res = Position.objects.get(pk=1)
+        result = res.name
+
+        self.assertEqual(expected, result)
+
+
+    def test_return_project_title_test_project_2_given_pk_1(self):
+        expected = 'Test project 2'
+
+        query = Position.objects.get(pk=2)
+        result = query.project.title
+
+        self.assertEqual(expected, result)
 
 
 """
