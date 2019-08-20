@@ -223,6 +223,14 @@ class TestSkillModel(TestCase):
 
         self.assertEqual(expected, result)
 
+    def test_return_profile_profile_1_when_queried_with_pk_of_1(self):
+        expected = "Profile 1"
+
+        query = Skill.objects.get(pk=1)
+        result = query.profile.name
+
+        self.assertEqual(expected, result)
+
     def test_return_name_java_when_queried_with_pk_of_2(self):
         expected = "Java"
 
@@ -231,9 +239,16 @@ class TestSkillModel(TestCase):
 
         self.assertEqual(expected, result)
 
+    def test_return_profile_profile_2_when_queried_with_pk_of_2(self):
+        expected = "Profile 2"
+
+        query = Skill.objects.get(pk=2)
+        result = query.profile.name
+
+        self.assertEqual(expected, result)
+
     def test_return_skill_name_when_type_casted_as_str(self):
         expected = "Java"
-
 
         query = Skill.objects.get(pk=2)
         result = str(query)
@@ -241,9 +256,9 @@ class TestSkillModel(TestCase):
         self.assertEqual(expected, result)
 
 
-# """
-# POSITION MODEL
-# """
+# # """
+# # POSITION MODEL
+# # """
 # class TestPositionModel(TestCase):
 #     def setUp(self):
 #         self.user = User.objects.create(
