@@ -70,6 +70,13 @@
     [x]: Create a function allowing user to apply for a position in a project
 
 
+==============================
+
+AUGUST 20th, 2019
+    GOAL:
+        []: Finish improving tests for '/projects/create'
+        []: Finish improving tests for '/accounts/login'
+        []: Finish improving tests for '/accounts/logout'
 
 ==============================
 
