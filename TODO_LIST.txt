@@ -8,6 +8,7 @@
     []: Add endpoints
         [x]: '/projects/{id}/delete/'
         [x]: '/projects/{id}/edit'
+        [x]: '/projects/{id}/'
         [x]: '/projects/create'
             [x]: "The user should be able to create multiple positions for a project. Positions relate to a particular skill."
             [x]: "The user should be able to specify the positions where his/her project needs help with a name, a description, and related skill."
@@ -16,12 +17,13 @@
     []: Add tests for the endpoints
         []: '/projects/{id}/delete/'
         []: '/projects/{id}/edit'
-        []: '/projects/create'
+        []: '/projects/{id}/'
+        [x]: '/projects/create'
 
 []: Applications page
     []: Add endpoints
         [x]: '/applications'
-    []L Add tests for the endpoints
+    []: Add tests for the endpoints
         []: '/applications'
 
 []:Profile Page
@@ -39,20 +41,20 @@
 []: Signup Page
     [x]: Add endpoint
         [x]: '/accounts/signup'
-    []: Add tests for the endpoints
-        []: '/accounts/signup'
+    [x]: Add tests for the endpoints
+        [x]: '/accounts/signup'
 
 []: Login Page
     [x]: Add endpoint
         [x]: '/accounts/login'
-    []: Add tests for the endpoints
-        []: '/accounts/login'
+    [x]: Add tests for the endpoints
+        [x]: '/accounts/login'
 
 []:Logout
     [x]: Add endpoint
         [x]: '/accounts/logout'
-    []: Add tests for the endpoints
-        []: '/accounts/logout'
+    [x]: Add tests for the endpoints
+        [x]: '/accounts/logout'
 
 
 # ======
@@ -74,9 +76,12 @@
 
 AUGUST 20th, 2019
     GOAL:
-        []: Finish improving tests for '/projects/create'
-        []: Finish improving tests for '/accounts/login'
-        []: Finish improving tests for '/accounts/logout'
+        []: Fix tests for '/projects/{id}/delete/'
+        []: Fix tests for '/projects/{id}/edit'
+        []: Fix tests for '/projects/{id}/'
+        [x]: Fix tests for '/projects/create'
+        [x]: Fix tests for '/accounts/login'
+        [x]: Fix tests for '/accounts/logout'
 
 ==============================
 
