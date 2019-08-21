@@ -566,72 +566,69 @@ from .models import Project, Skill, Position, Profile
 #         self.assertEqual(expected, result)
 
 
+# -----------
+# VIEW TESTS
+# -----------
 
-# # -----------
-# # VIEW TESTS
-# # -----------
+"""
+/accounts/login (GET)
+"""
+class LoginGETRequest(TestCase):
+    def setUp(self):
+        self.resp = self.client.get(reverse('accounts:login'))
 
-# """
-# /accounts/login (GET)
-# """
-# class LoginGETRequest(TestCase):
-#     def setUp(self):
-#         self.resp = self.client.get(reverse('accounts:login'))
+    def test_returns_status_200_on_visit(self):
+        expected = 200
 
-#     def test_returns_status_200_on_visit(self):
-#         expected = 200
+        result = self.resp.status_code
 
-#         result = self.resp.status_code
+        self.assertEqual(expected, result)
 
-#         self.assertEqual(expected, result)
+    def test_return_layoutHTML_as_template_used(self):
+        expected = 'layout.html'
 
-#     def test_return_layoutHTML_as_template_used(self):
-#         expected = 'layout.html'
+        self.assertTemplateUsed(self.resp, expected)
 
-#         self.assertTemplateUsed(self.resp, expected)
+    def test_return_signinHTML_as_template_used(self):
+        expected = 'accounts/signin.html'
 
-#     def test_return_signinHTML_as_template_used(self):
-#         expected = 'accounts/signin.html'
-
-#         self.assertTemplateUsed(self.resp, expected)
+        self.assertTemplateUsed(self.resp, expected)
 
 
-# """
-# /accounts/login (POST)
-# """
-# class LoginPOSTRequest(TestCase):
-#     def setUp(self):
-#         self.resp = self.client.post(reverse('accounts:sign_up'), {
-#             'email': 'hello@example.com',
-#             'password1': 'hello!234',
-#             'password2': 'hello!234'
-#         })
+"""
+/accounts/login (POST)
+"""
+class LoginPOSTRequest(TestCase):
+    def setUp(self):
+        self.resp = self.client.post(reverse('accounts:sign_up'), {
+            'email': 'hello@example.com',
+            'password1': 'hello!234',
+            'password2': 'hello!234'
+        })
 
-#     def test_return_to_sign_in_page_if_signup_unsuccessful(self):
-#         expected = 'accounts/signin.html'
+    def test_return_to_sign_in_page_if_signup_unsuccessful(self):
+        expected = 'accounts/signin.html'
 
-#         response1 = self.client.post(reverse('accounts:login'), {
-#             'username': 'hello@example.com',
-#             'password': 'hello1'
-#         })
+        response1 = self.client.post(reverse('accounts:login'), {
+            'username': 'hello@example.com',
+            'password': 'hello1'
+        })
 
-#         response2 = self.client.post(reverse('accounts:login'), {
-#             'username': 'hello@ example.com',
-#             'password': 'hello1'
-#         })
+        response2 = self.client.post(reverse('accounts:login'), {
+            'username': 'hello@ example.com',
+            'password': 'hello1'
+        })
 
-#         self.assertTemplateUsed(response1, expected)
-#         self.assertTemplateUsed(response2, expected)
+        self.assertTemplateUsed(response1, expected)
+        self.assertTemplateUsed(response2, expected)
 
-#     @unittest.expectedFailure
-#     def test_return_to_home_page_if_login_successful(self):
-#         # NEEDS WORK
-#         resp = self.client.post(reverse('accounts:login'), {
-#             'username': 'hello@example.com',
-#             'password': 'hello!234'
-#         }, follow=True)
+    def test_return_to_home_page_if_login_successful(self):
+        resp = self.client.post(reverse('accounts:login'), {
+            'username': 'hello@example.com',
+            'password': 'hello!234'
+        }, follow=True)
 
-#         self.assertRedirects(resp, reverse('accounts:login'), fetch_redirect_response=False)
+        self.assertRedirects(resp, reverse('home'), fetch_redirect_response=False)
 
 
 
@@ -727,24 +724,24 @@ from .models import Project, Skill, Position, Profile
 # """
 # /projects/create
 # """
-class ProjectCreateGETTestCase(TestCase):
-    def setUp(self):
-        self.user = User.objects.create(username='admin', password='pass@123', email='admin@admin.com')
-        self.user.set_password('12345')
-        self.user.save()
-        self.client = APIClient()
+# class ProjectCreateGETTestCase(TestCase):
+#     def setUp(self):
+#         self.user = User.objects.create(username='admin', password='pass@123', email='admin@admin.com')
+#         self.user.set_password('12345')
+#         self.user.save()
+#         self.client = APIClient()
 
-        print(User.objects.get(pk=1).email)
+#         print(User.objects.get(pk=1).email)
 
-    def test_return_status_okay_if_logged_in(self):
-        # NEEDS WORK
-        expected = 200
+#     def test_return_status_okay_if_logged_in(self):
+#         # NEEDS WORK
+#         expected = 200
 
-        self.client.force_login(User.objects.get(pk=1))
-        response = self.client.get(reverse('project_create'))
-        result = response.status_code
+#         self.client.force_login(User.objects.get(pk=1))
+#         response = self.client.get(reverse('project_create'))
+#         result = response.status_code
 
-        self.assertEqual(result, expected)
+#         self.assertEqual(result, expected)
 
 #     def test_return_302_if_not_logged_in(self):
 #         expected = 302
