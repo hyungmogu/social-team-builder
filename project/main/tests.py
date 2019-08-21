@@ -631,94 +631,69 @@ class LoginPOSTRequest(TestCase):
         self.assertRedirects(resp, reverse('home'), fetch_redirect_response=False)
 
 
+"""
+/accounts/sign_up (GET)
+"""
+class SignUpGETRequest(TestCase):
+    def setUp(self):
+        self.resp = self.client.get(reverse('accounts:sign_up'))
 
-# """
-# /accounts/sign_up (GET)
-# """
-# class SignUpGETRequest(TestCase):
-#     def setUp(self):
-#         self.resp = self.client.get(reverse('accounts:sign_up'))
+    def test_returns_status_200_on_visit(self):
+        expected = 200
 
-#     def test_returns_status_200_on_visit(self):
-#         expected = 200
+        result = self.resp.status_code
 
-#         result = self.resp.status_code
+        self.assertEqual(expected, result)
 
-#         self.assertEqual(expected, result)
+    def test_return_layoutHTML_as_template_used(self):
+        expected = 'layout.html'
 
-#     def test_return_layoutHTML_as_template_used(self):
-#         expected = 'layout.html'
+        self.assertTemplateUsed(self.resp, expected)
 
-#         self.assertTemplateUsed(self.resp, expected)
+    def test_return_signupHTML_as_template_used(self):
+        expected = 'accounts/signup.html'
 
-#     def test_return_signinHTML_as_template_used(self):
-#         expected = 'accounts/signup.html'
-
-#         self.assertTemplateUsed(self.resp, expected)
+        self.assertTemplateUsed(self.resp, expected)
 
 
-# """
-# /accounts/sign_up (POST)
-# """
-# class SignUpPOSTRequest(TestCase):
-#     def setUp(self):
-#         self.resp = self.client.post(reverse('accounts:sign_up'), {
-#             'email': 'hello@example.com',
-#             'password1': 'hello!234',
-#             'password2': 'hello!234'
-#         })
+"""
+/accounts/sign_up (POST)
+"""
+class SignUpPOSTRequest(TestCase):
+    def setUp(self):
+        self.resp = self.client.post(reverse('accounts:sign_up'), {
+            'email': 'hello@example.com',
+            'password1': 'hello!234',
+            'password2': 'hello!234'
+        })
 
-#     def test_return_to_sign_up_page_if_signup_unsuccessful(self):
-#         expected = 'accounts/signup.html'
+    def test_return_to_sign_up_page_if_signup_unsuccessful(self):
+        expected = 'accounts/signup.html'
 
-#         response1 = self.client.post(reverse('accounts:sign_up'), {
-#             'email': 'hello@example.com',
-#             'password1': 'hello1',
-#             'password2': 'hello2'
-#         })
+        response1 = self.client.post(reverse('accounts:sign_up'), {
+            'email': 'hello@example.com',
+            'password1': 'hello1',
+            'password2': 'hello2'
+        })
 
-#         response2 = self.client.post(reverse('accounts:sign_up'), {
-#             'email': 'hello@ example.com',
-#             'password1': 'hello1',
-#             'password2': 'hello1'
-#         })
+        response2 = self.client.post(reverse('accounts:sign_up'), {
+            'email': 'hello@ example.com',
+            'password1': 'hello1',
+            'password2': 'hello1'
+        })
 
-#         self.assertTemplateUsed(response1, expected)
-#         self.assertTemplateUsed(response2, expected)
+        self.assertTemplateUsed(response1, expected)
+        self.assertTemplateUsed(response2, expected)
 
-#     def test_return_user_model_with_count_of_1_if_signup_successful(self):
-#         expected = 1
+    def test_return_user_model_with_count_of_1_if_signup_successful(self):
+        expected = 1
 
-#         result = User.objects.all().count()
+        result = User.objects.all().count()
 
-#         self.assertEqual(expected, result)
+        self.assertEqual(expected, result)
 
-#     def test_return_to_login_page_if_signup_successful(self):
-#         self.assertRedirects(self.resp, reverse('accounts:login'), fetch_redirect_response=True)
-
-# """
-# /accounts/sign_up (GET)
-# """
-# class SignUpGETRequest(TestCase):
-#     def setUp(self):
-#         self.resp = self.client.get(reverse('accounts:sign_up'))
-
-#     def test_returns_status_200_on_visit(self):
-#         expected = 200
-
-#         result = self.resp.status_code
-
-#         self.assertEqual(expected, result)
-
-#     def test_return_layoutHTML_as_template_used(self):
-#         expected = 'layout.html'
-
-#         self.assertTemplateUsed(self.resp, expected)
-
-#     def test_return_signupHTML_as_template_used(self):
-#         expected = 'accounts/signup.html'
-
-#         self.assertTemplateUsed(self.resp, expected)
+    def test_return_to_login_page_if_signup_successful(self):
+        self.assertRedirects(self.resp, reverse('accounts:login'), fetch_redirect_response=True)
 
 
 # """
