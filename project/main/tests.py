@@ -774,6 +774,106 @@ class ProjectGETTestCase(TestCase):
 
         self.assertEqual(expected, result)
 
+
+# """
+# /projects/{id}/edit
+# """
+
+class ProjectEditGETTestCase(TestCase):
+    def setUp(self):
+        self.resp = self.client.post(reverse('accounts:sign_up'), {
+            'email': 'hello@example.com',
+            'password1': 'hello!234',
+            'password2': 'hello!234'
+        })
+
+        self.user = User.objects.get(pk=1)
+        self.profile = self.user.profile
+        self.profile.name = 'Test Profile 1'
+        self.profile.short_bio = 'Test Bio 1'
+        self.profile.profile_image = 'image_1.png'
+
+        self.project = Project.objects.create(
+            title='Test project 1',
+            user=self.user,
+            timeline='10 days',
+            applicant_requirements='Test requirement 1',
+            description='Test description 1'
+        )
+
+        self.position1 = Position.objects.create(
+            name='Test position 1',
+            project=self.project,
+            description='Test description 1'
+        )
+
+        self.position2 = Position.objects.create(
+            name='Test position 2',
+            project=self.project,
+            description='Test description 2'
+        )
+
+    def test_return_status_code_200_if_successful(self):
+        expected = 200
+
+        resp = self.client.post(reverse('accounts:login'), {
+            'username': 'hello@example.com',
+            'password': 'hello!234'
+        })
+
+        response = self.client.get(reverse('project_edit', kwargs={
+            'pk': 1
+        }))
+
+        result = response.status_code
+
+        self.assertEqual(expected, result)
+
+    def test_return_projectHTML_as_template_used(self):
+        expected= 'main/project_edit.html'
+
+        resp = self.client.post(reverse('accounts:login'), {
+            'username': 'hello@example.com',
+            'password': 'hello!234'
+        })
+
+        response = self.client.get(reverse('project_edit', kwargs={
+            'pk': 1
+        }), follow=True)
+
+        self.assertTemplateUsed(response, expected)
+
+    def test_return_layoutHTML_as_template_used(self):
+        expected= 'layout.html'
+
+        resp = self.client.post(reverse('accounts:login'), {
+            'username': 'hello@example.com',
+            'password': 'hello!234'
+        })
+
+        response = self.client.get(reverse('project_edit', kwargs={
+            'pk': 1
+        }), follow=True)
+
+        self.assertTemplateUsed(response, expected)
+
+    def test_return_project_1_as_the_project_used(self):
+        expected = 'Test project 1'
+
+        resp = self.client.post(reverse('accounts:login'), {
+            'username': 'hello@example.com',
+            'password': 'hello!234'
+        })
+
+        response = self.client.get(reverse('project_edit', kwargs={
+            'pk': 1
+        }), follow=True)
+
+        result = response.context['project'].title
+
+        self.assertEqual(expected, result)
+
+
 # """
 # /projects/create
 # """
