@@ -772,7 +772,7 @@ class ProfileGETTestCase(TestCase):
 
 
 # """
-# /profile/{id}/edit
+# /profile/{id}/edit (GET)
 # """
 
 class ProfileEditGETRequest(TestCase):
@@ -849,6 +849,210 @@ class ProfileEditGETRequest(TestCase):
         result = response.context['profile'].name
 
         self.assertEqual(expected, result)
+
+# """
+# /profile/{id}/edit (POST)
+# """
+
+class EditProfilePOSTRequest(TestCase):
+    def setUp(self):
+        self.client.post(reverse('accounts:sign_up'), {
+            'email': 'hello@example.com',
+            'password1': 'hello!234',
+            'password2': 'hello!234'
+        })
+
+
+        self.user = User.objects.get(pk=1)
+        self.profile = self.user.profile
+        self.profile.name = 'Test Profile 1'
+        self.profile.short_bio = 'Test Bio 1'
+        self.profile.profile_image = 'image_1.png'
+        self.profile.save()
+
+        self.skill1 = Skill.objects.create(
+            name="Test skill 1",
+            profile=self.profile
+        )
+        self.skill2 = Skill.objects.create(
+            name="Test skill 2",
+            profile=self.profile
+        )
+        self.profile.skills.add(self.skill1)
+        self.profile.skills.add(self.skill2)
+        self.profile.save()
+
+        self.edit_data = {
+            'profile-user': self.user,
+            'profile-name': 'Revised test name 1',
+            'profile-short_bio': 'Revised test short bio 1',
+            'skills-TOTAL_FORMS': '3',
+            'skills-INITIAL_FORMS': '2',
+            'skills-MIN_NUM_FORMS': '0',
+            'skills-MAX_NUM_FORMS': '1000',
+            'skills-0-id': ['1'],
+            'skills-0-name': 'Revised test skill 1',
+            'skills-1-id': ['2'],
+            'skills-1-name': 'Revised test skill 2',
+            'skills-2-name': 'Test skill 3',
+            'skills-2-DELETE': '',
+            'user_projects-TOTAL_FORMS': '1',
+            'user_projects-INITIAL_FORMS': '0',
+            'user_projects-MIN_NUM_FORMS': '0',
+            'user_projects-MAX_NUM_FORMS': '1000',
+            'user_projects-0-id': '',
+            'user_projects-0-name': 'Test project 1',
+            'user_projects-0-url': 'http://google1.ca'
+        }
+
+
+    def test_return_302_if_try_to_edit_while_not_logged_in(self):
+        expected = 302
+
+        response = self.client.post(reverse('profile_edit', kwargs={
+            'pk': 1
+        }), self.edit_data)
+        result = response.status_code
+
+        self.assertEqual(expected, result)
+
+    def test_return_login_page_if_try_to_create_while_not_logged_in(self):
+        expected = 'accounts/signin.html'
+
+        response = self.client.post(reverse('profile_edit', kwargs={
+            'pk': 1
+        }), self.edit_data, follow=True)
+
+        self.assertTemplateUsed(response, expected)
+
+    def test_retrun_project_with_title_revised_test_profile_1_if_edit_successful(self):
+        expected = 'Revised test name 1'
+
+        self.client.post(reverse('accounts:login'), {
+            'username': 'hello@example.com',
+            'password': 'hello!234'
+        }, follow=True)
+
+        self.resp = self.client.post(reverse('profile_edit', kwargs={
+            'pk': 1
+        }), self.edit_data)
+
+        result = Profile.objects.get(pk=1).name
+
+        self.assertEqual(expected, result)
+
+    def test_retrun_project_short_bio_revised_short_bio_1_if_edit_successful(self):
+        expected = 'Revised test short bio 1'
+
+        self.client.post(reverse('accounts:login'), {
+            'username': 'hello@example.com',
+            'password': 'hello!234'
+        }, follow=True)
+
+        self.resp = self.client.post(reverse('profile_edit', kwargs={
+            'pk': 1
+        }), self.edit_data)
+
+        result = Profile.objects.get(pk=1).short_bio
+
+        self.assertEqual(expected, result)
+
+    def test_retrun_skills_with_length_3_if_edit_successful(self):
+        expected = 3
+
+        self.client.post(reverse('accounts:login'), {
+            'username': 'hello@example.com',
+            'password': 'hello!234'
+        }, follow=True)
+
+        self.resp = self.client.post(reverse('profile_edit', kwargs={
+            'pk': 1
+        }), self.edit_data)
+
+        result = Profile.objects.get(pk=1).skills.all().count()
+
+        self.assertEqual(expected, result)
+
+    def test_retrun_first_skill_with_revised_skill_1_if_edit_successful(self):
+        expected = 'Revised test skill 1'
+
+        self.client.post(reverse('accounts:login'), {
+            'username': 'hello@example.com',
+            'password': 'hello!234'
+        }, follow=True)
+
+        self.resp = self.client.post(reverse('profile_edit', kwargs={
+            'pk': 1
+        }), self.edit_data)
+
+        result = Profile.objects.get(pk=1).skills.get(pk=1).name
+
+        self.assertEqual(expected, result)
+
+    def test_retrun_second_skill_with_revised_skill_2_if_edit_successful(self):
+        expected = 'Revised test skill 2'
+
+        self.client.post(reverse('accounts:login'), {
+            'username': 'hello@example.com',
+            'password': 'hello!234'
+        }, follow=True)
+
+        self.resp = self.client.post(reverse('profile_edit', kwargs={
+            'pk': 1
+        }), self.edit_data)
+
+        result = Profile.objects.get(pk=1).skills.get(pk=2).name
+
+        self.assertEqual(expected, result)
+
+    def test_retrun_third_skill_with_revised_skill_3_if_edit_successful(self):
+        expected = 'Test skill 3'
+
+        self.client.post(reverse('accounts:login'), {
+            'username': 'hello@example.com',
+            'password': 'hello!234'
+        }, follow=True)
+
+        self.resp = self.client.post(reverse('profile_edit', kwargs={
+            'pk': 1
+        }), self.edit_data)
+
+        result = Profile.objects.get(pk=1).skills.get(pk=3).name
+
+        self.assertEqual(expected, result)
+
+    def test_retrun_my_project_with_length_1_if_edit_successful(self):
+        expected = 1
+
+        self.client.post(reverse('accounts:login'), {
+            'username': 'hello@example.com',
+            'password': 'hello!234'
+        }, follow=True)
+
+        self.resp = self.client.post(reverse('profile_edit', kwargs={
+            'pk': 1
+        }), self.edit_data)
+
+        result = Profile.objects.get(pk=1).user_projects.all().count()
+
+        self.assertEqual(expected, result)
+
+    def test_retrun_my_project_with_name_project_1_if_edit_successful(self):
+        expected = 'Test project 1'
+
+        self.client.post(reverse('accounts:login'), {
+            'username': 'hello@example.com',
+            'password': 'hello!234'
+        }, follow=True)
+
+        self.resp = self.client.post(reverse('profile_edit', kwargs={
+            'pk': 1
+        }), self.edit_data)
+
+        result = Profile.objects.get(pk=1).user_projects.get(pk=1).name
+
+        self.assertEqual(expected, result)
+
 
 # """
 # /projects/{id}
