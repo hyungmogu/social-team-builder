@@ -927,11 +927,11 @@ class EditProjectPOSTRequest(TestCase):
             'positions-0-name': 'e1',
             'positions-0-description': 'f1',
             'positions-1-name': 'g',
-            'positions-2-description': 'h',
+            'positions-1-description': 'h',
             'project-title': 'Revised test project 1',
             'project-user': self.user,
             'project-timeline': 'Revised timeline 1',
-            'project-description':'Revised test description 1',
+            'project-description':'Revised description 1',
             'project-applicant_requirements': 'Revised applicant requirements 1'
         }
 
@@ -967,7 +967,7 @@ class EditProjectPOSTRequest(TestCase):
 
         self.assertTemplateUsed(response, expected)
 
-    def test_retrun_projects_model_with_title_revised_test_project_1_if_edit_successful(self):
+    def test_retrun_project_with_title_revised_test_project_1_if_edit_successful(self):
         expected = 'Revised test project 1'
 
         self.client.post(reverse('accounts:login'), {
@@ -979,90 +979,85 @@ class EditProjectPOSTRequest(TestCase):
             'pk': 1
         }), self.edit_data)
 
-        print(self.resp.content)
-
         result = Project.objects.get(pk=1).title
 
         self.assertEqual(expected, result)
 
 
-    # def test_retrun_position_model_with_length_4_if_create_successful(self):
-    #     expected = 4
+    def test_retrun_project_timeline_revised_timeline_1_if_edit_successful(self):
+        expected = 'Revised timeline 1'
 
-    #     self.client.post(reverse('accounts:login'), {
-    #         'username': 'hello@example.com',
-    #         'password': 'hello!234'
-    #     }, follow=True)
+        self.client.post(reverse('accounts:login'), {
+            'username': 'hello@example.com',
+            'password': 'hello!234'
+        }, follow=True)
 
-    #     response = self.client.post(reverse('project_create'), {
-    #         'positions-TOTAL_FORMS': '1',
-    #         'positions-INITIAL_FORMS': '0',
-    #         'positions-MIN_NUM_FORMS': '0',
-    #         'positions-MAX_NUM_FORMS': '1000',
+        self.resp = self.client.post(reverse('project_edit', kwargs={
+            'pk': 1
+        }), self.edit_data)
 
-    #         'positions-0-name': 'e',
-    #         'positions-0-description': 'f',
+        result = Project.objects.get(pk=1).timeline
 
-    #         'project-title': 'Test project 3',
-    #         'project-user': self.user,
-    #         'project-timeline': 'This is test timeline 3',
-    #         'project-description':'This is test description 3',
-    #         'project-applicant_requirements': 'This is test applicant requirements'
-    #     })
+        self.assertEqual(expected, result)
 
-    #     result = Position.objects.all().count()
+    def test_retrun_project_description_revised_description_1_if_edit_successful(self):
+        expected = 'Revised description 1'
 
-    #     self.assertEqual(expected, result)
+        self.client.post(reverse('accounts:login'), {
+            'username': 'hello@example.com',
+            'password': 'hello!234'
+        }, follow=True)
 
-    # def test_return_status_302_if_edit_successful(self):
-    #     expected = 302
+        self.resp = self.client.post(reverse('project_edit', kwargs={
+            'pk': 1
+        }), self.edit_data)
 
-    #     self.client.post(reverse('accounts:login'), {
-    #         'username': 'hello@example.com',
-    #         'password': 'hello!234'
-    #     }, follow=True)
+        result = Project.objects.get(pk=1).description
 
-    #     res = self.client.post(reverse('project_create'), {
-    #         'positions-TOTAL_FORMS': '1',
-    #         'positions-INITIAL_FORMS': '0',
-    #         'positions-MIN_NUM_FORMS': '0',
-    #         'positions-MAX_NUM_FORMS': '1000',
-    #         'positions-0-name': 'e',
-    #         'positions-0-description': 'f',
-    #         'project-title': 'Test project 3',
-    #         'project-user': self.user,
-    #         'project-timeline': 'This is test timeline 3',
-    #         'project-description':'This is test description 3',
-    #         'project-applicant_requirements': 'This is test applicant requirements'
-    #     })
+        self.assertEqual(expected, result)
 
-    #     result = res.status_code
+    def test_retrun_project_description_revised_applicant_requirements_1_if_edit_successful(self):
+        expected = 'Revised applicant requirements 1'
 
-    #     self.assertEqual(expected, result)
+        self.client.post(reverse('accounts:login'), {
+            'username': 'hello@example.com',
+            'password': 'hello!234'
+        }, follow=True)
 
-    # def test_return_projectHTML_as_template_used_if_edit_successful(self):
-    #     expected = 'main/project.html'
+        self.resp = self.client.post(reverse('project_edit', kwargs={
+            'pk': 1
+        }), self.edit_data)
 
-    #     self.client.post(reverse('accounts:login'), {
-    #         'username': 'hello@example.com',
-    #         'password': 'hello!234'
-    #     }, follow=True)
+        result = Project.objects.get(pk=1).applicant_requirements
 
-    #     result = self.client.post(reverse('project_create'), {
-    #         'positions-TOTAL_FORMS': '1',
-    #         'positions-INITIAL_FORMS': '0',
-    #         'positions-MIN_NUM_FORMS': '0',
-    #         'positions-MAX_NUM_FORMS': '1000',
-    #         'positions-0-name': 'e',
-    #         'positions-0-description': 'f',
-    #         'project-title': 'Test project 3',
-    #         'project-user': self.user,
-    #         'project-timeline': 'This is test timeline 3',
-    #         'project-description':'This is test description 3',
-    #         'project-applicant_requirements': 'This is test applicant requirements'
-    #     }, follow=True)
+        self.assertEqual(expected, result)
 
-    #     self.assertTemplateUsed(result, expected)
+
+    def test_return_status_302_if_edit_successful(self):
+        expected = 302
+
+        self.client.post(reverse('accounts:login'), {
+            'username': 'hello@example.com',
+            'password': 'hello!234'
+        }, follow=True)
+
+        res = self.client.post(reverse('project_create'), self.edit_data)
+
+        result = res.status_code
+
+        self.assertEqual(expected, result)
+
+    def test_return_projectHTML_as_template_used_if_edit_successful(self):
+        expected = 'main/project.html'
+
+        self.client.post(reverse('accounts:login'), {
+            'username': 'hello@example.com',
+            'password': 'hello!234'
+        }, follow=True)
+
+        result = self.client.post(reverse('project_create'), self.edit_data, follow=True)
+
+        self.assertTemplateUsed(result, expected)
 
 # """
 # /projects/create
