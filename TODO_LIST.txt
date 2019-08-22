@@ -3,6 +3,8 @@
 [x]:Home Page
     [x]: Add endpoint
         [x]: '/'
+    []: Add tests for the endpont
+        []: '/'
 
 []:Project Page
     []: Add endpoints
@@ -15,9 +17,9 @@
             []: "The user should be able to use use Markdown for the position description. This Markdown is rendered on the project page."
 
     []: Add tests for the endpoints
-        []: '/projects/{id}/delete/'
+        [x]: '/projects/{id}/delete/'
         []: '/projects/{id}/edit'
-        []: '/projects/{id}/'
+        [x]: '/projects/{id}/'
         [x]: '/projects/create'
 
 []: Applications page
@@ -30,27 +32,27 @@
     []: Add endpoints
         [x]: '/profile/'
             [x]:
-        []: '/profile/edit'
+        [x]: '/profile/edit'
             NOTE
-            []: Saving the profile with the skill that has been erased before causes program to complains that it already exists.
-            []: 'Past projects' still needs to be worked on.
+            [x]: Saving the profile with the skill that has been erased before causes program to complains that it already exists.
+            [x]: 'Past projects' still needs to be worked on.
     []: Add tests for the endpoints
         []: '/profile/'
         []: '/profile/edit'
 
-[]: Signup Page
+[x]: Signup Page
     [x]: Add endpoint
         [x]: '/accounts/signup'
     [x]: Add tests for the endpoints
         [x]: '/accounts/signup'
 
-[]: Login Page
+[x]: Login Page
     [x]: Add endpoint
         [x]: '/accounts/login'
     [x]: Add tests for the endpoints
         [x]: '/accounts/login'
 
-[]:Logout
+[x]:Logout
     [x]: Add endpoint
         [x]: '/accounts/logout'
     [x]: Add tests for the endpoints
@@ -74,14 +76,23 @@
 
 ==============================
 
+AUGUST 21st, 2019
+    GOAL:
+        []: Fix tests for '/projects/{id}/edit'
+        []: Fix issue where superuser cannot login to admin
+        []: Create tests for '/profile/{id}/'
+        []: Create tests for '/profile/{id}/edit'
+
+==============================
+
 AUGUST 20th, 2019
     GOAL:
-        []: Fix tests for '/projects/{id}/delete/'
-        []: Fix tests for '/projects/{id}/edit'
-        []: Fix tests for '/projects/{id}/'
+        [x]: Add tests for '/projects/{id}/'
+        [x]: Fix tests for '/projects/{id}/delete/'
         [x]: Fix tests for '/projects/create'
         [x]: Fix tests for '/accounts/login'
         [x]: Fix tests for '/accounts/logout'
+        []: Fix tests for '/projects/{id}/edit'
 
 ==============================
 
