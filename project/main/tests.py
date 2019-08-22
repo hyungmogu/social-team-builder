@@ -1736,3 +1736,70 @@ class DeleteProjectGETRequest(TestCase):
         }), follow=True)
 
         self.assertTemplateUsed(response, expected)
+
+
+# """
+# /applications
+# """
+
+class ApplicationGETRequest(TestCase):
+    def setUp(self):
+        self.resp = self.client.post(reverse('accounts:sign_up'), {
+            'email': 'hello@example.com',
+            'password1': 'hello!234',
+            'password2': 'hello!234'
+        })
+
+    def test_return_302_if_try_to_create_while_not_logged_in(self):
+        expected = 302
+
+        response = self.client.get(reverse('applications'))
+
+        result = response.status_code
+
+        self.assertEqual(expected, result)
+
+    def test_return_login_page_if_try_to_create_while_not_logged_in(self):
+        expected = 'accounts/signin.html'
+
+        result = self.client.get(reverse('applications'), follow=True)
+
+        self.assertTemplateUsed(result, expected)
+
+    def test_return_status_code_200_if_successful(self):
+        expected = 200
+
+        resp = self.client.post(reverse('accounts:login'), {
+            'username': 'hello@example.com',
+            'password': 'hello!234'
+        })
+
+        response = self.client.get(reverse('applications'))
+
+        result = response.status_code
+
+        self.assertEqual(expected, result)
+
+    def test_return_applicationHTML_as_template_used(self):
+        expected = 'main/applications.html'
+
+        resp = self.client.post(reverse('accounts:login'), {
+            'username': 'hello@example.com',
+            'password': 'hello!234'
+        })
+
+        response = self.client.get(reverse('applications'))
+
+        self.assertTemplateUsed(response, expected)
+
+    def test_return_layoutHTML_as_template_used(self):
+        expected= 'layout.html'
+
+        resp = self.client.post(reverse('accounts:login'), {
+            'username': 'hello@example.com',
+            'password': 'hello!234'
+        })
+
+        response = self.client.get(reverse('applications'))
+
+        self.assertTemplateUsed(response, expected)

@@ -9,8 +9,6 @@ from django.views.generic import (
     CreateView, DeleteView, ListView, RedirectView)
 
 from . import models, forms
-# Create your views here.
-
 
 # Temporary. Will be replaced with class based views once developed.
 class HomeView(TemplateView):
@@ -217,6 +215,8 @@ class ProfileEditView(LoginRequiredMixin, UpdateView):
         profile = self.model.objects.get(user=request.user)
         projects = self.get_past_projects()
 
+        print(request.POST)
+
         form_profile = self.form_profile(request.POST, request.FILES, instance=profile, prefix='profile')
         form_user_projects = self.form_user_projects(instance=profile, data=request.POST, prefix="user_projects")
         form_skills = self.form_skills(instance=profile, data=request.POST, prefix="skills")
@@ -268,37 +268,6 @@ class ApplicationSubmitView(LoginRequiredMixin, CreateView):
         return redirect(reverse('project', kwargs={
             'pk': self.kwargs.get('project_pk')
         }))
-
-class ApplicationsView(LoginRequiredMixin, TemplateView):
-    model = models.Application
-    template_name = 'main/applications.html'
-
-    def get(self, request):
-        form_status = forms.ApplicationForm()
-
-        # 1. get all types of queries
-        q_project = request.GET.get('q_project', '')
-        q_proj_need = request.GET.get('q_proj_need', '')
-        q_status = request.GET.get('q_status', '')
-
-        if q_project:
-            filtered_applicants = self.model.objects.filter(Q(project__title__iexact=q_project)&Q(project__user=request.user))
-        elif q_proj_need:
-            filtered_applicants = self.model.objects.filter(Q(project__user=request.user)&Q(position__applications__position__name__iexact=q_proj_need))
-        else:
-            filtered_applicants = self.model.objects.filter(project__user=request.user)
-
-        my_projects = models.Project.objects.filter(user=request.user)
-        my_proj_needs = models.Position.objects.filter(Q(project__user=request.user)).distinct()
-        return render(request, self.template_name, {
-            'q_project': q_project,
-            'q_proj_need': q_proj_need,
-            'q_status': q_status,
-            'my_projects': my_projects,
-            'my_proj_needs': my_proj_needs,
-            'filtered_applicants': filtered_applicants,
-            'form_status': form_status
-        })
 
 
 class ApplicationsView(LoginRequiredMixin, TemplateView):
