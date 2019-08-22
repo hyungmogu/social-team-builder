@@ -696,6 +696,81 @@ class SignUpPOSTRequest(TestCase):
         self.assertRedirects(self.resp, reverse('accounts:login'), fetch_redirect_response=True)
 
 
+
+# """
+# /profile/{id}
+# """
+
+class ProfileGETTestCase(TestCase):
+    def setUp(self):
+        self.user = User.objects.create(
+            email='hyungmo@helloworld.com',
+            password='hello'
+        )
+
+        self.profile = Profile.objects.create(
+            user=self.user,
+            name='Test Profile 1',
+            short_bio='Test Bio 1',
+            profile_image = 'image_1.png'
+        )
+
+        self.client.post(reverse('accounts:sign_up'), {
+            'email': 'hello@example.com',
+            'password1': 'hello!234',
+            'password2': 'hello!234'
+        })
+
+        self.client.post(reverse('accounts:login'), {
+            'username': 'hello@example.com',
+            'password': 'hello!234'
+        })
+
+
+    def test_return_status_code_200_if_successful(self):
+        expected = 200
+
+        response = self.client.get(reverse('profile', kwargs={
+            'pk': 1
+        }))
+
+        result = response.status_code
+
+        self.assertEqual(expected, result)
+
+    def test_return_profileHTML_as_template_used(self):
+        expected= 'main/profile.html'
+
+
+
+        response = self.client.get(reverse('profile', kwargs={
+            'pk': 1
+        }), follow=True)
+
+        self.assertTemplateUsed(response, expected)
+
+    def test_return_layoutHTML_as_template_used(self):
+        expected= 'layout.html'
+
+        response = self.client.get(reverse('profile', kwargs={
+            'pk': 1
+        }), follow=True)
+
+        self.assertTemplateUsed(response, expected)
+
+    def test_return_correctly_used_profile(self):
+        expected = 'Test Profile 1'
+
+        response = self.client.get(reverse('profile', kwargs={
+            'pk': 1
+        }), follow=True)
+
+        result = response.context['profile'].name
+
+        self.assertEqual(expected, result)
+
+
+
 # """
 # /projects/{id}
 # """
