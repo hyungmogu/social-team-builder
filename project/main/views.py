@@ -215,8 +215,6 @@ class ProfileEditView(LoginRequiredMixin, UpdateView):
         profile = self.model.objects.get(user=request.user)
         projects = self.get_past_projects()
 
-        print(request.POST)
-
         form_profile = self.form_profile(request.POST, request.FILES, instance=profile, prefix='profile')
         form_user_projects = self.form_user_projects(instance=profile, data=request.POST, prefix="user_projects")
         form_skills = self.form_skills(instance=profile, data=request.POST, prefix="skills")
