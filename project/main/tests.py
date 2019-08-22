@@ -35,7 +35,7 @@ from .models import Project, Skill, Position, Profile
 
 #         result = User.objects.all().count()
 
-#         self.assertEqual(expected, result)
+#         self.assertEqual(result, expected)
 
 #     def test_return_hyungmo_as_email_and_password_when_queried_with_pk_of_1(self):
 #         expected_email = 'hyungmo@helloworld.com'
@@ -64,7 +64,7 @@ from .models import Project, Skill, Position, Profile
 
 #         result = str(User.objects.get(pk=1))
 
-#         self.assertEqual(expected, result)
+#         self.assertEqual(result, expected)
 
 # """
 # PROFILE MODEL
@@ -102,7 +102,7 @@ from .models import Project, Skill, Position, Profile
 
 #         result = Profile.objects.all().count()
 
-#         self.assertEqual(expected, result)
+#         self.assertEqual(result, expected)
 
 #     @unittest.expectedFailure
 #     def test_return_error_when_profile_of_same_user_id_is_created(self):
@@ -125,7 +125,7 @@ from .models import Project, Skill, Position, Profile
 #         query = Profile.objects.get(pk=1)
 #         result = query.name
 
-#         self.assertEqual(expected, result)
+#         self.assertEqual(result, expected)
 
 #     def test_return_short_bio_bio_1_when_queried_with_pk_of_1(self):
 #         expected = "Bio 1"
@@ -133,7 +133,7 @@ from .models import Project, Skill, Position, Profile
 #         query = Profile.objects.get(pk=1)
 #         result = query.short_bio
 
-#         self.assertEqual(expected, result)
+#         self.assertEqual(result, expected)
 
 #     def test_return_profile_image_image_1_when_queried_with_pk_of_1(self):
 #         expected = "image_1.png"
@@ -141,7 +141,7 @@ from .models import Project, Skill, Position, Profile
 #         query = Profile.objects.get(pk=1)
 #         result = query.profile_image.name
 
-#         self.assertEqual(expected, result)
+#         self.assertEqual(result, expected)
 
 
 #     def test_return_name_profile_2_when_queried_with_pk_of_2(self):
@@ -150,7 +150,7 @@ from .models import Project, Skill, Position, Profile
 #         query = Profile.objects.get(pk=2)
 #         result = query.name
 
-#         self.assertEqual(expected, result)
+#         self.assertEqual(result, expected)
 
 #     def test_return_short_bio_bio_2_when_queried_with_pk_of_2(self):
 #         expected = "Bio 2"
@@ -158,7 +158,7 @@ from .models import Project, Skill, Position, Profile
 #         query = Profile.objects.get(pk=2)
 #         result = query.short_bio
 
-#         self.assertEqual(expected, result)
+#         self.assertEqual(result, expected)
 
 #     def test_return_profile_image_image_2_when_queried_with_pk_of_2(self):
 #         expected = "image_2.png"
@@ -166,7 +166,7 @@ from .models import Project, Skill, Position, Profile
 #         query = Profile.objects.get(pk=2)
 #         result = query.profile_image.name
 
-#         self.assertEqual(expected, result)
+#         self.assertEqual(result, expected)
 
 
 
@@ -214,7 +214,7 @@ from .models import Project, Skill, Position, Profile
 
 #         result = Skill.objects.all().count()
 
-#         self.assertEqual(expected, result)
+#         self.assertEqual(result, expected)
 
 #     def test_return_name_swift_when_queried_with_pk_of_1(self):
 #         expected = "Swift"
@@ -222,7 +222,7 @@ from .models import Project, Skill, Position, Profile
 #         query = Skill.objects.get(pk=1)
 #         result = query.name
 
-#         self.assertEqual(expected, result)
+#         self.assertEqual(result, expected)
 
 #     def test_return_profile_profile_1_when_queried_with_pk_of_1(self):
 #         expected = "Profile 1"
@@ -230,7 +230,7 @@ from .models import Project, Skill, Position, Profile
 #         query = Skill.objects.get(pk=1)
 #         result = query.profile.name
 
-#         self.assertEqual(expected, result)
+#         self.assertEqual(result, expected)
 
 #     def test_return_name_java_when_queried_with_pk_of_2(self):
 #         expected = "Java"
@@ -238,7 +238,7 @@ from .models import Project, Skill, Position, Profile
 #         query = Skill.objects.get(pk=2)
 #         result = query.name
 
-#         self.assertEqual(expected, result)
+#         self.assertEqual(result, expected)
 
 #     def test_return_profile_profile_2_when_queried_with_pk_of_2(self):
 #         expected = "Profile 2"
@@ -246,7 +246,7 @@ from .models import Project, Skill, Position, Profile
 #         query = Skill.objects.get(pk=2)
 #         result = query.profile.name
 
-#         self.assertEqual(expected, result)
+#         self.assertEqual(result, expected)
 
 #     def test_return_skill_name_when_type_casted_as_str(self):
 #         expected = "Java"
@@ -254,7 +254,7 @@ from .models import Project, Skill, Position, Profile
 #         query = Skill.objects.get(pk=2)
 #         result = str(query)
 
-#         self.assertEqual(expected, result)
+#         self.assertEqual(result, expected)
 
 
 # # """
@@ -346,7 +346,7 @@ from .models import Project, Skill, Position, Profile
 #         query = Position.objects.get(pk=1)
 #         result = query.name
 
-#         self.assertEqual(expected, result)
+#         self.assertEqual(result, expected)
 
 #     def test_return_project_title_test_project_1_given_pk_1(self):
 #         expected = 'Test project 1'
@@ -354,7 +354,7 @@ from .models import Project, Skill, Position, Profile
 #         query = Position.objects.get(pk=1)
 #         result = query.project.title
 
-#         self.assertEqual(expected, result)
+#         self.assertEqual(result, expected)
 
 #     def test_return_description_test_description_1_given_pk_1(self):
 #         expected = 'Test description 1'
@@ -362,7 +362,7 @@ from .models import Project, Skill, Position, Profile
 #         query = Position.objects.get(pk=1)
 #         result = query.description
 
-#         self.assertEqual(expected, result)
+#         self.assertEqual(result, expected)
 
 #     def test_return_related_skills_with_length_2_given_pk_1(self):
 #         expected = 2
@@ -370,7 +370,7 @@ from .models import Project, Skill, Position, Profile
 #         query = Position.objects.get(pk=1)
 #         result = query.related_skills.count()
 
-#         self.assertEqual(expected, result)
+#         self.assertEqual(result, expected)
 
 #     def test_return_swift_as_first_related_skill_given_pk_1(self):
 #         expected = 'Swift'
@@ -379,7 +379,7 @@ from .models import Project, Skill, Position, Profile
 #         related_skills = query.related_skills.all()
 #         result = related_skills[0].name
 
-#         self.assertEqual(expected, result)
+#         self.assertEqual(result, expected)
 
 
 #     def test_return_Java_as_second_related_skill_given_pk_1(self):
@@ -389,7 +389,7 @@ from .models import Project, Skill, Position, Profile
 #         related_skills = query.related_skills.all()
 #         result = related_skills[1].name
 
-#         self.assertEqual(expected, result)
+#         self.assertEqual(result, expected)
 
 #     def test_return_name_test_position_2_given_pk_2(self):
 #         expected = 'Test position 2'
@@ -397,7 +397,7 @@ from .models import Project, Skill, Position, Profile
 #         query = Position.objects.get(pk=2)
 #         result = query.name
 
-#         self.assertEqual(expected, result)
+#         self.assertEqual(result, expected)
 
 #     def test_return_name_test_description_2_given_pk_2(self):
 #         expected = 'Test description 2'
@@ -405,7 +405,7 @@ from .models import Project, Skill, Position, Profile
 #         query = Position.objects.get(pk=2)
 #         result = query.description
 
-#         self.assertEqual(expected, result)
+#         self.assertEqual(result, expected)
 
 #     def test_return_related_skills_with_length_2_given_pk_2(self):
 #         expected = 1
@@ -413,7 +413,7 @@ from .models import Project, Skill, Position, Profile
 #         query = Position.objects.get(pk=2)
 #         result = query.related_skills.count()
 
-#         self.assertEqual(expected, result)
+#         self.assertEqual(result, expected)
 
 #     def test_return_C_as_first_related_skill_given_pk_2(self):
 #         expected = 'C'
@@ -422,7 +422,7 @@ from .models import Project, Skill, Position, Profile
 #         related_skills = query.related_skills.all()
 #         result = related_skills[0].name
 
-#         self.assertEqual(expected, result)
+#         self.assertEqual(result, expected)
 
 #     def test_return_name_when_type_casted_as_str(self):
 #         expected = 'Test position 1'
@@ -430,7 +430,7 @@ from .models import Project, Skill, Position, Profile
 #         res = Position.objects.get(pk=1)
 #         result = res.name
 
-#         self.assertEqual(expected, result)
+#         self.assertEqual(result, expected)
 
 
 #     def test_return_project_title_test_project_2_given_pk_1(self):
@@ -439,7 +439,7 @@ from .models import Project, Skill, Position, Profile
 #         query = Position.objects.get(pk=2)
 #         result = query.project.title
 
-#         self.assertEqual(expected, result)
+#         self.assertEqual(result, expected)
 
 
 # """
@@ -473,7 +473,7 @@ from .models import Project, Skill, Position, Profile
 
 #         result = Project.objects.all().count()
 
-#         self.assertEqual(expected, result)
+#         self.assertEqual(result, expected)
 
 
 #     def test_return_title_test_project_1_given_pk_1(self):
@@ -482,7 +482,7 @@ from .models import Project, Skill, Position, Profile
 #         query = Project.objects.get(pk=1)
 #         result = str(query)
 
-#         self.assertEqual(expected, result)
+#         self.assertEqual(result, expected)
 
 #     def test_return_user_with_username_test_given_pk_1(self):
 #         expected = 'test'
@@ -490,7 +490,7 @@ from .models import Project, Skill, Position, Profile
 #         query = Project.objects.get(pk=1)
 #         result = query.user.username
 
-#         self.assertEqual(expected, result)
+#         self.assertEqual(result, expected)
 
 #     def test_return_timeline_10_days_given_pk_1(self):
 #         expected = '10 days'
@@ -498,7 +498,7 @@ from .models import Project, Skill, Position, Profile
 #         query = Project.objects.get(pk=1)
 #         result = query.timeline
 
-#         self.assertEqual(expected, result)
+#         self.assertEqual(result, expected)
 
 
 #     def test_return_applicant_requirements_test_requirement_1_given_pk_1(self):
@@ -507,7 +507,7 @@ from .models import Project, Skill, Position, Profile
 #         query = Project.objects.get(pk=1)
 #         result = query.applicant_requirements
 
-#         self.assertEqual(expected, result)
+#         self.assertEqual(result, expected)
 
 #     def test_return_description_test_description_1_given_pk_1(self):
 #         expected = 'Test description 1'
@@ -515,7 +515,7 @@ from .models import Project, Skill, Position, Profile
 #         query = Project.objects.get(pk=1)
 #         result = query.description
 
-#         self.assertEqual(expected, result)
+#         self.assertEqual(result, expected)
 
 #     def test_return_title_test_project_2_given_pk_2(self):
 #         expected = 'Test project 2'
@@ -523,7 +523,7 @@ from .models import Project, Skill, Position, Profile
 #         query = Project.objects.get(pk=2)
 #         result = str(query)
 
-#         self.assertEqual(expected, result)
+#         self.assertEqual(result, expected)
 
 #     def test_return_user_with_username_test_given_pk_2(self):
 #         expected = 'test'
@@ -531,7 +531,7 @@ from .models import Project, Skill, Position, Profile
 #         query = Project.objects.get(pk=2)
 #         result = query.user.username
 
-#         self.assertEqual(expected, result)
+#         self.assertEqual(result, expected)
 
 #     def test_return_timeline_20_days_given_pk_2(self):
 #         expected = '20 days'
@@ -539,7 +539,7 @@ from .models import Project, Skill, Position, Profile
 #         query = Project.objects.get(pk=2)
 #         result = query.timeline
 
-#         self.assertEqual(expected, result)
+#         self.assertEqual(result, expected)
 
 #     def test_return_applicant_requirements_test_requirement_2_given_pk_2(self):
 #         expected = 'Test requirement 2'
@@ -547,7 +547,7 @@ from .models import Project, Skill, Position, Profile
 #         query = Project.objects.get(pk=2)
 #         result = query.applicant_requirements
 
-#         self.assertEqual(expected, result)
+#         self.assertEqual(result, expected)
 
 #     def test_return_description_test_description_2_given_pk_2(self):
 #         expected = 'Test description 2'
@@ -555,7 +555,7 @@ from .models import Project, Skill, Position, Profile
 #         query = Project.objects.get(pk=2)
 #         result = query.description
 
-#         self.assertEqual(expected, result)
+#         self.assertEqual(result, expected)
 
 #     def test_return_name_when_type_casted_as_str_for_pk_1(self):
 #         expected = 'Test project 1'
@@ -563,7 +563,7 @@ from .models import Project, Skill, Position, Profile
 #         query = Project.objects.get(pk=1)
 #         result = str(query)
 
-#         self.assertEqual(expected, result)
+#         self.assertEqual(result, expected)
 
 
 # -----------
@@ -582,7 +582,7 @@ class LoginGETRequest(TestCase):
 
         result = self.resp.status_code
 
-        self.assertEqual(expected, result)
+        self.assertEqual(result, expected)
 
     def test_return_layoutHTML_as_template_used(self):
         expected = 'layout.html'
@@ -643,7 +643,7 @@ class SignUpGETRequest(TestCase):
 
         result = self.resp.status_code
 
-        self.assertEqual(expected, result)
+        self.assertEqual(result, expected)
 
     def test_return_layoutHTML_as_template_used(self):
         expected = 'layout.html'
@@ -690,7 +690,7 @@ class SignUpPOSTRequest(TestCase):
 
         result = User.objects.all().count()
 
-        self.assertEqual(expected, result)
+        self.assertEqual(result, expected)
 
     def test_return_to_login_page_if_signup_successful(self):
         self.assertRedirects(self.resp, reverse('accounts:login'), fetch_redirect_response=True)
@@ -736,7 +736,7 @@ class ProfileGETTestCase(TestCase):
 
         result = response.status_code
 
-        self.assertEqual(expected, result)
+        self.assertEqual(result, expected)
 
     def test_return_profileHTML_as_template_used(self):
         expected= 'main/profile.html'
@@ -767,7 +767,7 @@ class ProfileGETTestCase(TestCase):
 
         result = response.context['profile'].name
 
-        self.assertEqual(expected, result)
+        self.assertEqual(result, expected)
 
 
 
@@ -804,7 +804,7 @@ class ProfileEditGETRequest(TestCase):
 
         result = response.status_code
 
-        self.assertEqual(expected, result)
+        self.assertEqual(result, expected)
 
     def test_return_profileHTML_as_template_used(self):
         expected= 'main/profile_edit.html'
@@ -848,7 +848,7 @@ class ProfileEditGETRequest(TestCase):
 
         result = response.context['profile'].name
 
-        self.assertEqual(expected, result)
+        self.assertEqual(result, expected)
 
 # """
 # /profile/{id}/edit (POST)
@@ -914,7 +914,7 @@ class EditProfilePOSTRequest(TestCase):
         }), self.edit_data)
         result = response.status_code
 
-        self.assertEqual(expected, result)
+        self.assertEqual(result, expected)
 
     def test_return_login_page_if_try_to_create_while_not_logged_in(self):
         expected = 'accounts/signin.html'
@@ -939,7 +939,7 @@ class EditProfilePOSTRequest(TestCase):
 
         result = Profile.objects.get(pk=1).name
 
-        self.assertEqual(expected, result)
+        self.assertEqual(result, expected)
 
     def test_retrun_project_short_bio_revised_short_bio_1_if_edit_successful(self):
         expected = 'Revised test short bio 1'
@@ -955,7 +955,7 @@ class EditProfilePOSTRequest(TestCase):
 
         result = Profile.objects.get(pk=1).short_bio
 
-        self.assertEqual(expected, result)
+        self.assertEqual(result, expected)
 
     def test_retrun_skills_with_length_3_if_edit_successful(self):
         expected = 3
@@ -971,7 +971,7 @@ class EditProfilePOSTRequest(TestCase):
 
         result = Profile.objects.get(pk=1).skills.all().count()
 
-        self.assertEqual(expected, result)
+        self.assertEqual(result, expected)
 
     def test_retrun_first_skill_with_revised_skill_1_if_edit_successful(self):
         expected = 'Revised test skill 1'
@@ -987,7 +987,7 @@ class EditProfilePOSTRequest(TestCase):
 
         result = Profile.objects.get(pk=1).skills.get(pk=1).name
 
-        self.assertEqual(expected, result)
+        self.assertEqual(result, expected)
 
     def test_retrun_second_skill_with_revised_skill_2_if_edit_successful(self):
         expected = 'Revised test skill 2'
@@ -1003,7 +1003,7 @@ class EditProfilePOSTRequest(TestCase):
 
         result = Profile.objects.get(pk=1).skills.get(pk=2).name
 
-        self.assertEqual(expected, result)
+        self.assertEqual(result, expected)
 
     def test_retrun_third_skill_with_revised_skill_3_if_edit_successful(self):
         expected = 'Test skill 3'
@@ -1019,7 +1019,7 @@ class EditProfilePOSTRequest(TestCase):
 
         result = Profile.objects.get(pk=1).skills.get(pk=3).name
 
-        self.assertEqual(expected, result)
+        self.assertEqual(result, expected)
 
     def test_retrun_my_project_with_length_1_if_edit_successful(self):
         expected = 1
@@ -1035,7 +1035,7 @@ class EditProfilePOSTRequest(TestCase):
 
         result = Profile.objects.get(pk=1).user_projects.all().count()
 
-        self.assertEqual(expected, result)
+        self.assertEqual(result, expected)
 
     def test_retrun_my_project_with_name_project_1_if_edit_successful(self):
         expected = 'Test project 1'
@@ -1051,7 +1051,7 @@ class EditProfilePOSTRequest(TestCase):
 
         result = Profile.objects.get(pk=1).user_projects.get(pk=1).name
 
-        self.assertEqual(expected, result)
+        self.assertEqual(result, expected)
 
 
 # """
@@ -1101,7 +1101,7 @@ class ProjectGETTestCase(TestCase):
 
         result = response.status_code
 
-        self.assertEqual(expected, result)
+        self.assertEqual(result, expected)
 
     def test_return_projectHTML_as_template_used(self):
         expected= 'main/project.html'
@@ -1130,7 +1130,7 @@ class ProjectGETTestCase(TestCase):
 
         result = response.context['project'].title
 
-        self.assertEqual(expected, result)
+        self.assertEqual(result, expected)
 
 
 # """
@@ -1185,7 +1185,7 @@ class EditProjectGETRequest(TestCase):
 
         result = response.status_code
 
-        self.assertEqual(expected, result)
+        self.assertEqual(result, expected)
 
     def test_return_projectHTML_as_template_used(self):
         expected= 'main/project_edit.html'
@@ -1229,7 +1229,7 @@ class EditProjectGETRequest(TestCase):
 
         result = response.context['project'].title
 
-        self.assertEqual(expected, result)
+        self.assertEqual(result, expected)
 
 
 
@@ -1308,7 +1308,7 @@ class EditProjectPOSTRequest(TestCase):
         })
         result = response.status_code
 
-        self.assertEqual(expected, result)
+        self.assertEqual(result, expected)
 
     def test_return_login_page_if_try_to_create_while_not_logged_in(self):
         expected = 'accounts/signin.html'
@@ -1339,7 +1339,7 @@ class EditProjectPOSTRequest(TestCase):
 
         result = Project.objects.get(pk=1).title
 
-        self.assertEqual(expected, result)
+        self.assertEqual(result, expected)
 
 
     def test_retrun_project_timeline_revised_timeline_1_if_edit_successful(self):
@@ -1356,7 +1356,7 @@ class EditProjectPOSTRequest(TestCase):
 
         result = Project.objects.get(pk=1).timeline
 
-        self.assertEqual(expected, result)
+        self.assertEqual(result, expected)
 
     def test_retrun_project_description_revised_description_1_if_edit_successful(self):
         expected = 'Revised description 1'
@@ -1372,7 +1372,7 @@ class EditProjectPOSTRequest(TestCase):
 
         result = Project.objects.get(pk=1).description
 
-        self.assertEqual(expected, result)
+        self.assertEqual(result, expected)
 
     def test_retrun_project_description_revised_applicant_requirements_1_if_edit_successful(self):
         expected = 'Revised applicant requirements 1'
@@ -1388,7 +1388,7 @@ class EditProjectPOSTRequest(TestCase):
 
         result = Project.objects.get(pk=1).applicant_requirements
 
-        self.assertEqual(expected, result)
+        self.assertEqual(result, expected)
 
 
     def test_return_status_302_if_edit_successful(self):
@@ -1403,7 +1403,7 @@ class EditProjectPOSTRequest(TestCase):
 
         result = res.status_code
 
-        self.assertEqual(expected, result)
+        self.assertEqual(result, expected)
 
     def test_return_projectHTML_as_template_used_if_edit_successful(self):
         expected = 'main/project.html'
@@ -1450,7 +1450,7 @@ class CreateProjectGETRequest(TestCase):
         response = self.client.get(reverse('project_create'))
         result = response.status_code
 
-        self.assertEqual(expected, result)
+        self.assertEqual(result, expected)
 
     def test_return_login_page_if_not_logged_in(self):
         expected = 'accounts/signin.html'
@@ -1528,7 +1528,7 @@ class CreateProjectPOSTRequest(TestCase):
         })
         result = response.status_code
 
-        self.assertEqual(expected, result)
+        self.assertEqual(result, expected)
 
     def test_return_login_page_if_try_to_create_while_not_logged_in(self):
         expected = 'accounts/signin.html'
@@ -1567,7 +1567,7 @@ class CreateProjectPOSTRequest(TestCase):
 
         result = Project.objects.all().count()
 
-        self.assertEqual(expected, result)
+        self.assertEqual(result, expected)
 
 
     def test_retrun_position_model_with_length_4_if_create_successful(self):
@@ -1596,7 +1596,7 @@ class CreateProjectPOSTRequest(TestCase):
 
         result = Position.objects.all().count()
 
-        self.assertEqual(expected, result)
+        self.assertEqual(result, expected)
 
     def test_return_status_302_if_create_successful(self):
         expected = 302
@@ -1622,7 +1622,7 @@ class CreateProjectPOSTRequest(TestCase):
 
         result = res.status_code
 
-        self.assertEqual(expected, result)
+        self.assertEqual(result, expected)
 
     def test_return_projectHTML_as_template_used_if_create_successful(self):
         expected = 'main/project.html'
@@ -1691,7 +1691,7 @@ class DeleteProjectGETRequest(TestCase):
 
         result = response.status_code
 
-        self.assertEqual(expected, result)
+        self.assertEqual(result, expected)
 
     def test_return_layoutHTML_as_template_used(self):
         expected = 'layout.html'
@@ -1725,7 +1725,7 @@ class DeleteProjectGETRequest(TestCase):
 
         result = response.status_code
 
-        self.assertEqual(expected, result)
+        self.assertEqual(result, expected)
 
 
     def test_return_to_sign_in_if_try_to_delete_while_not_logged_in(self):
@@ -1757,7 +1757,7 @@ class ApplicationGETRequest(TestCase):
 
         result = response.status_code
 
-        self.assertEqual(expected, result)
+        self.assertEqual(result, expected)
 
     def test_return_login_page_if_try_to_create_while_not_logged_in(self):
         expected = 'accounts/signin.html'
@@ -1778,7 +1778,7 @@ class ApplicationGETRequest(TestCase):
 
         result = response.status_code
 
-        self.assertEqual(expected, result)
+        self.assertEqual(result, expected)
 
     def test_return_applicationHTML_as_template_used(self):
         expected = 'main/applications.html'
