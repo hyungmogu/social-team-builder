@@ -18,7 +18,7 @@
 
     []: Add tests for the endpoints
         [x]: '/projects/{id}/delete/'
-        []: '/projects/{id}/edit'
+        [x]: '/projects/{id}/edit'
         [x]: '/projects/{id}/'
         [x]: '/projects/create'
 
@@ -36,9 +36,9 @@
             NOTE
             [x]: Saving the profile with the skill that has been erased before causes program to complains that it already exists.
             [x]: 'Past projects' still needs to be worked on.
-    []: Add tests for the endpoints
-        []: '/profile/'
-        []: '/profile/edit'
+    [x]: Add tests for the endpoints
+        [x]: '/profile/'
+        [x]: '/profile/edit'
 
 [x]: Signup Page
     [x]: Add endpoint
@@ -73,15 +73,32 @@
 [x]: Apply for a position
     [x]: Create a function allowing user to apply for a position in a project
 
+==============================
+
+AUGUST 23rd, 2019
+    GOAL:
+        []: Add admin functionality that allows user to select permissions (i.e. employer and employee)
+        []: Add tests for /application
+        []: Add tests for /
+
+
+==============================
+
+AUGUST 22nd, 2019
+    GOAL:
+        [x]: Fix tests for '/projects/{id}/edit'
+        [x]: Fix issue where superuser cannot login to admin
+        [x]: Create tests for '/profile/{id}/'
+        [x]: Create tests for '/profile/{id}/edit'
 
 ==============================
 
 AUGUST 21st, 2019
     GOAL:
-        []: Fix tests for '/projects/{id}/edit'
-        []: Fix issue where superuser cannot login to admin
-        []: Create tests for '/profile/{id}/'
-        []: Create tests for '/profile/{id}/edit'
+        [x]: Fix tests for '/projects/{id}/edit'
+        [x]: Fix issue where superuser cannot login to admin
+        [x]: Create tests for '/profile/{id}/'
+        [x]: Create tests for '/profile/{id}/edit'
 
 ==============================
 
