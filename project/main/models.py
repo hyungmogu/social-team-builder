@@ -29,7 +29,6 @@ class Profile(models.Model):
     name = models.CharField(max_length=255)
     short_bio = models.TextField(blank=True)
     profile_image = models.ImageField(upload_to='profile_images', null=True, blank=True)
-    roles = models.IntegerField(choices=MEMBERSHIP_CHOICES, default = 1)
 
     def __str__(self):
         return self.name
@@ -68,28 +67,3 @@ class Application(models.Model):
 
     def __str__(self):
         return "[{}] - {} {}".format(profile, project, position)
-
-# class Membership(models.Model):
-#     user = models.ForeignKey(settings.AUTH_USER_MODEL, related_name="communities")
-#     role = models.CharField(choices=MEMBERSHIP_CHOICES, default=1)
-
-#     class Meta:
-#         permissions = (
-#             ("employee", "Employee"),
-#             ("employer", "Employer")
-#         )
-
-#     def __str__(self):
-#         return "{} is {}".format(
-#             self.user.profile.name,
-#             self.role
-#         )
-
-#     @property
-#     def employer(self):
-#         return self.user.filter(role=1).values_list("user", flat=True)
-
-#     @property
-#     def employee(self):
-#         return self.user.filter(role=0).values_list("user", flat=True)
-
