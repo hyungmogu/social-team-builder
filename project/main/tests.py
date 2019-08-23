@@ -697,9 +697,9 @@ class SignUpPOSTRequest(TestCase):
 
 
 
-# """
-# /profile/{id}
-# """
+"""
+/profile/{id}
+"""
 
 class ProfileGETTestCase(TestCase):
     def setUp(self):
@@ -771,9 +771,9 @@ class ProfileGETTestCase(TestCase):
 
 
 
-# """
-# /profile/{id}/edit (GET)
-# """
+"""
+/profile/{id}/edit (GET)
+"""
 
 class ProfileEditGETRequest(TestCase):
     def setUp(self):
@@ -850,9 +850,9 @@ class ProfileEditGETRequest(TestCase):
 
         self.assertEqual(result, expected)
 
-# """
-# /profile/{id}/edit (POST)
-# """
+"""
+/profile/{id}/edit (POST)
+"""
 
 class EditProfilePOSTRequest(TestCase):
     def setUp(self):
@@ -1054,9 +1054,9 @@ class EditProfilePOSTRequest(TestCase):
         self.assertEqual(result, expected)
 
 
-# """
-# /projects/{id}
-# """
+"""
+/projects/{id}
+"""
 
 class ProjectGETTestCase(TestCase):
     def setUp(self):
@@ -1133,9 +1133,9 @@ class ProjectGETTestCase(TestCase):
         self.assertEqual(result, expected)
 
 
-# """
-# /projects/{id}/edit
-# """
+"""
+/projects/{id}/edit
+"""
 
 class EditProjectGETRequest(TestCase):
     def setUp(self):
@@ -1417,9 +1417,9 @@ class EditProjectPOSTRequest(TestCase):
 
         self.assertTemplateUsed(result, expected)
 
-# """
-# /projects/create
-# """
+"""
+/projects/create
+"""
 class CreateProjectGETRequest(TestCase):
     def setUp(self):
         self.client.post(reverse('accounts:sign_up'), {
@@ -1738,9 +1738,9 @@ class DeleteProjectGETRequest(TestCase):
         self.assertTemplateUsed(response, expected)
 
 
-# """
-# /applications
-# """
+"""
+/applications
+"""
 
 class ApplicationGETRequest(TestCase):
     def setUp(self):
@@ -1803,3 +1803,71 @@ class ApplicationGETRequest(TestCase):
         response = self.client.get(reverse('applications'))
 
         self.assertTemplateUsed(response, expected)
+
+
+"""
+/
+"""
+class HomeGETRequest(TestCase):
+    def setUp(self):
+        self.client.post(reverse('accounts:sign_up'), {
+            'email': 'hello@example.com',
+            'password1': 'hello!234',
+            'password2': 'hello!234'
+        })
+
+        self.user = User.objects.get(pk=1)
+
+        self.project1 = Project.objects.create(
+            title='Test project 1',
+            user=self.user,
+            timeline='10 days',
+            applicant_requirements='Test requirement 1',
+            description='Test description 1'
+        )
+
+        self.project2 = Project.objects.create(
+            title='Test project 2',
+            user=self.user,
+            timeline='20 days',
+            applicant_requirements='Test requirement 2',
+            description='Test description 2'
+        )
+
+        self.response = self.client.get(reverse('home'))
+
+    def test_returns_status_200_on_visit(self):
+        expected = 200
+
+        result = self.response.status_code
+
+        self.assertEqual(result, expected)
+
+    def test_returns_status_200_on_visit_when_logged_in(self):
+        expected = 200
+
+        self.client.post(reverse('accounts:login'), {
+            'username': 'hello@example.com',
+            'password': 'hello!234'
+        }, follow=True)
+
+        result = self.response.status_code
+
+        self.assertEqual(result, expected)
+
+    def test_return_layoutHTML_as_template_used(self):
+        expected = 'layout.html'
+
+        self.assertTemplateUsed(self.response, expected)
+
+    def test_return_homeHTML_as_template_used(self):
+        expected = 'main/home.html'
+
+        self.assertTemplateUsed(self.response, expected)
+
+    def test_return_projects_with_length_2(self):
+        expected = 2
+
+        result = self.response.context['projects'].count()
+
+        self.assertEqual(result, expected)
