@@ -2,6 +2,12 @@ from django.db import models
 from django.utils import timezone
 from django.conf import settings
 
+
+MEMBERSHIP_CHOICES = [
+    (1, 'Employee'),
+    (2, 'Employer'),
+]
+
 class Project(models.Model):
     title = models.CharField(max_length=255)
     user = models.ForeignKey(settings.AUTH_USER_MODEL)
@@ -23,9 +29,16 @@ class Profile(models.Model):
     name = models.CharField(max_length=255)
     short_bio = models.TextField(blank=True)
     profile_image = models.ImageField(upload_to='profile_images', null=True, blank=True)
+    roles = models.IntegerField(choices=MEMBERSHIP_CHOICES, default = 1)
 
     def __str__(self):
         return self.name
+
+    class Meta:
+        permissions = (
+            ('employer', 'Employer'),
+            ('employee', 'Employee'),
+        )
 
 class Position(models.Model):
     name = models.CharField(max_length=255)
@@ -55,11 +68,6 @@ class Application(models.Model):
 
     def __str__(self):
         return "[{}] - {} {}".format(profile, project, position)
-
-MEMBERSHIP_CHOICES = [
-    ('employee', 'Employee'),
-    ('employee', 'Employer'),
-]
 
 # class Membership(models.Model):
 #     user = models.ForeignKey(settings.AUTH_USER_MODEL, related_name="communities")
