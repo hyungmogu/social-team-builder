@@ -3,6 +3,7 @@ from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.core.urlresolvers import reverse, reverse_lazy
 from django.contrib.auth import login, logout
 from django.views.generic import FormView, CreateView, RedirectView
+from django.contrib.auth.models import Group, Permission
 
 import main.models as mainModel
 from . import forms, models
@@ -34,14 +35,28 @@ class SignUpView(CreateView):
     template_name = 'accounts/signup.html'
 
     def form_valid(self, form):
-        self.create_user_profile(form)
+        user = form.save()
+        self.create_user_profile(user)
+
+        if user.is_employer:
+            self.add_user_to_employer_group(user)
         return super().form_valid(form)
 
-    def create_user_profile(self, form):
-        user = form.save()
+    def create_user_profile(self, user):
         mainModel.Profile.objects.create(
             user=user
         )
+
+    def add_user_to_employer_group(self, user):
+        try:
+            employer_group = Group.objects.get(name__iexact='Employer')
+        except Group.DoesNotExist:
+            employer_group = Group.objects.create(name='Editors')
+
+        employer_group.permissions.add(Permission.objects.get(codename="employer"))
+
+        user.groups.add(employer_group)
+        user.save()
 
 
 

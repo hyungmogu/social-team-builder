@@ -6,7 +6,7 @@ from . import models
 class SignUpForm(UserCreationForm):
     class Meta:
         model = models.User
-        fields=('email', 'password1', 'password2',)
+        fields=('email', 'password1', 'password2', 'is_employer',)
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
