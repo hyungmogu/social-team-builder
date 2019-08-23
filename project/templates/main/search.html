@@ -22,7 +22,7 @@
         <h4>Project Needs</h4>
         <ul class="circle--filter--list">
             {% for need in project_needs %}
-              <li><a href="/search/by_position?q={{ need.name }}">{{ need.name }}</a></li>
+              <li><a href="{% url 'filter_position' %}?q={{ need.name }}">{{ need.name }}</a></li>
             {% endfor %}
         </ul>
       </div>
