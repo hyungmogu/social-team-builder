@@ -1,5 +1,5 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.contrib import messages
 from django.core.urlresolvers import reverse, reverse_lazy
 from django.db.models import Q
@@ -236,8 +236,9 @@ class ProfileEditView(LoginRequiredMixin, UpdateView):
         })
 
 
-class ApplicationSubmitView(LoginRequiredMixin, CreateView):
+class ApplicationSubmitView(PermissionRequiredMixin, LoginRequiredMixin, CreateView):
     model = models.Application
+    permission_required = 'employer'
 
     def get(self, request, *args, **kwargs):
         # 1. fetch project position and user
@@ -268,9 +269,10 @@ class ApplicationSubmitView(LoginRequiredMixin, CreateView):
         }))
 
 
-class ApplicationsView(LoginRequiredMixin, TemplateView):
+class ApplicationsView(PermissionRequiredMixin, LoginRequiredMixin, TemplateView):
     model = models.Application
     template_name = 'main/applications.html'
+    permission_required = 'main.employer'
 
     def get(self, request):
         form_status = forms.ApplicationForm()
@@ -289,9 +291,11 @@ class ApplicationsView(LoginRequiredMixin, TemplateView):
             'redirect': redirect
         })
 
-class ApplicationsByProjectNeedView(LoginRequiredMixin, TemplateView):
+
+class ApplicationsByProjectNeedView(PermissionRequiredMixin, LoginRequiredMixin, TemplateView):
     model = models.Application
     template_name = 'main/applications.html'
+    permission_required = 'main.employer'
 
     def get(self, request):
         form_status = forms.ApplicationForm()
@@ -316,9 +320,11 @@ class ApplicationsByProjectNeedView(LoginRequiredMixin, TemplateView):
             'redirect': redirect
         })
 
-class ApplicationsByProjectView(LoginRequiredMixin, TemplateView):
+
+class ApplicationsByProjectView(PermissionRequiredMixin, LoginRequiredMixin, TemplateView):
     model = models.Application
     template_name = 'main/applications.html'
+    permission_required = 'main.employer'
 
     def get(self, request):
         form_status = forms.ApplicationForm()
@@ -343,9 +349,10 @@ class ApplicationsByProjectView(LoginRequiredMixin, TemplateView):
             'redirect': redirect
         })
 
-class ApplicationsByStatusView(LoginRequiredMixin, TemplateView):
+class ApplicationsByStatusView(PermissionRequiredMixin, LoginRequiredMixin, TemplateView):
     model = models.Application
     template_name = 'main/applications.html'
+    permission_required = 'main.employer'
 
     def get(self, request):
         form_status = forms.ApplicationForm()
@@ -370,9 +377,10 @@ class ApplicationsByStatusView(LoginRequiredMixin, TemplateView):
             'redirect': redirect
         })
 
-class ApplicantEditView(LoginRequiredMixin, UpdateView):
+class ApplicantEditView(PermissionRequiredMixin, LoginRequiredMixin, UpdateView):
     model = models.Application
     template_name = 'main/applications.html'
+    permission_required = 'main.employer'
 
     def post(self, request, *args, **kwargs):
         redirect_path = request.GET.get('redirect','')
