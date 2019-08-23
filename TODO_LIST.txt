@@ -3,8 +3,8 @@
 [x]:Home Page
     [x]: Add endpoint
         [x]: '/'
-    []: Add tests for the endpont
-        []: '/'
+    [x]: Add tests for the endpont
+        [x]: '/'
 
 []:Project Page
     []: Add endpoints
@@ -25,8 +25,8 @@
 []: Applications page
     []: Add endpoints
         [x]: '/applications'
-    []: Add tests for the endpoints
-        []: '/applications'
+    [x]: Add tests for the endpoints
+        [x]: '/applications'
 
 []:Profile Page
     []: Add endpoints
@@ -73,23 +73,31 @@
 [x]: Apply for a position
     [x]: Create a function allowing user to apply for a position in a project
 
+
 ==============================
 
 AUGUST 23rd, 2019
     GOAL:
-        []: Add admin functionality that allows user to select permissions (i.e. employer and employee)
-        []: Add tests for /application
-        []: Add tests for /
-
+        []: Refactor urls.py
+            []: '/search/by_position' to '/filter/by_position'
+            []: '/applications/by_proj_need/' to '/applications/filter/by_proj_need/'
+            []: '/applications/by_project/' to '/applications/filter/by_project'
+            []: '/applications/by_status/' to '/appliations/filter/bystatus'
+        []: Add tests to the following
+            []: '/search'
+            []: '/applications/filter/by_proj_need/'
+            []: '/filter/by_proj'
+            []: '/filter/by_position/'
 
 ==============================
 
-AUGUST 22nd, 2019
+AUGUST 22rd, 2019
     GOAL:
-        [x]: Fix tests for '/projects/{id}/edit'
-        [x]: Fix issue where superuser cannot login to admin
-        [x]: Create tests for '/profile/{id}/'
-        [x]: Create tests for '/profile/{id}/edit'
+        [x]: Add tests for /application
+        [x]: Add tests for /
+        [x]: Add admin functionality that allows user to select permissions (i.e. employer and employee)
+            [x]: Add checkbox to signup page determining if the user is an employer
+            [x]: Add logic to signup form that if valid and is_employer, then place user under "Employer" group
 
 ==============================
 
@@ -134,17 +142,6 @@ AUGUST 16th, 2019 / AUGUST 17th, 2019 (Part 2)
                     - Need to create selectables on whether an applicant is approved, rejected, or pending
         [x]: Apply for a position ('/project/{id}/')
             [x]: Create a function allowing user to apply for a position in a project
-
-==============================
-
-AUGUST 16th, 2019 / AUGUST 17th, 2019 (Part 1)
-    GOAL:
-        - FINISH Profile page
-            [x]: Add '/profile/'
-            [x]: Add '/profile/edit'
-        - FINISH FILTER FUNCTION
-            [x]: Add '/search/by_position/'
-            [x]: Add '/search/by_project/'
 
 ==============================
 
