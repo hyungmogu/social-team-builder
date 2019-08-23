@@ -37,7 +37,7 @@ class ProjectDetailView(DetailView):
 
         return context
 
-class ProjectEditView(LoginRequiredMixin, UpdateView):
+class ProjectEditView(PermissionRequiredMixin, LoginRequiredMixin, UpdateView):
     fields = (
         'title', 'timeline',
         'applicant_requirements', 'description')
@@ -45,6 +45,17 @@ class ProjectEditView(LoginRequiredMixin, UpdateView):
     form_project = forms.ProjectForm
     form_positions = forms.PositionFormSet
     template_name = 'main/project_edit.html'
+    permission_required = 'main.employer'
+
+    def get(self, request, *args, **kwargs):
+        project = models.Project.objects.get(pk=self.kwargs.get('pk'))
+
+        if request.user.pk != project.user.pk:
+            return redirect(reverse('project', kwargs={
+                'pk': project.pk
+            }))
+
+        return super().get(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
