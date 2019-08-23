@@ -236,9 +236,8 @@ class ProfileEditView(LoginRequiredMixin, UpdateView):
         })
 
 
-class ApplicationSubmitView(PermissionRequiredMixin, LoginRequiredMixin, CreateView):
+class ApplicationSubmitView(LoginRequiredMixin, CreateView):
     model = models.Application
-    permission_required = 'employer'
 
     def get(self, request, *args, **kwargs):
         # 1. fetch project position and user
