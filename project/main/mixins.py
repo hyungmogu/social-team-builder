@@ -10,3 +10,5 @@ class MustBeProjectAuthorMixin:
             return redirect(reverse('project', kwargs={
                 'pk': project.pk
             }))
+
+        return super().get(request, *args, **kwargs)
