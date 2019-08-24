@@ -86,10 +86,16 @@ class ProjectEditView(
         })
 
 
-class ProjectCreateView(LoginRequiredMixin, CreateView):
+class ProjectCreateView(
+        PermissionRequiredMixin,
+        LoginRequiredMixin,
+        CreateView
+    ):
+
     model = models.Project
     form_project = forms.ProjectForm
     form_positions = forms.PositionFormSet
+    permission_required = 'main.employer'
 
     template_name = 'main/project_create.html'
 
