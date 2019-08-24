@@ -2,16 +2,19 @@
 {% load filters %}
 
 {% block body_actions_bar %}
-  <div class="circle--actions--bar">
-    <nav class="bounds">
-      <ul class="circle--pill--list">
-        <li><a href="{% url 'applications' %}">Applications</a></li>
-        <li><a class="selected" href="{% url 'profile' pk=profile.pk %}">Profile</a></li>
-      </ul>
-    </nav>
-  </div>
+  {% if user.is_authenticated and user.pk == profile.user.pk %}
+    <div class="circle--actions--bar">
+      <nav class="bounds">
+        <ul class="circle--pill--list">
+          {% if user.is_employer and user.pk == profile.user.pk %}
+            <li><a href="{% url 'applications' %}">Applications</a></li>
+          {% endif %}
+          <li><a class="selected" href="{% url 'profile' pk=profile.pk %}">Profile</a></li>
+        </ul>
+      </nav>
+    </div>
+  {% endif %}
 {% endblock %}
-
 
 {% block body_content %}
   <div class="bounds circle--page">
