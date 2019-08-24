@@ -17,6 +17,6 @@ urlpatterns = [
     url(r'^applications/filter/by_project/$', views.ApplicationsByProjectView.as_view(), name="applications_project"),
     url(r'^applications/filter/by_status/$', views.ApplicationsByStatusView.as_view(), name="applications_status"),
     url(r'^applications/$', views.ApplicationsView.as_view(), name="applications"),
-    url(r'^filter/by_position/$', views.SearchByPositionView.as_view(), name="filter_position"),
+    url(r'^filter/by_position/$', views.FilterByPositionView.as_view(), name="filter_position"),
     url(r'^$', views.HomeView.as_view(), name="home"),
 ]

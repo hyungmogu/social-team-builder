@@ -153,7 +153,7 @@ class SearchView(TemplateView):
         })
 
 
-class SearchByPositionView(ListView):
+class FilterByPositionView(ListView):
     model = models.Project
     template_name = 'main/home.html'
 
