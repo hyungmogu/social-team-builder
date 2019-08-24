@@ -1892,7 +1892,7 @@ class DeleteProjectGETRequest(TestCase):
 """
 /applications
 """
-class ApplicationGETRequest(TestCase):
+class ApplicationsGETRequest(TestCase):
     def setUp(self):
         self.client.post(reverse('accounts:sign_up'), {
             'email': 'hello@example.com',
@@ -1976,6 +1976,54 @@ class ApplicationGETRequest(TestCase):
 
         self.assertTemplateUsed(response, expected)
 
+"""
+/applications/filter/by_proj_need/
+"""
+class ApplicationsFilterByProjectNeedGETRequest(TestCase):
+    def setUp(self):
+        self.client.post(reverse('accounts:sign_up'), {
+            'email': 'hello@example.com',
+            'password1': 'hello!234',
+            'password2': 'hello!234',
+            'is_employer': 'on'
+        })
+
+        self.client.post(reverse('accounts:sign_up'), {
+            'email': 'hello1@example.com',
+            'password1': 'hello!234',
+            'password2': 'hello!234'
+        })
+
+    def test_return_to_login_page_if_not_signed_in(self):
+        expected = '{}?next={}'.format(
+            reverse('accounts:login'),
+            reverse('applications_proj_need'))
+
+        response = self.client.get(reverse('applications_proj_need'), follow=True)
+
+        self.assertRedirects(
+            response,
+            expected,
+            fetch_redirect_response=False
+        )
+
+    def test_return_to_login_page_if_not_have_permission(self):
+        expected = '{}?next={}'.format(
+            reverse('accounts:login'),
+            reverse('applications_proj_need'))
+
+
+        self.client.post(reverse('accounts:login'), {
+            'username': 'hello1@example.com',
+            'password': 'hello!234'
+        })
+
+        response = self.client.get(reverse('applications_proj_need'), follow=True)
+
+        self.assertRedirects(
+            response,
+            expected,
+            fetch_redirect_response=False)
 
 """
 /
