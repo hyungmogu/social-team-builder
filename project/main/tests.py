@@ -570,973 +570,973 @@ from .models import Project, Skill, Position, Profile
 # VIEW TESTS
 # -----------
 
-# """
-# /accounts/login (GET)
-# """
-# class LoginGETRequest(TestCase):
-#     def setUp(self):
-#         self.resp = self.client.get(reverse('accounts:login'))
+"""
+/accounts/login (GET)
+"""
+class LoginGETRequest(TestCase):
+    def setUp(self):
+        self.resp = self.client.get(reverse('accounts:login'))
 
-#     def test_returns_status_200_on_visit(self):
-#         expected = 200
+    def test_returns_status_200_on_visit(self):
+        expected = 200
 
-#         result = self.resp.status_code
+        result = self.resp.status_code
 
-#         self.assertEqual(result, expected)
+        self.assertEqual(result, expected)
 
-#     def test_return_layoutHTML_as_template_used(self):
-#         expected = 'layout.html'
+    def test_return_layoutHTML_as_template_used(self):
+        expected = 'layout.html'
 
-#         self.assertTemplateUsed(self.resp, expected)
+        self.assertTemplateUsed(self.resp, expected)
 
-#     def test_return_signinHTML_as_template_used(self):
-#         expected = 'accounts/signin.html'
+    def test_return_signinHTML_as_template_used(self):
+        expected = 'accounts/signin.html'
 
-#         self.assertTemplateUsed(self.resp, expected)
+        self.assertTemplateUsed(self.resp, expected)
 
 
-# """
-# /accounts/login (POST)
-# """
-# class LoginPOSTRequest(TestCase):
-#     def setUp(self):
-#         self.resp = self.client.post(reverse('accounts:sign_up'), {
-#             'email': 'hello@example.com',
-#             'password1': 'hello!234',
-#             'password2': 'hello!234'
-#         })
+"""
+/accounts/login (POST)
+"""
+class LoginPOSTRequest(TestCase):
+    def setUp(self):
+        self.resp = self.client.post(reverse('accounts:sign_up'), {
+            'email': 'hello@example.com',
+            'password1': 'hello!234',
+            'password2': 'hello!234'
+        })
 
-#     def test_return_to_sign_in_page_if_signup_unsuccessful(self):
-#         expected = 'accounts/signin.html'
+    def test_return_to_sign_in_page_if_signup_unsuccessful(self):
+        expected = 'accounts/signin.html'
 
-#         response1 = self.client.post(reverse('accounts:login'), {
-#             'username': 'hello@example.com',
-#             'password': 'hello1'
-#         })
+        response1 = self.client.post(reverse('accounts:login'), {
+            'username': 'hello@example.com',
+            'password': 'hello1'
+        })
 
-#         response2 = self.client.post(reverse('accounts:login'), {
-#             'username': 'hello@ example.com',
-#             'password': 'hello1'
-#         })
+        response2 = self.client.post(reverse('accounts:login'), {
+            'username': 'hello@ example.com',
+            'password': 'hello1'
+        })
 
-#         self.assertTemplateUsed(response1, expected)
-#         self.assertTemplateUsed(response2, expected)
+        self.assertTemplateUsed(response1, expected)
+        self.assertTemplateUsed(response2, expected)
 
-#     def test_return_to_home_page_if_login_successful(self):
-#         resp = self.client.post(reverse('accounts:login'), {
-#             'username': 'hello@example.com',
-#             'password': 'hello!234'
-#         }, follow=True)
+    def test_return_to_home_page_if_login_successful(self):
+        resp = self.client.post(reverse('accounts:login'), {
+            'username': 'hello@example.com',
+            'password': 'hello!234'
+        }, follow=True)
 
-#         self.assertRedirects(resp, reverse('home'), fetch_redirect_response=False)
+        self.assertRedirects(resp, reverse('home'), fetch_redirect_response=False)
 
 
-# """
-# /accounts/sign_up (GET)
-# """
-# class SignUpGETRequest(TestCase):
-#     def setUp(self):
-#         self.resp = self.client.get(reverse('accounts:sign_up'))
+"""
+/accounts/sign_up (GET)
+"""
+class SignUpGETRequest(TestCase):
+    def setUp(self):
+        self.resp = self.client.get(reverse('accounts:sign_up'))
 
-#     def test_returns_status_200_on_visit(self):
-#         expected = 200
+    def test_returns_status_200_on_visit(self):
+        expected = 200
 
-#         result = self.resp.status_code
+        result = self.resp.status_code
 
-#         self.assertEqual(result, expected)
+        self.assertEqual(result, expected)
 
-#     def test_return_layoutHTML_as_template_used(self):
-#         expected = 'layout.html'
+    def test_return_layoutHTML_as_template_used(self):
+        expected = 'layout.html'
 
-#         self.assertTemplateUsed(self.resp, expected)
+        self.assertTemplateUsed(self.resp, expected)
 
-#     def test_return_signupHTML_as_template_used(self):
-#         expected = 'accounts/signup.html'
+    def test_return_signupHTML_as_template_used(self):
+        expected = 'accounts/signup.html'
 
-#         self.assertTemplateUsed(self.resp, expected)
+        self.assertTemplateUsed(self.resp, expected)
 
 
-# """
-# /accounts/sign_up (POST)
-# """
-# class SignUpPOSTRequest(TestCase):
-#     def setUp(self):
-#         self.resp = self.client.post(reverse('accounts:sign_up'), {
-#             'email': 'hello@example.com',
-#             'password1': 'hello!234',
-#             'password2': 'hello!234'
-#         })
+"""
+/accounts/sign_up (POST)
+"""
+class SignUpPOSTRequest(TestCase):
+    def setUp(self):
+        self.resp = self.client.post(reverse('accounts:sign_up'), {
+            'email': 'hello@example.com',
+            'password1': 'hello!234',
+            'password2': 'hello!234'
+        })
 
-#     def test_return_to_sign_up_page_if_signup_unsuccessful(self):
-#         expected = 'accounts/signup.html'
+    def test_return_to_sign_up_page_if_signup_unsuccessful(self):
+        expected = 'accounts/signup.html'
 
-#         response1 = self.client.post(reverse('accounts:sign_up'), {
-#             'email': 'hello@example.com',
-#             'password1': 'hello1',
-#             'password2': 'hello2'
-#         })
+        response1 = self.client.post(reverse('accounts:sign_up'), {
+            'email': 'hello@example.com',
+            'password1': 'hello1',
+            'password2': 'hello2'
+        })
 
-#         response2 = self.client.post(reverse('accounts:sign_up'), {
-#             'email': 'hello@ example.com',
-#             'password1': 'hello1',
-#             'password2': 'hello1'
-#         })
+        response2 = self.client.post(reverse('accounts:sign_up'), {
+            'email': 'hello@ example.com',
+            'password1': 'hello1',
+            'password2': 'hello1'
+        })
 
-#         self.assertTemplateUsed(response1, expected)
-#         self.assertTemplateUsed(response2, expected)
+        self.assertTemplateUsed(response1, expected)
+        self.assertTemplateUsed(response2, expected)
 
-#     def test_return_user_model_with_count_of_1_if_signup_successful(self):
-#         expected = 1
+    def test_return_user_model_with_count_of_1_if_signup_successful(self):
+        expected = 1
 
-#         result = User.objects.all().count()
+        result = User.objects.all().count()
 
-#         self.assertEqual(result, expected)
+        self.assertEqual(result, expected)
 
-#     def test_return_to_login_page_if_signup_successful(self):
-#         self.assertRedirects(self.resp, reverse('accounts:login'), fetch_redirect_response=True)
+    def test_return_to_login_page_if_signup_successful(self):
+        self.assertRedirects(self.resp, reverse('accounts:login'), fetch_redirect_response=True)
 
 
 
-# """
-# /profile/{id}
-# """
+"""
+/profile/{id}
+"""
 
-# class ProfileGETTestCase(TestCase):
-#     def setUp(self):
-#         self.user = User.objects.create(
-#             email='hyungmo@helloworld.com',
-#             password='hello'
-#         )
+class ProfileGETTestCase(TestCase):
+    def setUp(self):
+        self.user = User.objects.create(
+            email='hyungmo@helloworld.com',
+            password='hello'
+        )
 
-#         self.profile = Profile.objects.create(
-#             user=self.user,
-#             name='Test Profile 1',
-#             short_bio='Test Bio 1',
-#             profile_image = 'image_1.png'
-#         )
+        self.profile = Profile.objects.create(
+            user=self.user,
+            name='Test Profile 1',
+            short_bio='Test Bio 1',
+            profile_image = 'image_1.png'
+        )
 
-#         self.client.post(reverse('accounts:sign_up'), {
-#             'email': 'hello@example.com',
-#             'password1': 'hello!234',
-#             'password2': 'hello!234'
-#         })
+        self.client.post(reverse('accounts:sign_up'), {
+            'email': 'hello@example.com',
+            'password1': 'hello!234',
+            'password2': 'hello!234'
+        })
 
-#         self.client.post(reverse('accounts:login'), {
-#             'username': 'hello@example.com',
-#             'password': 'hello!234'
-#         })
+        self.client.post(reverse('accounts:login'), {
+            'username': 'hello@example.com',
+            'password': 'hello!234'
+        })
 
 
-#     def test_return_status_code_200_if_successful(self):
-#         expected = 200
+    def test_return_status_code_200_if_successful(self):
+        expected = 200
 
-#         response = self.client.get(reverse('profile', kwargs={
-#             'pk': 1
-#         }))
+        response = self.client.get(reverse('profile', kwargs={
+            'pk': 1
+        }))
 
-#         result = response.status_code
+        result = response.status_code
 
-#         self.assertEqual(result, expected)
+        self.assertEqual(result, expected)
 
-#     def test_return_profileHTML_as_template_used(self):
-#         expected= 'main/profile.html'
+    def test_return_profileHTML_as_template_used(self):
+        expected= 'main/profile.html'
 
 
 
-#         response = self.client.get(reverse('profile', kwargs={
-#             'pk': 1
-#         }), follow=True)
+        response = self.client.get(reverse('profile', kwargs={
+            'pk': 1
+        }), follow=True)
 
-#         self.assertTemplateUsed(response, expected)
+        self.assertTemplateUsed(response, expected)
 
-#     def test_return_layoutHTML_as_template_used(self):
-#         expected= 'layout.html'
+    def test_return_layoutHTML_as_template_used(self):
+        expected= 'layout.html'
 
-#         response = self.client.get(reverse('profile', kwargs={
-#             'pk': 1
-#         }), follow=True)
+        response = self.client.get(reverse('profile', kwargs={
+            'pk': 1
+        }), follow=True)
 
-#         self.assertTemplateUsed(response, expected)
+        self.assertTemplateUsed(response, expected)
 
-#     def test_return_correctly_used_profile(self):
-#         expected = 'Test Profile 1'
+    def test_return_correctly_used_profile(self):
+        expected = 'Test Profile 1'
 
-#         response = self.client.get(reverse('profile', kwargs={
-#             'pk': 1
-#         }), follow=True)
+        response = self.client.get(reverse('profile', kwargs={
+            'pk': 1
+        }), follow=True)
 
-#         result = response.context['profile'].name
+        result = response.context['profile'].name
 
-#         self.assertEqual(result, expected)
+        self.assertEqual(result, expected)
 
 
 
-# """
-# /profile/{id}/edit (GET)
-# """
+"""
+/profile/{id}/edit (GET)
+"""
 
-# class ProfileEditGETRequest(TestCase):
-#     def setUp(self):
-#         self.resp = self.client.post(reverse('accounts:sign_up'), {
-#             'email': 'hello@example.com',
-#             'password1': 'hello!234',
-#             'password2': 'hello!234'
-#         })
+class ProfileEditGETRequest(TestCase):
+    def setUp(self):
+        self.resp = self.client.post(reverse('accounts:sign_up'), {
+            'email': 'hello@example.com',
+            'password1': 'hello!234',
+            'password2': 'hello!234'
+        })
 
-#         self.user = User.objects.get(pk=1)
-#         self.profile = self.user.profile
-#         self.profile.name = 'Test Profile 1'
-#         self.profile.short_bio = 'Test Bio 1'
-#         self.profile.profile_image = 'image_1.png'
-#         self.profile.save()
+        self.user = User.objects.get(pk=1)
+        self.profile = self.user.profile
+        self.profile.name = 'Test Profile 1'
+        self.profile.short_bio = 'Test Bio 1'
+        self.profile.profile_image = 'image_1.png'
+        self.profile.save()
 
-#     def test_return_status_code_200_if_successful(self):
-#         expected = 200
+    def test_return_status_code_200_if_successful(self):
+        expected = 200
 
-#         resp = self.client.post(reverse('accounts:login'), {
-#             'username': 'hello@example.com',
-#             'password': 'hello!234'
-#         })
+        resp = self.client.post(reverse('accounts:login'), {
+            'username': 'hello@example.com',
+            'password': 'hello!234'
+        })
 
-#         response = self.client.get(reverse('profile_edit', kwargs={
-#             'pk': 1
-#         }))
+        response = self.client.get(reverse('profile_edit', kwargs={
+            'pk': 1
+        }))
 
-#         result = response.status_code
+        result = response.status_code
 
-#         self.assertEqual(result, expected)
+        self.assertEqual(result, expected)
 
-#     def test_return_profileHTML_as_template_used(self):
-#         expected= 'main/profile_edit.html'
+    def test_return_profileHTML_as_template_used(self):
+        expected= 'main/profile_edit.html'
 
-#         resp = self.client.post(reverse('accounts:login'), {
-#             'username': 'hello@example.com',
-#             'password': 'hello!234'
-#         })
+        resp = self.client.post(reverse('accounts:login'), {
+            'username': 'hello@example.com',
+            'password': 'hello!234'
+        })
 
-#         response = self.client.get(reverse('profile_edit', kwargs={
-#             'pk': 1
-#         }), follow=True)
+        response = self.client.get(reverse('profile_edit', kwargs={
+            'pk': 1
+        }), follow=True)
 
-#         self.assertTemplateUsed(response, expected)
+        self.assertTemplateUsed(response, expected)
 
-#     def test_return_layoutHTML_as_template_used(self):
-#         expected= 'layout.html'
+    def test_return_layoutHTML_as_template_used(self):
+        expected= 'layout.html'
 
-#         resp = self.client.post(reverse('accounts:login'), {
-#             'username': 'hello@example.com',
-#             'password': 'hello!234'
-#         })
+        resp = self.client.post(reverse('accounts:login'), {
+            'username': 'hello@example.com',
+            'password': 'hello!234'
+        })
 
-#         response = self.client.get(reverse('profile_edit', kwargs={
-#             'pk': 1
-#         }), follow=True)
+        response = self.client.get(reverse('profile_edit', kwargs={
+            'pk': 1
+        }), follow=True)
 
-#         self.assertTemplateUsed(response, expected)
+        self.assertTemplateUsed(response, expected)
 
-#     def test_return_profile_1_as_the_project_used(self):
-#         expected = 'Test Profile 1'
+    def test_return_profile_1_as_the_project_used(self):
+        expected = 'Test Profile 1'
 
-#         resp = self.client.post(reverse('accounts:login'), {
-#             'username': 'hello@example.com',
-#             'password': 'hello!234'
-#         })
+        resp = self.client.post(reverse('accounts:login'), {
+            'username': 'hello@example.com',
+            'password': 'hello!234'
+        })
 
-#         response = self.client.get(reverse('profile_edit', kwargs={
-#             'pk': 1
-#         }), follow=True)
+        response = self.client.get(reverse('profile_edit', kwargs={
+            'pk': 1
+        }), follow=True)
 
-#         result = response.context['profile'].name
+        result = response.context['profile'].name
 
-#         self.assertEqual(result, expected)
+        self.assertEqual(result, expected)
 
 
-# """
-# /profile/{id}/edit (POST)
-# """
+"""
+/profile/{id}/edit (POST)
+"""
 
-# class EditProfilePOSTRequest(TestCase):
-#     def setUp(self):
-#         self.client.post(reverse('accounts:sign_up'), {
-#             'email': 'hello@example.com',
-#             'password1': 'hello!234',
-#             'password2': 'hello!234'
-#         })
+class EditProfilePOSTRequest(TestCase):
+    def setUp(self):
+        self.client.post(reverse('accounts:sign_up'), {
+            'email': 'hello@example.com',
+            'password1': 'hello!234',
+            'password2': 'hello!234'
+        })
 
 
-#         self.user = User.objects.get(pk=1)
-#         self.profile = self.user.profile
-#         self.profile.name = 'Test Profile 1'
-#         self.profile.short_bio = 'Test Bio 1'
-#         self.profile.profile_image = 'image_1.png'
-#         self.profile.save()
+        self.user = User.objects.get(pk=1)
+        self.profile = self.user.profile
+        self.profile.name = 'Test Profile 1'
+        self.profile.short_bio = 'Test Bio 1'
+        self.profile.profile_image = 'image_1.png'
+        self.profile.save()
 
-#         self.skill1 = Skill.objects.create(
-#             name="Test skill 1",
-#             profile=self.profile
-#         )
-#         self.skill2 = Skill.objects.create(
-#             name="Test skill 2",
-#             profile=self.profile
-#         )
-#         self.profile.skills.add(self.skill1)
-#         self.profile.skills.add(self.skill2)
-#         self.profile.save()
+        self.skill1 = Skill.objects.create(
+            name="Test skill 1",
+            profile=self.profile
+        )
+        self.skill2 = Skill.objects.create(
+            name="Test skill 2",
+            profile=self.profile
+        )
+        self.profile.skills.add(self.skill1)
+        self.profile.skills.add(self.skill2)
+        self.profile.save()
 
-#         self.edit_data = {
-#             'profile-user': self.user,
-#             'profile-name': 'Revised test name 1',
-#             'profile-short_bio': 'Revised test short bio 1',
-#             'skills-TOTAL_FORMS': '3',
-#             'skills-INITIAL_FORMS': '2',
-#             'skills-MIN_NUM_FORMS': '0',
-#             'skills-MAX_NUM_FORMS': '1000',
-#             'skills-0-id': ['1'],
-#             'skills-0-name': 'Revised test skill 1',
-#             'skills-1-id': ['2'],
-#             'skills-1-name': 'Revised test skill 2',
-#             'skills-2-name': 'Test skill 3',
-#             'skills-2-DELETE': '',
-#             'user_projects-TOTAL_FORMS': '1',
-#             'user_projects-INITIAL_FORMS': '0',
-#             'user_projects-MIN_NUM_FORMS': '0',
-#             'user_projects-MAX_NUM_FORMS': '1000',
-#             'user_projects-0-id': '',
-#             'user_projects-0-name': 'Test project 1',
-#             'user_projects-0-url': 'http://google1.ca'
-#         }
+        self.edit_data = {
+            'profile-user': self.user,
+            'profile-name': 'Revised test name 1',
+            'profile-short_bio': 'Revised test short bio 1',
+            'skills-TOTAL_FORMS': '3',
+            'skills-INITIAL_FORMS': '2',
+            'skills-MIN_NUM_FORMS': '0',
+            'skills-MAX_NUM_FORMS': '1000',
+            'skills-0-id': ['1'],
+            'skills-0-name': 'Revised test skill 1',
+            'skills-1-id': ['2'],
+            'skills-1-name': 'Revised test skill 2',
+            'skills-2-name': 'Test skill 3',
+            'skills-2-DELETE': '',
+            'user_projects-TOTAL_FORMS': '1',
+            'user_projects-INITIAL_FORMS': '0',
+            'user_projects-MIN_NUM_FORMS': '0',
+            'user_projects-MAX_NUM_FORMS': '1000',
+            'user_projects-0-id': '',
+            'user_projects-0-name': 'Test project 1',
+            'user_projects-0-url': 'http://google1.ca'
+        }
 
 
-#     def test_return_302_if_try_to_edit_while_not_logged_in(self):
-#         expected = 302
+    def test_return_302_if_try_to_edit_while_not_logged_in(self):
+        expected = 302
 
-#         response = self.client.post(reverse('profile_edit', kwargs={
-#             'pk': 1
-#         }), self.edit_data)
-#         result = response.status_code
+        response = self.client.post(reverse('profile_edit', kwargs={
+            'pk': 1
+        }), self.edit_data)
+        result = response.status_code
 
-#         self.assertEqual(result, expected)
+        self.assertEqual(result, expected)
 
-#     def test_return_login_page_if_try_to_create_while_not_logged_in(self):
-#         expected = 'accounts/signin.html'
+    def test_return_login_page_if_try_to_create_while_not_logged_in(self):
+        expected = 'accounts/signin.html'
 
-#         response = self.client.post(reverse('profile_edit', kwargs={
-#             'pk': 1
-#         }), self.edit_data, follow=True)
+        response = self.client.post(reverse('profile_edit', kwargs={
+            'pk': 1
+        }), self.edit_data, follow=True)
 
-#         self.assertTemplateUsed(response, expected)
+        self.assertTemplateUsed(response, expected)
 
-#     def test_retrun_project_with_title_revised_test_profile_1_if_edit_successful(self):
-#         expected = 'Revised test name 1'
+    def test_retrun_project_with_title_revised_test_profile_1_if_edit_successful(self):
+        expected = 'Revised test name 1'
 
-#         self.client.post(reverse('accounts:login'), {
-#             'username': 'hello@example.com',
-#             'password': 'hello!234'
-#         }, follow=True)
+        self.client.post(reverse('accounts:login'), {
+            'username': 'hello@example.com',
+            'password': 'hello!234'
+        }, follow=True)
 
-#         self.resp = self.client.post(reverse('profile_edit', kwargs={
-#             'pk': 1
-#         }), self.edit_data)
+        self.resp = self.client.post(reverse('profile_edit', kwargs={
+            'pk': 1
+        }), self.edit_data)
 
-#         result = Profile.objects.get(pk=1).name
+        result = Profile.objects.get(pk=1).name
 
-#         self.assertEqual(result, expected)
+        self.assertEqual(result, expected)
 
-#     def test_retrun_project_short_bio_revised_short_bio_1_if_edit_successful(self):
-#         expected = 'Revised test short bio 1'
+    def test_retrun_project_short_bio_revised_short_bio_1_if_edit_successful(self):
+        expected = 'Revised test short bio 1'
 
-#         self.client.post(reverse('accounts:login'), {
-#             'username': 'hello@example.com',
-#             'password': 'hello!234'
-#         }, follow=True)
+        self.client.post(reverse('accounts:login'), {
+            'username': 'hello@example.com',
+            'password': 'hello!234'
+        }, follow=True)
 
-#         self.resp = self.client.post(reverse('profile_edit', kwargs={
-#             'pk': 1
-#         }), self.edit_data)
+        self.resp = self.client.post(reverse('profile_edit', kwargs={
+            'pk': 1
+        }), self.edit_data)
 
-#         result = Profile.objects.get(pk=1).short_bio
+        result = Profile.objects.get(pk=1).short_bio
 
-#         self.assertEqual(result, expected)
+        self.assertEqual(result, expected)
 
-#     def test_retrun_skills_with_length_3_if_edit_successful(self):
-#         expected = 3
+    def test_retrun_skills_with_length_3_if_edit_successful(self):
+        expected = 3
 
-#         self.client.post(reverse('accounts:login'), {
-#             'username': 'hello@example.com',
-#             'password': 'hello!234'
-#         }, follow=True)
+        self.client.post(reverse('accounts:login'), {
+            'username': 'hello@example.com',
+            'password': 'hello!234'
+        }, follow=True)
 
-#         self.resp = self.client.post(reverse('profile_edit', kwargs={
-#             'pk': 1
-#         }), self.edit_data)
+        self.resp = self.client.post(reverse('profile_edit', kwargs={
+            'pk': 1
+        }), self.edit_data)
 
-#         result = Profile.objects.get(pk=1).skills.all().count()
+        result = Profile.objects.get(pk=1).skills.all().count()
 
-#         self.assertEqual(result, expected)
+        self.assertEqual(result, expected)
 
-#     def test_retrun_first_skill_with_revised_skill_1_if_edit_successful(self):
-#         expected = 'Revised test skill 1'
+    def test_retrun_first_skill_with_revised_skill_1_if_edit_successful(self):
+        expected = 'Revised test skill 1'
 
-#         self.client.post(reverse('accounts:login'), {
-#             'username': 'hello@example.com',
-#             'password': 'hello!234'
-#         }, follow=True)
+        self.client.post(reverse('accounts:login'), {
+            'username': 'hello@example.com',
+            'password': 'hello!234'
+        }, follow=True)
 
-#         self.resp = self.client.post(reverse('profile_edit', kwargs={
-#             'pk': 1
-#         }), self.edit_data)
+        self.resp = self.client.post(reverse('profile_edit', kwargs={
+            'pk': 1
+        }), self.edit_data)
 
-#         result = Profile.objects.get(pk=1).skills.get(pk=1).name
+        result = Profile.objects.get(pk=1).skills.get(pk=1).name
 
-#         self.assertEqual(result, expected)
+        self.assertEqual(result, expected)
 
-#     def test_retrun_second_skill_with_revised_skill_2_if_edit_successful(self):
-#         expected = 'Revised test skill 2'
+    def test_retrun_second_skill_with_revised_skill_2_if_edit_successful(self):
+        expected = 'Revised test skill 2'
 
-#         self.client.post(reverse('accounts:login'), {
-#             'username': 'hello@example.com',
-#             'password': 'hello!234'
-#         }, follow=True)
+        self.client.post(reverse('accounts:login'), {
+            'username': 'hello@example.com',
+            'password': 'hello!234'
+        }, follow=True)
 
-#         self.resp = self.client.post(reverse('profile_edit', kwargs={
-#             'pk': 1
-#         }), self.edit_data)
+        self.resp = self.client.post(reverse('profile_edit', kwargs={
+            'pk': 1
+        }), self.edit_data)
 
-#         result = Profile.objects.get(pk=1).skills.get(pk=2).name
+        result = Profile.objects.get(pk=1).skills.get(pk=2).name
 
-#         self.assertEqual(result, expected)
+        self.assertEqual(result, expected)
 
-#     def test_retrun_third_skill_with_revised_skill_3_if_edit_successful(self):
-#         expected = 'Test skill 3'
+    def test_retrun_third_skill_with_revised_skill_3_if_edit_successful(self):
+        expected = 'Test skill 3'
 
-#         self.client.post(reverse('accounts:login'), {
-#             'username': 'hello@example.com',
-#             'password': 'hello!234'
-#         }, follow=True)
+        self.client.post(reverse('accounts:login'), {
+            'username': 'hello@example.com',
+            'password': 'hello!234'
+        }, follow=True)
 
-#         self.resp = self.client.post(reverse('profile_edit', kwargs={
-#             'pk': 1
-#         }), self.edit_data)
+        self.resp = self.client.post(reverse('profile_edit', kwargs={
+            'pk': 1
+        }), self.edit_data)
 
-#         result = Profile.objects.get(pk=1).skills.get(pk=3).name
+        result = Profile.objects.get(pk=1).skills.get(pk=3).name
 
-#         self.assertEqual(result, expected)
+        self.assertEqual(result, expected)
 
-#     def test_retrun_my_project_with_length_1_if_edit_successful(self):
-#         expected = 1
+    def test_retrun_my_project_with_length_1_if_edit_successful(self):
+        expected = 1
 
-#         self.client.post(reverse('accounts:login'), {
-#             'username': 'hello@example.com',
-#             'password': 'hello!234'
-#         }, follow=True)
+        self.client.post(reverse('accounts:login'), {
+            'username': 'hello@example.com',
+            'password': 'hello!234'
+        }, follow=True)
 
-#         self.resp = self.client.post(reverse('profile_edit', kwargs={
-#             'pk': 1
-#         }), self.edit_data)
+        self.resp = self.client.post(reverse('profile_edit', kwargs={
+            'pk': 1
+        }), self.edit_data)
 
-#         result = Profile.objects.get(pk=1).user_projects.all().count()
+        result = Profile.objects.get(pk=1).user_projects.all().count()
 
-#         self.assertEqual(result, expected)
+        self.assertEqual(result, expected)
 
-#     def test_retrun_my_project_with_name_project_1_if_edit_successful(self):
-#         expected = 'Test project 1'
+    def test_retrun_my_project_with_name_project_1_if_edit_successful(self):
+        expected = 'Test project 1'
 
-#         self.client.post(reverse('accounts:login'), {
-#             'username': 'hello@example.com',
-#             'password': 'hello!234'
-#         }, follow=True)
+        self.client.post(reverse('accounts:login'), {
+            'username': 'hello@example.com',
+            'password': 'hello!234'
+        }, follow=True)
 
-#         self.resp = self.client.post(reverse('profile_edit', kwargs={
-#             'pk': 1
-#         }), self.edit_data)
+        self.resp = self.client.post(reverse('profile_edit', kwargs={
+            'pk': 1
+        }), self.edit_data)
 
-#         result = Profile.objects.get(pk=1).user_projects.get(pk=1).name
+        result = Profile.objects.get(pk=1).user_projects.get(pk=1).name
 
-#         self.assertEqual(result, expected)
+        self.assertEqual(result, expected)
 
 
-# """
-# /projects/{id}
-# """
+"""
+/projects/{id}
+"""
 
-# class ProjectGETTestCase(TestCase):
-#     def setUp(self):
-#         self.user = User.objects.create(
-#             email='hyungmo@helloworld.com',
-#             password='hello'
-#         )
+class ProjectGETTestCase(TestCase):
+    def setUp(self):
+        self.user = User.objects.create(
+            email='hyungmo@helloworld.com',
+            password='hello'
+        )
 
-#         self.profile = Profile.objects.create(
-#             user=self.user,
-#             name='Test Profile 1',
-#             short_bio='Test Bio 1',
-#             profile_image = 'image_1.png'
-#         )
+        self.profile = Profile.objects.create(
+            user=self.user,
+            name='Test Profile 1',
+            short_bio='Test Bio 1',
+            profile_image = 'image_1.png'
+        )
 
-#         self.project = Project.objects.create(
-#             title='Test project 1',
-#             user=self.user,
-#             timeline='10 days',
-#             applicant_requirements='Test requirement 1',
-#             description='Test description 1'
-#         )
+        self.project = Project.objects.create(
+            title='Test project 1',
+            user=self.user,
+            timeline='10 days',
+            applicant_requirements='Test requirement 1',
+            description='Test description 1'
+        )
 
-#         self.position1 = Position.objects.create(
-#             name='Test position 1',
-#             project=self.project,
-#             description='Test description 1'
-#         )
+        self.position1 = Position.objects.create(
+            name='Test position 1',
+            project=self.project,
+            description='Test description 1'
+        )
 
-#         self.position2 = Position.objects.create(
-#             name='Test position 2',
-#             project=self.project,
-#             description='Test description 2'
-#         )
+        self.position2 = Position.objects.create(
+            name='Test position 2',
+            project=self.project,
+            description='Test description 2'
+        )
 
-#     def test_return_status_code_200_if_successful(self):
-#         expected = 200
+    def test_return_status_code_200_if_successful(self):
+        expected = 200
 
-#         response = self.client.get(reverse('project', kwargs={
-#             'pk': 1
-#         }))
+        response = self.client.get(reverse('project', kwargs={
+            'pk': 1
+        }))
 
-#         result = response.status_code
+        result = response.status_code
 
-#         self.assertEqual(result, expected)
+        self.assertEqual(result, expected)
 
-#     def test_return_projectHTML_as_template_used(self):
-#         expected= 'main/project.html'
+    def test_return_projectHTML_as_template_used(self):
+        expected= 'main/project.html'
 
-#         response = self.client.get(reverse('project', kwargs={
-#             'pk': 1
-#         }), follow=True)
+        response = self.client.get(reverse('project', kwargs={
+            'pk': 1
+        }), follow=True)
 
-#         self.assertTemplateUsed(response, expected)
+        self.assertTemplateUsed(response, expected)
 
-#     def test_return_layoutHTML_as_template_used(self):
-#         expected= 'layout.html'
+    def test_return_layoutHTML_as_template_used(self):
+        expected= 'layout.html'
 
-#         response = self.client.get(reverse('project', kwargs={
-#             'pk': 1
-#         }), follow=True)
+        response = self.client.get(reverse('project', kwargs={
+            'pk': 1
+        }), follow=True)
 
-#         self.assertTemplateUsed(response, expected)
+        self.assertTemplateUsed(response, expected)
 
-#     def test_return_project_1_as_the_project_used(self):
-#         expected = 'Test project 1'
+    def test_return_project_1_as_the_project_used(self):
+        expected = 'Test project 1'
 
-#         response = self.client.get(reverse('project', kwargs={
-#             'pk': 1
-#         }), follow=True)
+        response = self.client.get(reverse('project', kwargs={
+            'pk': 1
+        }), follow=True)
 
-#         result = response.context['project'].title
+        result = response.context['project'].title
 
-#         self.assertEqual(result, expected)
+        self.assertEqual(result, expected)
 
 
-# """
-# /projects/{id}/edit
-# """
+"""
+/projects/{id}/edit
+"""
 
-# class EditProjectGETRequest(TestCase):
-#     def setUp(self):
+class EditProjectGETRequest(TestCase):
+    def setUp(self):
 
-#         self.client.post(reverse('accounts:sign_up'), {
-#             'email': 'hello@example.com',
-#             'password1': 'hello!234',
-#             'password2': 'hello!234',
-#             'is_employer': 'on'
-#         })
+        self.client.post(reverse('accounts:sign_up'), {
+            'email': 'hello@example.com',
+            'password1': 'hello!234',
+            'password2': 'hello!234',
+            'is_employer': 'on'
+        })
 
-#         self.client.post(reverse('accounts:sign_up'), {
-#             'email': 'hello2@example.com',
-#             'password1': 'hello!234',
-#             'password2': 'hello!234',
-#             'is_employer': 'on'
-#         })
+        self.client.post(reverse('accounts:sign_up'), {
+            'email': 'hello2@example.com',
+            'password1': 'hello!234',
+            'password2': 'hello!234',
+            'is_employer': 'on'
+        })
 
-#         self.client.post(reverse('accounts:sign_up'), {
-#             'email': 'hello3@example.com',
-#             'password1': 'hello!234',
-#             'password2': 'hello!234'
-#         })
+        self.client.post(reverse('accounts:sign_up'), {
+            'email': 'hello3@example.com',
+            'password1': 'hello!234',
+            'password2': 'hello!234'
+        })
 
 
-#         self.user = User.objects.get(pk=1)
-#         self.profile = self.user.profile
-#         self.profile.name = 'Test Profile 1'
-#         self.profile.short_bio = 'Test Bio 1'
-#         self.profile.profile_image = 'image_1.png'
+        self.user = User.objects.get(pk=1)
+        self.profile = self.user.profile
+        self.profile.name = 'Test Profile 1'
+        self.profile.short_bio = 'Test Bio 1'
+        self.profile.profile_image = 'image_1.png'
 
-#         self.project = Project.objects.create(
-#             title='Test project 1',
-#             user=self.user,
-#             timeline='10 days',
-#             applicant_requirements='Test requirement 1',
-#             description='Test description 1'
-#         )
+        self.project = Project.objects.create(
+            title='Test project 1',
+            user=self.user,
+            timeline='10 days',
+            applicant_requirements='Test requirement 1',
+            description='Test description 1'
+        )
 
-#         self.position1 = Position.objects.create(
-#             name='Test position 1',
-#             project=self.project,
-#             description='Test description 1'
-#         )
+        self.position1 = Position.objects.create(
+            name='Test position 1',
+            project=self.project,
+            description='Test description 1'
+        )
 
-#         self.position2 = Position.objects.create(
-#             name='Test position 2',
-#             project=self.project,
-#             description='Test description 2'
-#         )
+        self.position2 = Position.objects.create(
+            name='Test position 2',
+            project=self.project,
+            description='Test description 2'
+        )
 
-#     def test_return_to_login_page_if_not_signed_in(self):
-#         expected = '{}?next={}'.format(
-#             reverse('accounts:login'),
-#             reverse('project_edit', kwargs={
-#                 'pk': 1
-#             }))
+    def test_return_to_login_page_if_not_signed_in(self):
+        expected = '{}?next={}'.format(
+            reverse('accounts:login'),
+            reverse('project_edit', kwargs={
+                'pk': 1
+            }))
 
-#         response = self.client.get(reverse('project_edit', kwargs={
-#             'pk': 1
-#         }), follow=True)
+        response = self.client.get(reverse('project_edit', kwargs={
+            'pk': 1
+        }), follow=True)
 
-#         self.assertRedirects(
-#             response,
-#             expected,
-#             fetch_redirect_response=False
-#         )
+        self.assertRedirects(
+            response,
+            expected,
+            fetch_redirect_response=False
+        )
 
-#     def test_return_to_login_page_if_not_have_permission(self):
-#         expected = '{}?next={}'.format(
-#             reverse('accounts:login'),
-#             reverse('project_edit', kwargs={
-#                 'pk': 1
-#             }))
+    def test_return_to_login_page_if_not_have_permission(self):
+        expected = '{}?next={}'.format(
+            reverse('accounts:login'),
+            reverse('project_edit', kwargs={
+                'pk': 1
+            }))
 
 
-#         self.client.post(reverse('accounts:login'), {
-#             'username': 'hello3@example.com',
-#             'password': 'hello!234'
-#         })
+        self.client.post(reverse('accounts:login'), {
+            'username': 'hello3@example.com',
+            'password': 'hello!234'
+        })
 
-#         response = self.client.get(reverse('project_edit', kwargs={
-#             'pk': 1
-#         }), follow=True)
+        response = self.client.get(reverse('project_edit', kwargs={
+            'pk': 1
+        }), follow=True)
 
-#         self.assertRedirects(
-#             response,
-#             expected,
-#             fetch_redirect_response=False)
+        self.assertRedirects(
+            response,
+            expected,
+            fetch_redirect_response=False)
 
-#     def test_return_to_project_page_if_not_the_author(self):
+    def test_return_to_project_page_if_not_the_author(self):
 
-#         self.client.post(reverse('accounts:login'), {
-#             'username': 'hello2@example.com',
-#             'password': 'hello!234'
-#         })
+        self.client.post(reverse('accounts:login'), {
+            'username': 'hello2@example.com',
+            'password': 'hello!234'
+        })
 
-#         response = self.client.get(reverse('project_edit', kwargs={
-#             'pk': 1
-#         }), follow=True)
+        response = self.client.get(reverse('project_edit', kwargs={
+            'pk': 1
+        }), follow=True)
 
-#         self.assertRedirects(response, reverse('project', kwargs={
-#             'pk': 1
-#         }), fetch_redirect_response=False)
+        self.assertRedirects(response, reverse('project', kwargs={
+            'pk': 1
+        }), fetch_redirect_response=False)
 
-#     def test_return_status_code_200_if_successful(self):
-#         expected = 200
+    def test_return_status_code_200_if_successful(self):
+        expected = 200
 
-#         resp = self.client.post(reverse('accounts:login'), {
-#             'username': 'hello@example.com',
-#             'password': 'hello!234'
-#         })
+        resp = self.client.post(reverse('accounts:login'), {
+            'username': 'hello@example.com',
+            'password': 'hello!234'
+        })
 
-#         response = self.client.get(reverse('project_edit', kwargs={
-#             'pk': 1
-#         }))
+        response = self.client.get(reverse('project_edit', kwargs={
+            'pk': 1
+        }))
 
-#         result = response.status_code
+        result = response.status_code
 
-#         self.assertEqual(result, expected)
+        self.assertEqual(result, expected)
 
-#     def test_return_projectHTML_as_template_used(self):
-#         expected= 'main/project_edit.html'
+    def test_return_projectHTML_as_template_used(self):
+        expected= 'main/project_edit.html'
 
-#         resp = self.client.post(reverse('accounts:login'), {
-#             'username': 'hello@example.com',
-#             'password': 'hello!234'
-#         })
+        resp = self.client.post(reverse('accounts:login'), {
+            'username': 'hello@example.com',
+            'password': 'hello!234'
+        })
 
-#         response = self.client.get(reverse('project_edit', kwargs={
-#             'pk': 1
-#         }), follow=True)
+        response = self.client.get(reverse('project_edit', kwargs={
+            'pk': 1
+        }), follow=True)
 
-#         self.assertTemplateUsed(response, expected)
+        self.assertTemplateUsed(response, expected)
 
-#     def test_return_layoutHTML_as_template_used(self):
-#         expected= 'layout.html'
+    def test_return_layoutHTML_as_template_used(self):
+        expected= 'layout.html'
 
-#         resp = self.client.post(reverse('accounts:login'), {
-#             'username': 'hello@example.com',
-#             'password': 'hello!234'
-#         })
+        resp = self.client.post(reverse('accounts:login'), {
+            'username': 'hello@example.com',
+            'password': 'hello!234'
+        })
 
-#         response = self.client.get(reverse('project_edit', kwargs={
-#             'pk': 1
-#         }), follow=True)
+        response = self.client.get(reverse('project_edit', kwargs={
+            'pk': 1
+        }), follow=True)
 
-#         self.assertTemplateUsed(response, expected)
+        self.assertTemplateUsed(response, expected)
 
-#     def test_return_project_1_as_the_project_used(self):
-#         expected = 'Test project 1'
+    def test_return_project_1_as_the_project_used(self):
+        expected = 'Test project 1'
 
-#         resp = self.client.post(reverse('accounts:login'), {
-#             'username': 'hello@example.com',
-#             'password': 'hello!234'
-#         })
+        resp = self.client.post(reverse('accounts:login'), {
+            'username': 'hello@example.com',
+            'password': 'hello!234'
+        })
 
-#         response = self.client.get(reverse('project_edit', kwargs={
-#             'pk': 1
-#         }), follow=True)
+        response = self.client.get(reverse('project_edit', kwargs={
+            'pk': 1
+        }), follow=True)
 
-#         result = response.context['project'].title
+        result = response.context['project'].title
 
-#         self.assertEqual(result, expected)
+        self.assertEqual(result, expected)
 
 
 
-# class EditProjectPOSTRequest(TestCase):
-#     def setUp(self):
-#         self.client.post(reverse('accounts:sign_up'), {
-#             'email': 'hello@example.com',
-#             'password1': 'hello!234',
-#             'password2': 'hello!234',
-#             'is_employer': 'on'
-#         })
+class EditProjectPOSTRequest(TestCase):
+    def setUp(self):
+        self.client.post(reverse('accounts:sign_up'), {
+            'email': 'hello@example.com',
+            'password1': 'hello!234',
+            'password2': 'hello!234',
+            'is_employer': 'on'
+        })
 
-#         self.client.post(reverse('accounts:sign_up'), {
-#             'email': 'hello2@example.com',
-#             'password1': 'hello!234',
-#             'password2': 'hello!234',
-#             'is_employer': 'on'
-#         })
+        self.client.post(reverse('accounts:sign_up'), {
+            'email': 'hello2@example.com',
+            'password1': 'hello!234',
+            'password2': 'hello!234',
+            'is_employer': 'on'
+        })
 
-#         self.client.post(reverse('accounts:sign_up'), {
-#             'email': 'hello3@example.com',
-#             'password1': 'hello!234',
-#             'password2': 'hello!234'
-#         })
+        self.client.post(reverse('accounts:sign_up'), {
+            'email': 'hello3@example.com',
+            'password1': 'hello!234',
+            'password2': 'hello!234'
+        })
 
-#         self.user = User.objects.get(pk=1)
+        self.user = User.objects.get(pk=1)
 
-#         self.project1 = Project.objects.create(
-#             title='Test project 1',
-#             user=self.user,
-#             timeline='10 days',
-#             applicant_requirements='Test requirement 1',
-#             description='Test description 1'
-#         )
+        self.project1 = Project.objects.create(
+            title='Test project 1',
+            user=self.user,
+            timeline='10 days',
+            applicant_requirements='Test requirement 1',
+            description='Test description 1'
+        )
 
-#         self.project2 = Project.objects.create(
-#             title='Test project 2',
-#             user=self.user,
-#             timeline='20 days',
-#             applicant_requirements='Test requirement 2',
-#             description='Test description 2'
-#         )
+        self.project2 = Project.objects.create(
+            title='Test project 2',
+            user=self.user,
+            timeline='20 days',
+            applicant_requirements='Test requirement 2',
+            description='Test description 2'
+        )
 
-#         self.position1 = Position.objects.create(
-#             name='Test position 1',
-#             project=self.project1,
-#             description='Test description 1'
-#         )
+        self.position1 = Position.objects.create(
+            name='Test position 1',
+            project=self.project1,
+            description='Test description 1'
+        )
 
-#         self.position2 = Position.objects.create(
-#             name='Test position 2',
-#             project=self.project1,
-#             description='Test description 2'
-#         )
+        self.position2 = Position.objects.create(
+            name='Test position 2',
+            project=self.project1,
+            description='Test description 2'
+        )
 
-#         self.position3 = Position.objects.create(
-#             name='Test position 3',
-#             project=self.project2,
-#             description='Test description 3'
-#         )
+        self.position3 = Position.objects.create(
+            name='Test position 3',
+            project=self.project2,
+            description='Test description 3'
+        )
 
-#         self.edit_data = {
-#             'positions-TOTAL_FORMS': '2',
-#             'positions-INITIAL_FORMS': '0',
-#             'positions-MIN_NUM_FORMS': '0',
-#             'positions-MAX_NUM_FORMS': '1000',
-#             'positions-0-name': 'e1',
-#             'positions-0-description': 'f1',
-#             'positions-1-name': 'g',
-#             'positions-1-description': 'h',
-#             'project-title': 'Revised test project 1',
-#             'project-user': self.user,
-#             'project-timeline': 'Revised timeline 1',
-#             'project-description':'Revised description 1',
-#             'project-applicant_requirements': 'Revised applicant requirements 1'
-#         }
+        self.edit_data = {
+            'positions-TOTAL_FORMS': '2',
+            'positions-INITIAL_FORMS': '0',
+            'positions-MIN_NUM_FORMS': '0',
+            'positions-MAX_NUM_FORMS': '1000',
+            'positions-0-name': 'e1',
+            'positions-0-description': 'f1',
+            'positions-1-name': 'g',
+            'positions-1-description': 'h',
+            'project-title': 'Revised test project 1',
+            'project-user': self.user,
+            'project-timeline': 'Revised timeline 1',
+            'project-description':'Revised description 1',
+            'project-applicant_requirements': 'Revised applicant requirements 1'
+        }
 
 
-#     def test_return_to_login_page_if_not_signed_in(self):
-#         expected = '{}?next={}'.format(
-#             reverse('accounts:login'),
-#             reverse('project_edit', kwargs={
-#                 'pk': 1
-#             }))
+    def test_return_to_login_page_if_not_signed_in(self):
+        expected = '{}?next={}'.format(
+            reverse('accounts:login'),
+            reverse('project_edit', kwargs={
+                'pk': 1
+            }))
 
-#         response = self.client.post(reverse('project_edit', kwargs={
-#             'pk': 1
-#         }), {
-#             'project-title': 'Test project 3',
-#             'project-user': self.user,
-#             'project-timeline': 'This is test timeline 3',
-#             'project-description':'This is test description 3',
-#             'project-applicant_requirements': 'This is test applicant requirements'
-#         })
+        response = self.client.post(reverse('project_edit', kwargs={
+            'pk': 1
+        }), {
+            'project-title': 'Test project 3',
+            'project-user': self.user,
+            'project-timeline': 'This is test timeline 3',
+            'project-description':'This is test description 3',
+            'project-applicant_requirements': 'This is test applicant requirements'
+        })
 
-#         self.assertRedirects(
-#             response,
-#             expected,
-#             fetch_redirect_response=False
-#         )
+        self.assertRedirects(
+            response,
+            expected,
+            fetch_redirect_response=False
+        )
 
-#     def test_return_to_login_page_if_not_have_permission(self):
-#         expected = '{}?next={}'.format(
-#             reverse('accounts:login'),
-#             reverse('project_edit', kwargs={
-#                 'pk': 1
-#             }))
+    def test_return_to_login_page_if_not_have_permission(self):
+        expected = '{}?next={}'.format(
+            reverse('accounts:login'),
+            reverse('project_edit', kwargs={
+                'pk': 1
+            }))
 
 
-#         self.client.post(reverse('accounts:login'), {
-#             'username': 'hello3@example.com',
-#             'password': 'hello!234'
-#         })
+        self.client.post(reverse('accounts:login'), {
+            'username': 'hello3@example.com',
+            'password': 'hello!234'
+        })
 
-#         response = self.client.post(reverse('project_edit', kwargs={
-#             'pk': 1
-#         }), {
-#             'project-title': 'Test project 3',
-#             'project-user': self.user,
-#             'project-timeline': 'This is test timeline 3',
-#             'project-description':'This is test description 3',
-#             'project-applicant_requirements': 'This is test applicant requirements'
-#         })
+        response = self.client.post(reverse('project_edit', kwargs={
+            'pk': 1
+        }), {
+            'project-title': 'Test project 3',
+            'project-user': self.user,
+            'project-timeline': 'This is test timeline 3',
+            'project-description':'This is test description 3',
+            'project-applicant_requirements': 'This is test applicant requirements'
+        })
 
-#         self.assertRedirects(
-#             response,
-#             expected,
-#             fetch_redirect_response=False)
+        self.assertRedirects(
+            response,
+            expected,
+            fetch_redirect_response=False)
 
-#     def test_return_to_project_page_if_not_the_author(self):
+    def test_return_to_project_page_if_not_the_author(self):
 
-#         self.client.post(reverse('accounts:login'), {
-#             'username': 'hello2@example.com',
-#             'password': 'hello!234'
-#         })
+        self.client.post(reverse('accounts:login'), {
+            'username': 'hello2@example.com',
+            'password': 'hello!234'
+        })
 
-#         response = self.client.post(reverse('project_edit', kwargs={
-#             'pk': 1
-#         }), self.edit_data)
+        response = self.client.post(reverse('project_edit', kwargs={
+            'pk': 1
+        }), self.edit_data)
 
-#         self.assertRedirects(response, reverse('project', kwargs={
-#             'pk': 1
-#         }), fetch_redirect_response=False)
+        self.assertRedirects(response, reverse('project', kwargs={
+            'pk': 1
+        }), fetch_redirect_response=False)
 
-#     def test_return_status_302_if_edit_successful(self):
-#         expected = 302
+    def test_return_status_302_if_edit_successful(self):
+        expected = 302
 
-#         self.client.post(reverse('accounts:login'), {
-#             'username': 'hello@example.com',
-#             'password': 'hello!234'
-#         })
+        self.client.post(reverse('accounts:login'), {
+            'username': 'hello@example.com',
+            'password': 'hello!234'
+        })
 
-#         response = self.client.post(reverse('project_edit', kwargs={
-#             'pk': 1
-#         }), self.edit_data)
+        response = self.client.post(reverse('project_edit', kwargs={
+            'pk': 1
+        }), self.edit_data)
 
-#         result = response.status_code
+        result = response.status_code
 
-#         self.assertEqual(result, expected)
+        self.assertEqual(result, expected)
 
-#     def test_return_projectHTML_as_template_used_if_edit_successful(self):
-#         expected = 'main/project.html'
+    def test_return_projectHTML_as_template_used_if_edit_successful(self):
+        expected = 'main/project.html'
 
-#         self.client.post(reverse('accounts:login'), {
-#             'username': 'hello@example.com',
-#             'password': 'hello!234'
-#         }, follow=True)
+        self.client.post(reverse('accounts:login'), {
+            'username': 'hello@example.com',
+            'password': 'hello!234'
+        }, follow=True)
 
-#         result = self.client.post(reverse('project_create'), self.edit_data, follow=True)
+        result = self.client.post(reverse('project_create'), self.edit_data, follow=True)
 
-#         self.assertTemplateUsed(result, expected)
+        self.assertTemplateUsed(result, expected)
 
-#     def test_retrun_project_with_title_revised_test_project_1_if_edit_successful(self):
-#         expected = 'Revised test project 1'
+    def test_retrun_project_with_title_revised_test_project_1_if_edit_successful(self):
+        expected = 'Revised test project 1'
 
-#         self.client.post(reverse('accounts:login'), {
-#             'username': 'hello@example.com',
-#             'password': 'hello!234'
-#         }, follow=True)
+        self.client.post(reverse('accounts:login'), {
+            'username': 'hello@example.com',
+            'password': 'hello!234'
+        }, follow=True)
 
-#         self.resp = self.client.post(reverse('project_edit', kwargs={
-#             'pk': 1
-#         }), self.edit_data)
+        self.resp = self.client.post(reverse('project_edit', kwargs={
+            'pk': 1
+        }), self.edit_data)
 
-#         result = Project.objects.get(pk=1).title
+        result = Project.objects.get(pk=1).title
 
-#         self.assertEqual(result, expected)
+        self.assertEqual(result, expected)
 
 
-#     def test_retrun_project_timeline_revised_timeline_1_if_edit_successful(self):
-#         expected = 'Revised timeline 1'
+    def test_retrun_project_timeline_revised_timeline_1_if_edit_successful(self):
+        expected = 'Revised timeline 1'
 
-#         self.client.post(reverse('accounts:login'), {
-#             'username': 'hello@example.com',
-#             'password': 'hello!234'
-#         }, follow=True)
+        self.client.post(reverse('accounts:login'), {
+            'username': 'hello@example.com',
+            'password': 'hello!234'
+        }, follow=True)
 
-#         self.resp = self.client.post(reverse('project_edit', kwargs={
-#             'pk': 1
-#         }), self.edit_data)
+        self.resp = self.client.post(reverse('project_edit', kwargs={
+            'pk': 1
+        }), self.edit_data)
 
-#         result = Project.objects.get(pk=1).timeline
+        result = Project.objects.get(pk=1).timeline
 
-#         self.assertEqual(result, expected)
+        self.assertEqual(result, expected)
 
-#     def test_retrun_project_description_revised_description_1_if_edit_successful(self):
-#         expected = 'Revised description 1'
+    def test_retrun_project_description_revised_description_1_if_edit_successful(self):
+        expected = 'Revised description 1'
 
-#         self.client.post(reverse('accounts:login'), {
-#             'username': 'hello@example.com',
-#             'password': 'hello!234'
-#         }, follow=True)
+        self.client.post(reverse('accounts:login'), {
+            'username': 'hello@example.com',
+            'password': 'hello!234'
+        }, follow=True)
 
-#         self.resp = self.client.post(reverse('project_edit', kwargs={
-#             'pk': 1
-#         }), self.edit_data)
+        self.resp = self.client.post(reverse('project_edit', kwargs={
+            'pk': 1
+        }), self.edit_data)
 
-#         result = Project.objects.get(pk=1).description
+        result = Project.objects.get(pk=1).description
 
-#         self.assertEqual(result, expected)
+        self.assertEqual(result, expected)
 
-#     def test_retrun_project_description_revised_applicant_requirements_1_if_edit_successful(self):
-#         expected = 'Revised applicant requirements 1'
+    def test_retrun_project_description_revised_applicant_requirements_1_if_edit_successful(self):
+        expected = 'Revised applicant requirements 1'
 
-#         self.client.post(reverse('accounts:login'), {
-#             'username': 'hello@example.com',
-#             'password': 'hello!234'
-#         }, follow=True)
+        self.client.post(reverse('accounts:login'), {
+            'username': 'hello@example.com',
+            'password': 'hello!234'
+        }, follow=True)
 
-#         self.resp = self.client.post(reverse('project_edit', kwargs={
-#             'pk': 1
-#         }), self.edit_data)
+        self.resp = self.client.post(reverse('project_edit', kwargs={
+            'pk': 1
+        }), self.edit_data)
 
-#         result = Project.objects.get(pk=1).applicant_requirements
+        result = Project.objects.get(pk=1).applicant_requirements
 
-#         self.assertEqual(result, expected)
+        self.assertEqual(result, expected)
 
 
 """
@@ -1799,242 +1799,263 @@ class CreateProjectPOSTRequest(TestCase):
         )
 
 
-# """
-# /projects/delete
-# """
-# class DeleteProjectGETRequest(TestCase):
-#     def setUp(self):
-#         self.client.post(reverse('accounts:sign_up'), {
-#             'email': 'hello@example.com',
-#             'password1': 'hello!234',
-#             'password2': 'hello!234'
-#         })
+"""
+/projects/delete
+"""
+class DeleteProjectGETRequest(TestCase):
+    def setUp(self):
+        self.client.post(reverse('accounts:sign_up'), {
+            'email': 'hello@example.com',
+            'password1': 'hello!234',
+            'password2': 'hello!234'
+        })
+
+        self.user = User.objects.get(pk=1)
+
+        self.project1 = Project.objects.create(
+            title='Test project 1',
+            user=self.user,
+            timeline='10 days',
+            applicant_requirements='Test requirement 1',
+            description='Test description 1'
+        )
+
+        self.project2 = Project.objects.create(
+            title='Test project 2',
+            user=self.user,
+            timeline='20 days',
+            applicant_requirements='Test requirement 2',
+            description='Test description 2'
+        )
 
-#         self.user = User.objects.get(pk=1)
+    def test_return_200_if_delete_while_logged_in(self):
+        expected = 200
+
+        self.client.post(reverse('accounts:login'), {
+            'username': 'hello@example.com',
+            'password': 'hello!234'
+        }, follow=True)
 
-#         self.project1 = Project.objects.create(
-#             title='Test project 1',
-#             user=self.user,
-#             timeline='10 days',
-#             applicant_requirements='Test requirement 1',
-#             description='Test description 1'
-#         )
+        response = self.client.get(reverse('project_delete', kwargs={
+            'pk': self.project1.pk
+        }))
 
-#         self.project2 = Project.objects.create(
-#             title='Test project 2',
-#             user=self.user,
-#             timeline='20 days',
-#             applicant_requirements='Test requirement 2',
-#             description='Test description 2'
-#         )
+        result = response.status_code
 
-#     def test_return_200_if_delete_while_logged_in(self):
-#         expected = 200
+        self.assertEqual(result, expected)
 
-#         self.client.post(reverse('accounts:login'), {
-#             'username': 'hello@example.com',
-#             'password': 'hello!234'
-#         }, follow=True)
+    def test_return_layoutHTML_as_template_used(self):
+        expected = 'layout.html'
 
-#         response = self.client.get(reverse('project_delete', kwargs={
-#             'pk': self.project1.pk
-#         }))
+        response = self.client.get(reverse('project_delete', kwargs={
+            'pk': self.project1.pk
+        }), follow=True)
 
-#         result = response.status_code
+        self.assertTemplateUsed(response, expected)
 
-#         self.assertEqual(result, expected)
+    def test_return_project_deleteHTML_as_template_used(self):
+        expected = 'main/project_delete.html'
 
-#     def test_return_layoutHTML_as_template_used(self):
-#         expected = 'layout.html'
+        self.client.post(reverse('accounts:login'), {
+            'username': 'hello@example.com',
+            'password': 'hello!234'
+        }, follow=True)
 
-#         response = self.client.get(reverse('project_delete', kwargs={
-#             'pk': self.project1.pk
-#         }), follow=True)
+        response = self.client.get(reverse('project_delete', kwargs={
+            'pk': self.project1.pk
+        }), follow=True)
 
-#         self.assertTemplateUsed(response, expected)
+        self.assertTemplateUsed(response, expected)
 
-#     def test_return_project_deleteHTML_as_template_used(self):
-#         expected = 'main/project_delete.html'
+    def test_return_302_if_try_to_delete_while_not_logged_in(self):
+        expected = 302
 
-#         self.client.post(reverse('accounts:login'), {
-#             'username': 'hello@example.com',
-#             'password': 'hello!234'
-#         }, follow=True)
+        response = self.client.get(reverse('project_delete', kwargs={
+            'pk': self.project1.pk
+        }))
 
-#         response = self.client.get(reverse('project_delete', kwargs={
-#             'pk': self.project1.pk
-#         }), follow=True)
+        result = response.status_code
 
-#         self.assertTemplateUsed(response, expected)
+        self.assertEqual(result, expected)
 
-#     def test_return_302_if_try_to_delete_while_not_logged_in(self):
-#         expected = 302
 
-#         response = self.client.get(reverse('project_delete', kwargs={
-#             'pk': self.project1.pk
-#         }))
+    def test_return_to_sign_in_if_try_to_delete_while_not_logged_in(self):
+        expected = 'accounts/signin.html'
 
-#         result = response.status_code
+        response = self.client.get(reverse('project_delete', kwargs={
+            'pk': self.project1.pk
+        }), follow=True)
 
-#         self.assertEqual(result, expected)
+        self.assertTemplateUsed(response, expected)
 
 
-#     def test_return_to_sign_in_if_try_to_delete_while_not_logged_in(self):
-#         expected = 'accounts/signin.html'
+"""
+/applications
+"""
+class ApplicationGETRequest(TestCase):
+    def setUp(self):
+        self.client.post(reverse('accounts:sign_up'), {
+            'email': 'hello@example.com',
+            'password1': 'hello!234',
+            'password2': 'hello!234',
+            'is_employer': 'on'
+        })
 
-#         response = self.client.get(reverse('project_delete', kwargs={
-#             'pk': self.project1.pk
-#         }), follow=True)
+        self.client.post(reverse('accounts:sign_up'), {
+            'email': 'hello1@example.com',
+            'password1': 'hello!234',
+            'password2': 'hello!234'
+        })
 
-#         self.assertTemplateUsed(response, expected)
+    def test_return_to_login_page_if_not_signed_in(self):
+        expected = '{}?next={}'.format(
+            reverse('accounts:login'),
+            reverse('applications'))
 
+        response = self.client.get(reverse('applications'), follow=True)
 
-# """
-# /applications
-# """
+        self.assertRedirects(
+            response,
+            expected,
+            fetch_redirect_response=False
+        )
 
-# class ApplicationGETRequest(TestCase):
-#     def setUp(self):
-#         self.resp = self.client.post(reverse('accounts:sign_up'), {
-#             'email': 'hello@example.com',
-#             'password1': 'hello!234',
-#             'password2': 'hello!234'
-#         })
+    def test_return_to_login_page_if_not_have_permission(self):
+        expected = '{}?next={}'.format(
+            reverse('accounts:login'),
+            reverse('applications'))
 
-#     def test_return_302_if_try_to_create_while_not_logged_in(self):
-#         expected = 302
 
-#         response = self.client.get(reverse('applications'))
+        self.client.post(reverse('accounts:login'), {
+            'username': 'hello1@example.com',
+            'password': 'hello!234'
+        })
 
-#         result = response.status_code
+        response = self.client.get(reverse('applications'), follow=True)
 
-#         self.assertEqual(result, expected)
+        self.assertRedirects(
+            response,
+            expected,
+            fetch_redirect_response=False)
 
-#     def test_return_login_page_if_try_to_create_while_not_logged_in(self):
-#         expected = 'accounts/signin.html'
+    def test_return_status_code_200_if_successful(self):
+        expected = 200
 
-#         result = self.client.get(reverse('applications'), follow=True)
+        resp = self.client.post(reverse('accounts:login'), {
+            'username': 'hello@example.com',
+            'password': 'hello!234'
+        })
 
-#         self.assertTemplateUsed(result, expected)
+        response = self.client.get(reverse('applications'))
 
-#     def test_return_status_code_200_if_successful(self):
-#         expected = 200
+        result = response.status_code
 
-#         resp = self.client.post(reverse('accounts:login'), {
-#             'username': 'hello@example.com',
-#             'password': 'hello!234'
-#         })
+        self.assertEqual(result, expected)
 
-#         response = self.client.get(reverse('applications'))
+    def test_return_applicationHTML_as_template_used(self):
+        expected = 'main/applications.html'
 
-#         result = response.status_code
+        resp = self.client.post(reverse('accounts:login'), {
+            'username': 'hello@example.com',
+            'password': 'hello!234'
+        })
 
-#         self.assertEqual(result, expected)
+        response = self.client.get(reverse('applications'))
 
-#     def test_return_applicationHTML_as_template_used(self):
-#         expected = 'main/applications.html'
+        self.assertTemplateUsed(response, expected)
 
-#         resp = self.client.post(reverse('accounts:login'), {
-#             'username': 'hello@example.com',
-#             'password': 'hello!234'
-#         })
+    def test_return_layoutHTML_as_template_used(self):
+        expected= 'layout.html'
 
-#         response = self.client.get(reverse('applications'))
+        resp = self.client.post(reverse('accounts:login'), {
+            'username': 'hello@example.com',
+            'password': 'hello!234'
+        })
 
-#         self.assertTemplateUsed(response, expected)
+        response = self.client.get(reverse('applications'))
 
-#     def test_return_layoutHTML_as_template_used(self):
-#         expected= 'layout.html'
+        self.assertTemplateUsed(response, expected)
 
-#         resp = self.client.post(reverse('accounts:login'), {
-#             'username': 'hello@example.com',
-#             'password': 'hello!234'
-#         })
 
-#         response = self.client.get(reverse('applications'))
+"""
+/
+"""
+class HomeGETRequest(TestCase):
+    def setUp(self):
+        self.client.post(reverse('accounts:sign_up'), {
+            'email': 'hello@example.com',
+            'password1': 'hello!234',
+            'password2': 'hello!234'
+        })
 
-#         self.assertTemplateUsed(response, expected)
+        self.user = User.objects.get(pk=1)
 
+        self.project1 = Project.objects.create(
+            title='Test project 1',
+            user=self.user,
+            timeline='10 days',
+            applicant_requirements='Test requirement 1',
+            description='Test description 1'
+        )
 
-# """
-# /
-# """
-# class HomeGETRequest(TestCase):
-#     def setUp(self):
-#         self.client.post(reverse('accounts:sign_up'), {
-#             'email': 'hello@example.com',
-#             'password1': 'hello!234',
-#             'password2': 'hello!234'
-#         })
+        self.project2 = Project.objects.create(
+            title='Test project 2',
+            user=self.user,
+            timeline='20 days',
+            applicant_requirements='Test requirement 2',
+            description='Test description 2'
+        )
 
-#         self.user = User.objects.get(pk=1)
+        self.response = self.client.get(reverse('home'))
 
-#         self.project1 = Project.objects.create(
-#             title='Test project 1',
-#             user=self.user,
-#             timeline='10 days',
-#             applicant_requirements='Test requirement 1',
-#             description='Test description 1'
-#         )
+    def test_returns_status_200_on_visit(self):
+        expected = 200
 
-#         self.project2 = Project.objects.create(
-#             title='Test project 2',
-#             user=self.user,
-#             timeline='20 days',
-#             applicant_requirements='Test requirement 2',
-#             description='Test description 2'
-#         )
+        result = self.response.status_code
 
-#         self.response = self.client.get(reverse('home'))
+        self.assertEqual(result, expected)
 
-#     def test_returns_status_200_on_visit(self):
-#         expected = 200
+    def test_returns_status_200_on_visit_when_logged_in(self):
+        expected = 200
 
-#         result = self.response.status_code
+        self.client.post(reverse('accounts:login'), {
+            'username': 'hello@example.com',
+            'password': 'hello!234'
+        }, follow=True)
 
-#         self.assertEqual(result, expected)
+        result = self.response.status_code
 
-#     def test_returns_status_200_on_visit_when_logged_in(self):
-#         expected = 200
+        self.assertEqual(result, expected)
 
-#         self.client.post(reverse('accounts:login'), {
-#             'username': 'hello@example.com',
-#             'password': 'hello!234'
-#         }, follow=True)
+    def test_return_layoutHTML_as_template_used(self):
+        expected = 'layout.html'
 
-#         result = self.response.status_code
+        self.assertTemplateUsed(self.response, expected)
 
-#         self.assertEqual(result, expected)
+    def test_return_homeHTML_as_template_used(self):
+        expected = 'main/home.html'
 
-#     def test_return_layoutHTML_as_template_used(self):
-#         expected = 'layout.html'
+        self.assertTemplateUsed(self.response, expected)
 
-#         self.assertTemplateUsed(self.response, expected)
+    def test_return_projects_with_length_2(self):
+        expected = 2
 
-#     def test_return_homeHTML_as_template_used(self):
-#         expected = 'main/home.html'
+        result = self.response.context['projects'].count()
 
-#         self.assertTemplateUsed(self.response, expected)
+        self.assertEqual(result, expected)
 
-#     def test_return_projects_with_length_2(self):
-#         expected = 2
 
-#         result = self.response.context['projects'].count()
+"""
+/search/
+"""
+class SearchGETRequest(TestCase):
+    def test_return_1_project_on_query_with_value_1(self):
+        expected = 1
 
-#         self.assertEqual(result, expected)
+        response = self.client.get('/search/', kwargs={
+            'q': '1'
+        })
 
+        result = response.count()
 
-# """
-# /search/
-# """
-# class SearchGETRequest(TestCase):
-#     def test_return_1_project_on_query_with_value_1(self):
-#         expected = 1
-
-#         response = self.client.get('/search/', kwargs={
-#             'q': '1'
-#         })
-
-#         result = response.count()
-
-#         self.assertEqual(result, expected)
+        self.assertEqual(result, expected)
