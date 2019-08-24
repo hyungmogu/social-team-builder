@@ -12,3 +12,15 @@ class MustBeProjectAuthorMixin:
             }))
 
         return super().get(request, *args, **kwargs)
+
+
+class MustBeProfileAuthorMixin:
+    def get(self, request, *args, **kwargs):
+        profile = models.Profile.objects.get(pk=self.kwargs.get('pk'))
+
+        if request.user.pk != profile.user.pk:
+            return redirect(reverse('profile', kwargs={
+                'pk': profile.pk
+            }))
+
+        return super().get(request, *args, **kwargs)

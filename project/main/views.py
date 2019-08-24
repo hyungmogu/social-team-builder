@@ -10,7 +10,7 @@ from django.views.generic import (
 
 from . import models, forms, mixins
 
-# Temporary. Will be replaced with class based views once developed.
+
 class HomeView(TemplateView):
     template_name = 'main/home.html'
 
@@ -25,6 +25,7 @@ class HomeView(TemplateView):
 
         return context
 
+
 class ProjectDetailView(DetailView):
     model = models.Project
     template_name = 'main/project.html'
@@ -36,6 +37,7 @@ class ProjectDetailView(DetailView):
         context['project'] = project
 
         return context
+
 
 class ProjectEditView(
         PermissionRequiredMixin,
@@ -82,6 +84,7 @@ class ProjectEditView(
             'form_project': form_project,
             "form_positions": form_positions
         })
+
 
 class ProjectCreateView(LoginRequiredMixin, CreateView):
     model = models.Project
@@ -149,6 +152,7 @@ class SearchView(TemplateView):
             'project_needs': project_needs
         })
 
+
 class SearchByPositionView(ListView):
     model = models.Project
     template_name = 'main/home.html'
@@ -188,7 +192,13 @@ class ProfileView(LoginRequiredMixin, TemplateView):
             'projects': projects
         })
 
-class ProfileEditView(LoginRequiredMixin, UpdateView):
+
+class ProfileEditView(
+        LoginRequiredMixin,
+        mixins.MustBeProfileAuthorMixin,
+        UpdateView
+    ):
+
     fields = ('name', 'short_bio', 'profile_image')
     model = models.Profile
     form_profile = forms.ProfileForm
@@ -358,6 +368,7 @@ class ApplicationsByProjectView(PermissionRequiredMixin, LoginRequiredMixin, Tem
             'redirect': redirect
         })
 
+
 class ApplicationsByStatusView(PermissionRequiredMixin, LoginRequiredMixin, TemplateView):
     model = models.Application
     template_name = 'main/applications.html'
@@ -385,6 +396,7 @@ class ApplicationsByStatusView(PermissionRequiredMixin, LoginRequiredMixin, Temp
             'form_status': form_status,
             'redirect': redirect
         })
+
 
 class ApplicantEditView(PermissionRequiredMixin, LoginRequiredMixin, UpdateView):
     model = models.Application
