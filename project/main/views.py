@@ -8,7 +8,7 @@ from django.views.generic import (
     TemplateView, DetailView, UpdateView,
     CreateView, DeleteView, ListView, RedirectView)
 
-from . import models, forms
+from . import models, forms, mixins
 
 # Temporary. Will be replaced with class based views once developed.
 class HomeView(TemplateView):
@@ -37,7 +37,12 @@ class ProjectDetailView(DetailView):
 
         return context
 
-class ProjectEditView(PermissionRequiredMixin, LoginRequiredMixin, UpdateView):
+class ProjectEditView(
+        PermissionRequiredMixin,
+        LoginRequiredMixin,
+        mixins.MustBeProjectAuthorMixin,
+        UpdateView
+    ):
     fields = (
         'title', 'timeline',
         'applicant_requirements', 'description')
@@ -46,16 +51,6 @@ class ProjectEditView(PermissionRequiredMixin, LoginRequiredMixin, UpdateView):
     form_positions = forms.PositionFormSet
     template_name = 'main/project_edit.html'
     permission_required = 'main.employer'
-
-    def get(self, request, *args, **kwargs):
-        project = models.Project.objects.get(pk=self.kwargs.get('pk'))
-
-        if request.user.pk != project.user.pk:
-            return redirect(reverse('project', kwargs={
-                'pk': project.pk
-            }))
-
-        return super().get(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -125,20 +120,14 @@ class ProjectCreateView(LoginRequiredMixin, CreateView):
         })
 
 
-class ProjectDeleteView(LoginRequiredMixin, DeleteView):
+class ProjectDeleteView(
+        LoginRequiredMixin,
+        mixins.MustBeProjectAuthorMixin,
+        DeleteView
+    ):
     model = models.Project
     template_name= 'main/project_delete.html'
     success_url = reverse_lazy('home')
-
-    def get(self, request, *args, **kwargs):
-        project = models.Project.objects.get(pk=self.kwargs.get('pk'))
-
-        if request.user.pk != project.user.pk:
-            return redirect(reverse('project', kwargs={
-                'pk': project.pk
-            }))
-
-        return super().get(request, *args, **kwargs)
 
 
 class SearchView(TemplateView):
