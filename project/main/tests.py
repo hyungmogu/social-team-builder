@@ -774,7 +774,6 @@ class ProfileGETTestCase(TestCase):
 """
 /profile/{id}/edit (GET)
 """
-
 class ProfileEditGETRequest(TestCase):
     def setUp(self):
         self.response = self.client.post(reverse('accounts:sign_up'), {
@@ -789,6 +788,45 @@ class ProfileEditGETRequest(TestCase):
         self.profile.short_bio = 'Test Bio 1'
         self.profile.profile_image = 'image_1.png'
         self.profile.save()
+
+    def test_return_to_login_page_if_not_signed_in(self):
+        expected = '{}?next={}'.format(
+            reverse('accounts:login'),
+            reverse('profile_edit', kwargs={
+                'pk': 1
+            }))
+
+        result = self.client.get(reverse('profile_edit', kwargs={
+            'pk': 1
+        }), follow=True)
+
+        self.assertRedirects(
+            result,
+            expected,
+            fetch_redirect_response=False
+        )
+
+    def test_return_to_login_page_if_not_have_permission(self):
+        expected = '{}?next={}'.format(
+            reverse('accounts:login'),
+            reverse('profile_edit', kwargs={
+                'pk': 1
+            }))
+
+        self.client.post(reverse('accounts:login'), {
+            'username': 'hello1@example.com',
+            'password': 'hello!234'
+        })
+
+        result = self.client.get(reverse('profile_edit', kwargs={
+            'pk': 1
+        }), follow=True)
+
+        self.assertRedirects(
+            result,
+            expected,
+            fetch_redirect_response=False
+        )
 
     def test_return_status_code_200_if_successful(self):
         expected = 200
@@ -834,7 +872,7 @@ class ProfileEditGETRequest(TestCase):
 
         self.assertTemplateUsed(response, expected)
 
-    def test_return_profile_1_as_the_project_used(self):
+    def test_return_profile_1_as_the_profile_used(self):
         expected = 'Test Profile 1'
 
         response = self.client.post(reverse('accounts:login'), {
@@ -863,6 +901,11 @@ class EditProfilePOSTRequest(TestCase):
             'password2': 'hello!234'
         })
 
+        self.client.post(reverse('accounts:sign_up'), {
+            'email': 'hello2@example.com',
+            'password1': 'hello!234',
+            'password2': 'hello!234'
+        })
 
         self.user = User.objects.get(pk=1)
         self.profile = self.user.profile
@@ -906,25 +949,37 @@ class EditProfilePOSTRequest(TestCase):
             'user_projects-0-url': 'http://google1.ca'
         }
 
+    def test_return_to_login_page_if_not_signed_in(self):
+        expected = '{}?next={}'.format(
+            reverse('accounts:login'),
+            reverse('profile_edit', kwargs={
+                'pk': 1
+            }))
 
-    def test_return_302_if_try_to_edit_while_not_logged_in(self):
-        expected = 302
-
-        response = self.client.post(reverse('profile_edit', kwargs={
+        result = self.client.get(reverse('profile_edit', kwargs={
             'pk': 1
-        }), self.edit_data)
-        result = response.status_code
+        }), follow=True)
 
-        self.assertEqual(result, expected)
+        self.assertRedirects(
+            result,
+            expected,
+            fetch_redirect_response=False
+        )
 
-    def test_return_login_page_if_try_to_create_while_not_logged_in(self):
-        expected = 'accounts/signin.html'
+    def test_return_to_project_page_if_not_the_author(self):
 
-        response = self.client.post(reverse('profile_edit', kwargs={
+        self.client.post(reverse('accounts:login'), {
+            'username': 'hello2@example.com',
+            'password': 'hello!234'
+        })
+
+        response = self.client.get(reverse('profile_edit', kwargs={
             'pk': 1
-        }), self.edit_data, follow=True)
+        }), follow=True)
 
-        self.assertTemplateUsed(response, expected)
+        self.assertRedirects(response, reverse('profile', kwargs={
+            'pk': 1
+        }), fetch_redirect_response=False)
 
     def test_retrun_project_with_title_revised_test_profile_1_if_edit_successful(self):
         expected = 'Revised test name 1'
