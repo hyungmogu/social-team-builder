@@ -2052,8 +2052,6 @@ class ApplicationsFilterByProjectNeedGETRequest(TestCase):
             project=self.project2
         )
 
-
-
     def test_return_to_login_page_if_not_signed_in(self):
         expected = '{}?next={}'.format(
             reverse('accounts:login'),
@@ -2175,7 +2173,7 @@ class ApplicationsFilterByProjectNeedGETRequest(TestCase):
 """
 /applications/filter/by_project/
 """
-class ApplicationsFilterByProjectTRequest(TestCase):
+class ApplicationsFilterByProjectGETRequest(TestCase):
     def setUp(self):
         self.client.post(reverse('accounts:sign_up'), {
             'email': 'hello@example.com',
@@ -2395,6 +2393,248 @@ class ApplicationsFilterByProjectTRequest(TestCase):
         response = self.client.get('{}?q=Test project 2'.format(reverse('applications_project')))
 
         result1 = response.context['filtered_applicants'][1].user.email
+
+        self.assertEqual(result1, expected)
+
+
+"""
+/applications/filter/by_status/
+"""
+class ApplicationsFilterByStatusGETRequest(TestCase):
+    def setUp(self):
+        self.client.post(reverse('accounts:sign_up'), {
+            'email': 'hello@example.com',
+            'password1': 'hello!234',
+            'password2': 'hello!234',
+            'is_employer': 'on'
+        })
+
+        self.client.post(reverse('accounts:sign_up'), {
+            'email': 'hello1@example.com',
+            'password1': 'hello!234',
+            'password2': 'hello!234'
+        })
+
+        self.client.post(reverse('accounts:sign_up'), {
+            'email': 'hello2@example.com',
+            'password1': 'hello!234',
+            'password2': 'hello!234'
+        })
+
+        self.user1 = User.objects.get(pk=1)
+        self.user2 = User.objects.get(pk=2)
+        self.user3 = User.objects.get(pk=3)
+
+        self.project1 = Project.objects.create(
+            title='Test project 1',
+            user=self.user1,
+            timeline='10 days',
+            applicant_requirements='Test requirement 1',
+            description='Test description 1'
+        )
+
+        self.position1 = Position.objects.create(
+            name='Test position 1',
+            project=self.project1,
+            description='Test description 1'
+        )
+
+        self.position2 = Position.objects.create(
+            name='Test position 2',
+            project=self.project1,
+            description='Test description 2'
+        )
+
+        self.application1 = Application.objects.create(
+            user=self.user2,
+            profile=self.user2.profile,
+            position=self.position1,
+            project=self.project1,
+            status='Accepted'
+        )
+
+        self.application2 = Application.objects.create(
+            user=self.user2,
+            profile=self.user2.profile,
+            position=self.position2,
+            project=self.project1,
+            status='Rejected'
+        )
+
+        self.project2 = Project.objects.create(
+            title='Test project 2',
+            user=self.user1,
+            timeline='10 days',
+            applicant_requirements='Test requirement 2',
+            description='Test description 2'
+        )
+
+        self.position3 = Position.objects.create(
+            name='Test position 1',
+            project=self.project2,
+            description='Test description 3'
+        )
+
+        self.position4 = Position.objects.create(
+            name='Test position 4',
+            project=self.project2,
+            description='Test description 4'
+        )
+
+        self.application3 = Application.objects.create(
+            user=self.user2,
+            profile=self.user2.profile,
+            position=self.position3,
+            project=self.project2,
+            status='Rejected'
+        )
+
+        self.application4 = Application.objects.create(
+            user=self.user3,
+            profile=self.user3.profile,
+            position=self.position4,
+            project=self.project2,
+            status='Pending'
+        )
+
+    def test_return_to_login_page_if_not_signed_in(self):
+        expected = '{}?next={}'.format(
+            reverse('accounts:login'),
+            reverse('applications_status'))
+
+        response = self.client.get(reverse('applications_status'), follow=True)
+
+        self.assertRedirects(
+            response,
+            expected,
+            fetch_redirect_response=False
+        )
+
+    def test_return_to_login_page_if_not_have_permission(self):
+        expected = '{}?next={}'.format(
+            reverse('accounts:login'),
+            reverse('applications_status'))
+
+
+        self.client.post(reverse('accounts:login'), {
+            'username': 'hello1@example.com',
+            'password': 'hello!234'
+        })
+
+        response = self.client.get(reverse('applications_status'), follow=True)
+
+        self.assertRedirects(
+            response,
+            expected,
+            fetch_redirect_response=False)
+
+    def test_return_status_200_on_successful_search(self):
+        expected = 200
+
+        self.client.post(reverse('accounts:login'), {
+            'username': 'hello@example.com',
+            'password': 'hello!234'
+        })
+
+        response = self.client.get(reverse('applications_status'), follow=True)
+        result = response.status_code
+
+        self.assertEqual(result, expected)
+
+    def test_return_all_applicantions_for_empty_query(self):
+        expected = 4
+
+        self.client.post(reverse('accounts:login'), {
+            'username': 'hello@example.com',
+            'password': 'hello!234'
+        })
+
+        response = self.client.get('{}?q='.format(reverse('applications_status')))
+
+        result = response.context['filtered_applicants'].count()
+
+        self.assertEqual(result, expected)
+
+    def test_return_applicantions_of_length_1_for_accepted(self):
+        expected = 1
+
+        self.client.post(reverse('accounts:login'), {
+            'username': 'hello@example.com',
+            'password': 'hello!234'
+        })
+
+        response = self.client.get('{}?q=Accepted'.format(reverse('applications_status')))
+
+        result = response.context['filtered_applicants'].count()
+
+        self.assertEqual(result, expected)
+
+    def test_return_user_2_as_the_only_applicant_for_accepted(self):
+        expected = 'hello1@example.com'
+
+        self.client.post(reverse('accounts:login'), {
+            'username': 'hello@example.com',
+            'password': 'hello!234'
+        })
+
+        response = self.client.get('{}?q=Accepted'.format(reverse('applications_status')))
+
+        result = response.context['filtered_applicants'][0].user.email
+
+        self.assertEqual(result, expected)
+
+    def test_return_applicantions_of_length_2_for_rejected(self):
+        expected = 2
+
+        self.client.post(reverse('accounts:login'), {
+            'username': 'hello@example.com',
+            'password': 'hello!234'
+        })
+
+        response = self.client.get('{}?q=Rejected'.format(reverse('applications_status')))
+
+        result = response.context['filtered_applicants'].count()
+
+        self.assertEqual(result, expected)
+
+    def test_return_user_2_for_both_applications_for_rejected(self):
+        expected = 'hello1@example.com'
+
+        self.client.post(reverse('accounts:login'), {
+            'username': 'hello@example.com',
+            'password': 'hello!234'
+        })
+
+        response = self.client.get('{}?q=Rejected'.format(reverse('applications_status')))
+
+        result1 = response.context['filtered_applicants'][0].user.email
+        result2 = response.context['filtered_applicants'][0].user.email
+
+    def test_return_applicantions_of_length_1_for_pending(self):
+        expected = 1
+
+        self.client.post(reverse('accounts:login'), {
+            'username': 'hello@example.com',
+            'password': 'hello!234'
+        })
+
+        response = self.client.get('{}?q=Pending'.format(reverse('applications_status')))
+
+        result = response.context['filtered_applicants'].count()
+
+        self.assertEqual(result, expected)
+
+    def test_return_user_3_as_the_applicant_for_pending(self):
+        expected = 'hello2@example.com'
+
+        self.client.post(reverse('accounts:login'), {
+            'username': 'hello@example.com',
+            'password': 'hello!234'
+        })
+
+        response = self.client.get('{}?q=Pending'.format(reverse('applications_status')))
+
+        result1 = response.context['filtered_applicants'][0].user.email
 
         self.assertEqual(result1, expected)
 
