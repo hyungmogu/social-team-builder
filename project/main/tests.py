@@ -1309,6 +1309,20 @@ class EditProjectPOSTRequest(TestCase):
         self.client.post(reverse('accounts:sign_up'), {
             'email': 'hello@example.com',
             'password1': 'hello!234',
+            'password2': 'hello!234',
+            'is_employer': 'on'
+        })
+
+        self.client.post(reverse('accounts:sign_up'), {
+            'email': 'hello2@example.com',
+            'password1': 'hello!234',
+            'password2': 'hello!234',
+            'is_employer': 'on'
+        })
+
+        self.client.post(reverse('accounts:sign_up'), {
+            'email': 'hello3@example.com',
+            'password1': 'hello!234',
             'password2': 'hello!234'
         })
 
@@ -1365,8 +1379,12 @@ class EditProjectPOSTRequest(TestCase):
         }
 
 
-    def test_return_302_if_try_to_edit_while_not_logged_in(self):
-        expected = 302
+    def test_return_to_login_page_if_not_signed_in(self):
+        expected = '{}?next={}'.format(
+            reverse('accounts:login'),
+            reverse('project_edit', kwargs={
+                'pk': 1
+            }))
 
         response = self.client.post(reverse('project_edit', kwargs={
             'pk': 1
@@ -1377,12 +1395,25 @@ class EditProjectPOSTRequest(TestCase):
             'project-description':'This is test description 3',
             'project-applicant_requirements': 'This is test applicant requirements'
         })
-        result = response.status_code
 
-        self.assertEqual(result, expected)
+        self.assertRedirects(
+            response,
+            expected,
+            fetch_redirect_response=False
+        )
 
-    def test_return_login_page_if_try_to_create_while_not_logged_in(self):
-        expected = 'accounts/signin.html'
+    def test_return_to_login_page_if_not_have_permission(self):
+        expected = '{}?next={}'.format(
+            reverse('accounts:login'),
+            reverse('project_edit', kwargs={
+                'pk': 1
+            }))
+
+
+        self.client.post(reverse('accounts:login'), {
+            'username': 'hello3@example.com',
+            'password': 'hello!234'
+        })
 
         response = self.client.post(reverse('project_edit', kwargs={
             'pk': 1
@@ -1392,9 +1423,55 @@ class EditProjectPOSTRequest(TestCase):
             'project-timeline': 'This is test timeline 3',
             'project-description':'This is test description 3',
             'project-applicant_requirements': 'This is test applicant requirements'
+        })
+
+        self.assertRedirects(
+            response,
+            expected,
+            fetch_redirect_response=False)
+
+    def test_return_to_project_page_if_not_the_author(self):
+
+        self.client.post(reverse('accounts:login'), {
+            'username': 'hello2@example.com',
+            'password': 'hello!234'
+        })
+
+        response = self.client.post(reverse('project_edit', kwargs={
+            'pk': 1
+        }), self.edit_data)
+
+        self.assertRedirects(response, reverse('project', kwargs={
+            'pk': 1
+        }), fetch_redirect_response=False)
+
+    def test_return_status_302_if_edit_successful(self):
+        expected = 302
+
+        self.client.post(reverse('accounts:login'), {
+            'username': 'hello@example.com',
+            'password': 'hello!234'
+        })
+
+        response = self.client.post(reverse('project_edit', kwargs={
+            'pk': 1
+        }), self.edit_data)
+
+        result = response.status_code
+
+        self.assertEqual(result, expected)
+
+    def test_return_projectHTML_as_template_used_if_edit_successful(self):
+        expected = 'main/project.html'
+
+        self.client.post(reverse('accounts:login'), {
+            'username': 'hello@example.com',
+            'password': 'hello!234'
         }, follow=True)
 
-        self.assertTemplateUsed(response, expected)
+        result = self.client.post(reverse('project_create'), self.edit_data, follow=True)
+
+        self.assertTemplateUsed(result, expected)
 
     def test_retrun_project_with_title_revised_test_project_1_if_edit_successful(self):
         expected = 'Revised test project 1'
@@ -1461,32 +1538,6 @@ class EditProjectPOSTRequest(TestCase):
 
         self.assertEqual(result, expected)
 
-
-    def test_return_status_302_if_edit_successful(self):
-        expected = 302
-
-        self.client.post(reverse('accounts:login'), {
-            'username': 'hello@example.com',
-            'password': 'hello!234'
-        }, follow=True)
-
-        res = self.client.post(reverse('project_create'), self.edit_data)
-
-        result = res.status_code
-
-        self.assertEqual(result, expected)
-
-    def test_return_projectHTML_as_template_used_if_edit_successful(self):
-        expected = 'main/project.html'
-
-        self.client.post(reverse('accounts:login'), {
-            'username': 'hello@example.com',
-            'password': 'hello!234'
-        }, follow=True)
-
-        result = self.client.post(reverse('project_create'), self.edit_data, follow=True)
-
-        self.assertTemplateUsed(result, expected)
 
 """
 /projects/create
