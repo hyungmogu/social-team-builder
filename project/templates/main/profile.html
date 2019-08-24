@@ -8,7 +8,7 @@
         {% if user.is_employer %}
           <li><a href="{% url 'applications' %}">Applications</a></li>
         {% endif %}
-          <li><a class="selected" href="{% url 'profile' pk=user.profile.pk %}">Profile</a></li>
+          <li><a class="selected" href="{% url 'profile' pk=profile.pk %}">Profile</a></li>
       </ul>
     </nav>
   </div>
@@ -21,7 +21,7 @@
         <h2>Profile</h2>
       </div>
       <div class="circle--fluid--cell circle--fluid--secondary">
-        <a class="button icon-on-left" href="{% url 'profile_edit' pk=user.profile.pk %}">Edit</a>
+        <a class="button icon-on-left" href="{% url 'profile_edit' pk=profile.pk %}">Edit</a>
       </div>
     </div>
 
