@@ -51,7 +51,7 @@ class SignUpView(CreateView):
         try:
             employer_group = Group.objects.get(name__iexact='Employer')
         except Group.DoesNotExist:
-            employer_group = Group.objects.create(name='Editors')
+            employer_group = Group.objects.create(name='Employer')
 
         employer_group.permissions.add(Permission.objects.get(codename="employer"))
 
