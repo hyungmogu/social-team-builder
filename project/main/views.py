@@ -130,6 +130,16 @@ class ProjectDeleteView(LoginRequiredMixin, DeleteView):
     template_name= 'main/project_delete.html'
     success_url = reverse_lazy('home')
 
+    def get(self, request, *args, **kwargs):
+        project = models.Project.objects.get(pk=self.kwargs.get('pk'))
+
+        if request.user.pk != project.user.pk:
+            return redirect(reverse('project', kwargs={
+                'pk': project.pk
+            }))
+
+        return super().get(request, *args, **kwargs)
+
 
 class SearchView(TemplateView):
     model = models.Project
