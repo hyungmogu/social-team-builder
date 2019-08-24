@@ -427,8 +427,8 @@ from .models import Project, Skill, Position, Profile, Application
 #     def test_return_name_when_type_casted_as_str(self):
 #         expected = 'Test position 1'
 
-#         res = Position.objects.get(pk=1)
-#         result = res.name
+#         response= Position.objects.get(pk=1)
+#         result = response.name
 
 #         self.assertEqual(result, expected)
 
@@ -575,24 +575,24 @@ from .models import Project, Skill, Position, Profile, Application
 """
 class LoginGETRequest(TestCase):
     def setUp(self):
-        self.resp = self.client.get(reverse('accounts:login'))
+        self.response = self.client.get(reverse('accounts:login'))
 
     def test_returns_status_200_on_visit(self):
         expected = 200
 
-        result = self.resp.status_code
+        result = self.response.status_code
 
         self.assertEqual(result, expected)
 
     def test_return_layoutHTML_as_template_used(self):
         expected = 'layout.html'
 
-        self.assertTemplateUsed(self.resp, expected)
+        self.assertTemplateUsed(self.response, expected)
 
     def test_return_signinHTML_as_template_used(self):
         expected = 'accounts/signin.html'
 
-        self.assertTemplateUsed(self.resp, expected)
+        self.assertTemplateUsed(self.response, expected)
 
 
 """
@@ -600,7 +600,7 @@ class LoginGETRequest(TestCase):
 """
 class LoginPOSTRequest(TestCase):
     def setUp(self):
-        self.resp = self.client.post(reverse('accounts:sign_up'), {
+        self.response = self.client.post(reverse('accounts:sign_up'), {
             'email': 'hello@example.com',
             'password1': 'hello!234',
             'password2': 'hello!234'
@@ -623,12 +623,12 @@ class LoginPOSTRequest(TestCase):
         self.assertTemplateUsed(response2, expected)
 
     def test_return_to_home_page_if_login_successful(self):
-        resp = self.client.post(reverse('accounts:login'), {
+        response = self.client.post(reverse('accounts:login'), {
             'username': 'hello@example.com',
             'password': 'hello!234'
         }, follow=True)
 
-        self.assertRedirects(resp, reverse('home'), fetch_redirect_response=False)
+        self.assertRedirects(response, reverse('home'), fetch_redirect_response=False)
 
 
 """
@@ -636,24 +636,24 @@ class LoginPOSTRequest(TestCase):
 """
 class SignUpGETRequest(TestCase):
     def setUp(self):
-        self.resp = self.client.get(reverse('accounts:sign_up'))
+        self.response = self.client.get(reverse('accounts:sign_up'))
 
     def test_returns_status_200_on_visit(self):
         expected = 200
 
-        result = self.resp.status_code
+        result = self.response.status_code
 
         self.assertEqual(result, expected)
 
     def test_return_layoutHTML_as_template_used(self):
         expected = 'layout.html'
 
-        self.assertTemplateUsed(self.resp, expected)
+        self.assertTemplateUsed(self.response, expected)
 
     def test_return_signupHTML_as_template_used(self):
         expected = 'accounts/signup.html'
 
-        self.assertTemplateUsed(self.resp, expected)
+        self.assertTemplateUsed(self.response, expected)
 
 
 """
@@ -661,7 +661,7 @@ class SignUpGETRequest(TestCase):
 """
 class SignUpPOSTRequest(TestCase):
     def setUp(self):
-        self.resp = self.client.post(reverse('accounts:sign_up'), {
+        self.response = self.client.post(reverse('accounts:sign_up'), {
             'email': 'hello@example.com',
             'password1': 'hello!234',
             'password2': 'hello!234'
@@ -693,7 +693,7 @@ class SignUpPOSTRequest(TestCase):
         self.assertEqual(result, expected)
 
     def test_return_to_login_page_if_signup_successful(self):
-        self.assertRedirects(self.resp, reverse('accounts:login'), fetch_redirect_response=True)
+        self.assertRedirects(self.response, reverse('accounts:login'), fetch_redirect_response=True)
 
 
 
@@ -777,7 +777,7 @@ class ProfileGETTestCase(TestCase):
 
 class ProfileEditGETRequest(TestCase):
     def setUp(self):
-        self.resp = self.client.post(reverse('accounts:sign_up'), {
+        self.response = self.client.post(reverse('accounts:sign_up'), {
             'email': 'hello@example.com',
             'password1': 'hello!234',
             'password2': 'hello!234'
@@ -793,7 +793,7 @@ class ProfileEditGETRequest(TestCase):
     def test_return_status_code_200_if_successful(self):
         expected = 200
 
-        resp = self.client.post(reverse('accounts:login'), {
+        response = self.client.post(reverse('accounts:login'), {
             'username': 'hello@example.com',
             'password': 'hello!234'
         })
@@ -809,7 +809,7 @@ class ProfileEditGETRequest(TestCase):
     def test_return_profileHTML_as_template_used(self):
         expected= 'main/profile_edit.html'
 
-        resp = self.client.post(reverse('accounts:login'), {
+        response = self.client.post(reverse('accounts:login'), {
             'username': 'hello@example.com',
             'password': 'hello!234'
         })
@@ -823,7 +823,7 @@ class ProfileEditGETRequest(TestCase):
     def test_return_layoutHTML_as_template_used(self):
         expected= 'layout.html'
 
-        resp = self.client.post(reverse('accounts:login'), {
+        response = self.client.post(reverse('accounts:login'), {
             'username': 'hello@example.com',
             'password': 'hello!234'
         })
@@ -837,7 +837,7 @@ class ProfileEditGETRequest(TestCase):
     def test_return_profile_1_as_the_project_used(self):
         expected = 'Test Profile 1'
 
-        resp = self.client.post(reverse('accounts:login'), {
+        response = self.client.post(reverse('accounts:login'), {
             'username': 'hello@example.com',
             'password': 'hello!234'
         })
@@ -934,7 +934,7 @@ class EditProfilePOSTRequest(TestCase):
             'password': 'hello!234'
         }, follow=True)
 
-        self.resp = self.client.post(reverse('profile_edit', kwargs={
+        self.response = self.client.post(reverse('profile_edit', kwargs={
             'pk': 1
         }), self.edit_data)
 
@@ -950,7 +950,7 @@ class EditProfilePOSTRequest(TestCase):
             'password': 'hello!234'
         }, follow=True)
 
-        self.resp = self.client.post(reverse('profile_edit', kwargs={
+        self.response = self.client.post(reverse('profile_edit', kwargs={
             'pk': 1
         }), self.edit_data)
 
@@ -966,7 +966,7 @@ class EditProfilePOSTRequest(TestCase):
             'password': 'hello!234'
         }, follow=True)
 
-        self.resp = self.client.post(reverse('profile_edit', kwargs={
+        self.response = self.client.post(reverse('profile_edit', kwargs={
             'pk': 1
         }), self.edit_data)
 
@@ -982,7 +982,7 @@ class EditProfilePOSTRequest(TestCase):
             'password': 'hello!234'
         }, follow=True)
 
-        self.resp = self.client.post(reverse('profile_edit', kwargs={
+        self.response = self.client.post(reverse('profile_edit', kwargs={
             'pk': 1
         }), self.edit_data)
 
@@ -998,7 +998,7 @@ class EditProfilePOSTRequest(TestCase):
             'password': 'hello!234'
         }, follow=True)
 
-        self.resp = self.client.post(reverse('profile_edit', kwargs={
+        self.response = self.client.post(reverse('profile_edit', kwargs={
             'pk': 1
         }), self.edit_data)
 
@@ -1014,7 +1014,7 @@ class EditProfilePOSTRequest(TestCase):
             'password': 'hello!234'
         }, follow=True)
 
-        self.resp = self.client.post(reverse('profile_edit', kwargs={
+        self.response = self.client.post(reverse('profile_edit', kwargs={
             'pk': 1
         }), self.edit_data)
 
@@ -1030,7 +1030,7 @@ class EditProfilePOSTRequest(TestCase):
             'password': 'hello!234'
         }, follow=True)
 
-        self.resp = self.client.post(reverse('profile_edit', kwargs={
+        self.response = self.client.post(reverse('profile_edit', kwargs={
             'pk': 1
         }), self.edit_data)
 
@@ -1046,7 +1046,7 @@ class EditProfilePOSTRequest(TestCase):
             'password': 'hello!234'
         }, follow=True)
 
-        self.resp = self.client.post(reverse('profile_edit', kwargs={
+        self.response = self.client.post(reverse('profile_edit', kwargs={
             'pk': 1
         }), self.edit_data)
 
@@ -1245,7 +1245,7 @@ class EditProjectGETRequest(TestCase):
     def test_return_status_code_200_if_successful(self):
         expected = 200
 
-        resp = self.client.post(reverse('accounts:login'), {
+        response = self.client.post(reverse('accounts:login'), {
             'username': 'hello@example.com',
             'password': 'hello!234'
         })
@@ -1261,7 +1261,7 @@ class EditProjectGETRequest(TestCase):
     def test_return_projectHTML_as_template_used(self):
         expected= 'main/project_edit.html'
 
-        resp = self.client.post(reverse('accounts:login'), {
+        response = self.client.post(reverse('accounts:login'), {
             'username': 'hello@example.com',
             'password': 'hello!234'
         })
@@ -1275,7 +1275,7 @@ class EditProjectGETRequest(TestCase):
     def test_return_layoutHTML_as_template_used(self):
         expected= 'layout.html'
 
-        resp = self.client.post(reverse('accounts:login'), {
+        response = self.client.post(reverse('accounts:login'), {
             'username': 'hello@example.com',
             'password': 'hello!234'
         })
@@ -1289,7 +1289,7 @@ class EditProjectGETRequest(TestCase):
     def test_return_project_1_as_the_project_used(self):
         expected = 'Test project 1'
 
-        resp = self.client.post(reverse('accounts:login'), {
+        response = self.client.post(reverse('accounts:login'), {
             'username': 'hello@example.com',
             'password': 'hello!234'
         })
@@ -1481,7 +1481,7 @@ class EditProjectPOSTRequest(TestCase):
             'password': 'hello!234'
         }, follow=True)
 
-        self.resp = self.client.post(reverse('project_edit', kwargs={
+        self.response = self.client.post(reverse('project_edit', kwargs={
             'pk': 1
         }), self.edit_data)
 
@@ -1498,7 +1498,7 @@ class EditProjectPOSTRequest(TestCase):
             'password': 'hello!234'
         }, follow=True)
 
-        self.resp = self.client.post(reverse('project_edit', kwargs={
+        self.response = self.client.post(reverse('project_edit', kwargs={
             'pk': 1
         }), self.edit_data)
 
@@ -1514,7 +1514,7 @@ class EditProjectPOSTRequest(TestCase):
             'password': 'hello!234'
         }, follow=True)
 
-        self.resp = self.client.post(reverse('project_edit', kwargs={
+        self.response = self.client.post(reverse('project_edit', kwargs={
             'pk': 1
         }), self.edit_data)
 
@@ -1530,7 +1530,7 @@ class EditProjectPOSTRequest(TestCase):
             'password': 'hello!234'
         }, follow=True)
 
-        self.resp = self.client.post(reverse('project_edit', kwargs={
+        self.response = self.client.post(reverse('project_edit', kwargs={
             'pk': 1
         }), self.edit_data)
 
@@ -1941,7 +1941,7 @@ class ApplicationsGETRequest(TestCase):
     def test_return_status_code_200_if_successful(self):
         expected = 200
 
-        resp = self.client.post(reverse('accounts:login'), {
+        response = self.client.post(reverse('accounts:login'), {
             'username': 'hello@example.com',
             'password': 'hello!234'
         })
@@ -1955,7 +1955,7 @@ class ApplicationsGETRequest(TestCase):
     def test_return_applicationHTML_as_template_used(self):
         expected = 'main/applications.html'
 
-        resp = self.client.post(reverse('accounts:login'), {
+        response = self.client.post(reverse('accounts:login'), {
             'username': 'hello@example.com',
             'password': 'hello!234'
         })
@@ -1967,7 +1967,7 @@ class ApplicationsGETRequest(TestCase):
     def test_return_layoutHTML_as_template_used(self):
         expected= 'layout.html'
 
-        resp = self.client.post(reverse('accounts:login'), {
+        response = self.client.post(reverse('accounts:login'), {
             'username': 'hello@example.com',
             'password': 'hello!234'
         })
