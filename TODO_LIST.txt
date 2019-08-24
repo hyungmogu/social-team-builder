@@ -29,7 +29,7 @@
         [x]: '/applications'
 
 []:Profile Page
-    []: Add endpoints
+    [x]: Add endpoints
         [x]: '/profile/'
             [x]:
         [x]: '/profile/edit'
@@ -76,16 +76,28 @@
 
 ==============================
 
-AUGUST 24th, 2019
+AUGUST 24th, 2019 (part 2)
     GOAL:
         []: Add permissions and tests to the following
-            []: '/projects/create'
-            []: '/applications/create'
-            []: '/applications/filter/by_proj_need/'
-            []: '/applications/filter/by_project'
-            []: '/applications/filter/by_status'
+            []: '/profile'
+            []: '/profile/edits'
+            []: '/filter/by_position'
+            []: '/applications/applicants/{id}/edit/'
 
-        []: Rename 'SearchByPositionView' to 'FilterByPositionView'
+        []: Change variables 'res' and 'resp' to 'response' (tests.py)
+
+==============================
+
+AUGUST 24th, 2019 (part 1)
+    GOAL:
+        [x]: Add permissions and tests to the following
+            [x]: '/projects/create'
+            [x]: '/applications'
+            [x]: '/applications/filter/by_proj_need'
+            [x]: '/applications/filter/by_project'
+            [x]: '/applications/filter/by_status'
+
+        [x]: Rename 'SearchByPositionView' to 'FilterByPositionView'
 
 ==============================
 
@@ -93,7 +105,7 @@ AUGUST 23rd, 2019
     GOAL:
         [x]: Refactor urls.py
             [x]: '/search/by_position' to '/filter/by_position'
-            [x]: '/applications/by_proj_need/' to '/applications/filter/by_proj_need/'
+            [x]: '/applications/by_proj_need/' to '/applications/filter/by_proj_need'
             [x]: '/applications/by_project/' to '/applications/filter/by_project'
             [x]: '/applications/by_status/' to '/applications/filter/by_status'
 
