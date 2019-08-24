@@ -850,6 +850,7 @@ class ProfileEditGETRequest(TestCase):
 
         self.assertEqual(result, expected)
 
+
 """
 /profile/{id}/edit (POST)
 """
@@ -1139,11 +1140,27 @@ class ProjectGETTestCase(TestCase):
 
 class EditProjectGETRequest(TestCase):
     def setUp(self):
-        self.resp = self.client.post(reverse('accounts:sign_up'), {
+
+        self.client.post(reverse('accounts:sign_up'), {
             'email': 'hello@example.com',
+            'password1': 'hello!234',
+            'password2': 'hello!234',
+            'is_employer': 'on'
+        })
+
+        self.client.post(reverse('accounts:sign_up'), {
+            'email': 'hello2@example.com',
+            'password1': 'hello!234',
+            'password2': 'hello!234',
+            'is_employer': 'on'
+        })
+
+        self.client.post(reverse('accounts:sign_up'), {
+            'email': 'hello3@example.com',
             'password1': 'hello!234',
             'password2': 'hello!234'
         })
+
 
         self.user = User.objects.get(pk=1)
         self.profile = self.user.profile
@@ -1170,6 +1187,60 @@ class EditProjectGETRequest(TestCase):
             project=self.project,
             description='Test description 2'
         )
+
+    def test_return_to_login_page_if_not_signed_in(self):
+        expected = '{}?next={}'.format(
+            reverse('accounts:login'),
+            reverse('project_edit', kwargs={
+                'pk': 1
+            }))
+
+        response = self.client.get(reverse('project_edit', kwargs={
+            'pk': 1
+        }), follow=True)
+
+        self.assertRedirects(
+            response,
+            expected,
+            fetch_redirect_response=False
+        )
+
+    def test_return_to_login_page_if_not_have_permission(self):
+        expected = '{}?next={}'.format(
+            reverse('accounts:login'),
+            reverse('project_edit', kwargs={
+                'pk': 1
+            }))
+
+
+        self.client.post(reverse('accounts:login'), {
+            'username': 'hello3@example.com',
+            'password': 'hello!234'
+        })
+
+        response = self.client.get(reverse('project_edit', kwargs={
+            'pk': 1
+        }), follow=True)
+
+        self.assertRedirects(
+            response,
+            expected,
+            fetch_redirect_response=False)
+
+    def test_return_to_project_page_if_not_the_author(self):
+
+        self.client.post(reverse('accounts:login'), {
+            'username': 'hello2@example.com',
+            'password': 'hello!234'
+        })
+
+        response = self.client.get(reverse('project_edit', kwargs={
+            'pk': 1
+        }), follow=True)
+
+        self.assertRedirects(response, reverse('project', kwargs={
+            'pk': 1
+        }), fetch_redirect_response=False)
 
     def test_return_status_code_200_if_successful(self):
         expected = 200
@@ -1869,5 +1940,21 @@ class HomeGETRequest(TestCase):
         expected = 2
 
         result = self.response.context['projects'].count()
+
+        self.assertEqual(result, expected)
+
+
+"""
+/search/
+"""
+class SearchGETRequest(TestCase):
+    def test_return_1_project_on_query_with_value_1(self):
+        expected = 1
+
+        response = self.client.get('/search/', kwargs={
+            'q': '1'
+        })
+
+        result = response.count()
 
         self.assertEqual(result, expected)
