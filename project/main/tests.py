@@ -8,7 +8,7 @@ from django.core.urlresolvers import reverse
 from accounts.models import User
 from rest_framework.test import APIClient
 
-from .models import Project, Skill, Position, Profile
+from .models import Project, Skill, Position, Profile, Application
 # Create your tests here.
 
 # -----------
@@ -1994,6 +1994,66 @@ class ApplicationsFilterByProjectNeedGETRequest(TestCase):
             'password2': 'hello!234'
         })
 
+        self.user1 = User.objects.get(pk=1)
+        self.user2 = User.objects.get(pk=2)
+
+        self.project1 = Project.objects.create(
+            title='Test project 1',
+            user=self.user1,
+            timeline='10 days',
+            applicant_requirements='Test requirement 1',
+            description='Test description 1'
+        )
+
+        self.position1 = Position.objects.create(
+            name='Test position 1',
+            project=self.project1,
+            description='Test description 1'
+        )
+
+        self.position2 = Position.objects.create(
+            name='Test position 2',
+            project=self.project1,
+            description='Test description 2'
+        )
+
+        self.application1 = Application.objects.create(
+            user=self.user2,
+            profile=self.user2.profile,
+            position=self.position1,
+            project=self.project1
+        )
+
+        self.application2 = Application.objects.create(
+            user=self.user2,
+            profile=self.user2.profile,
+            position=self.position2,
+            project=self.project1
+        )
+
+        self.project2 = Project.objects.create(
+            title='Test project 2',
+            user=self.user1,
+            timeline='10 days',
+            applicant_requirements='Test requirement 2',
+            description='Test description 2'
+        )
+
+        self.position3 = Position.objects.create(
+            name='Test position 1',
+            project=self.project2,
+            description='Test description 3'
+        )
+
+        self.application3 = Application.objects.create(
+            user=self.user2,
+            profile=self.user2.profile,
+            position=self.position3,
+            project=self.project2
+        )
+
+
+
     def test_return_to_login_page_if_not_signed_in(self):
         expected = '{}?next={}'.format(
             reverse('accounts:login'),
@@ -2024,6 +2084,92 @@ class ApplicationsFilterByProjectNeedGETRequest(TestCase):
             response,
             expected,
             fetch_redirect_response=False)
+
+    def test_return_status_200_on_successful_search(self):
+        expected = 200
+
+        self.client.post(reverse('accounts:login'), {
+            'username': 'hello@example.com',
+            'password': 'hello!234'
+        })
+
+        response = self.client.get(reverse('applications_proj_need'), follow=True)
+        result = response.status_code
+
+        self.assertEqual(result, expected)
+
+    def test_return_3_applicants_by_querying_none(self):
+        expected = 3
+
+        self.client.post(reverse('accounts:login'), {
+            'username': 'hello@example.com',
+            'password': 'hello!234'
+        })
+
+        response = self.client.get('{}?q='.format(reverse('applications_proj_need')))
+
+        result = response.context['filtered_applicants'].count()
+
+        self.assertEqual(result, expected)
+
+    def test_return_2_applicants_by_querying_test_position_1(self):
+        expected = 2
+
+        self.client.post(reverse('accounts:login'), {
+            'username': 'hello@example.com',
+            'password': 'hello!234'
+        })
+
+        response = self.client.get('{}?q=Test position 1'.format(reverse('applications_proj_need')))
+
+        result = response.context['filtered_applicants'].count()
+
+        self.assertEqual(result, expected)
+
+    def test_return_user_2_for_both_applications_for_test_position_1(self):
+        expected = 'hello1@example.com'
+
+        self.client.post(reverse('accounts:login'), {
+            'username': 'hello@example.com',
+            'password': 'hello!234'
+        })
+
+        response = self.client.get('{}?q=Test position 1'.format(reverse('applications_proj_need')))
+
+        result1 = response.context['filtered_applicants'][0].user.email
+        result2 = response.context['filtered_applicants'][0].user.email
+
+        self.assertEqual(result1, expected)
+        self.assertEqual(result2, expected)
+
+    def test_return_1_applicant_by_querying_test_position_2(self):
+        expected = 1
+
+        self.client.post(reverse('accounts:login'), {
+            'username': 'hello@example.com',
+            'password': 'hello!234'
+        })
+
+        response = self.client.get('{}?q=Test position 2'.format(reverse('applications_proj_need')))
+
+        result = response.context['filtered_applicants'].count()
+
+        self.assertEqual(result, expected)
+
+
+    def test_return_user_2_as_the_applicant_for_test_position_2(self):
+        expected = 'hello1@example.com'
+
+        self.client.post(reverse('accounts:login'), {
+            'username': 'hello@example.com',
+            'password': 'hello!234'
+        })
+
+        response = self.client.get('{}?q=Test position 2'.format(reverse('applications_proj_need')))
+
+        result1 = response.context['filtered_applicants'][0].user.email
+
+        self.assertEqual(result1, expected)
 
 """
 /
