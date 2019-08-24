@@ -1604,7 +1604,7 @@ class CreateProjectGETRequest(TestCase):
 
         self.assertEqual(result, expected)
 
-    def test_return_projectCreateHtml_as_template_used_if_logged_in(self):
+    def test_return_projectCreateHtml_as_template_used_if_logged_in_and_has_permission(self):
         expected= 'main/project_create.html'
 
         self.client.post(reverse('accounts:login'), {
@@ -1740,7 +1740,7 @@ class CreateProjectPOSTRequest(TestCase):
         self.assertEqual(result, expected)
 
 
-    def test_retrun_position_model_with_length_4_if_create_successful(self):
+    def test_retrun_position_model_with_length_4_for_project_1_if_create_successful(self):
         expected = 4
 
         self.client.post(reverse('accounts:login'), {
@@ -1797,7 +1797,6 @@ class CreateProjectPOSTRequest(TestCase):
             expected,
             fetch_redirect_response=False
         )
-
 
 
 # """
