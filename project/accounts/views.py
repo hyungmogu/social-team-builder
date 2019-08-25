@@ -1,11 +1,10 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.core.urlresolvers import reverse, reverse_lazy
 from django.contrib.auth import login, logout
 from django.views.generic import FormView, CreateView, RedirectView
 from django.contrib.auth.models import Group, Permission
 
-import main.models as mainModel
 from . import forms, models
 
 
@@ -38,17 +37,15 @@ class SignUpView(CreateView):
     template_name = 'accounts/signup.html'
 
     def form_valid(self, form):
-        user = form.save()
-        self.create_user_profile(user)
+        email = form.cleaned_data['email']
+        password = form.cleaned_data['password1']
+
+        user = models.User.objects.create_user(email, password=password)
 
         if user.is_employer:
             self.add_user_to_employer_group(user)
-        return super().form_valid(form)
 
-    def create_user_profile(self, user):
-        mainModel.Profile.objects.create(
-            user=user
-        )
+        return redirect(self.success_url)
 
     def add_user_to_employer_group(self, user):
         try:

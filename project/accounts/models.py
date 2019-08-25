@@ -23,6 +23,8 @@ class UserManager(BaseUserManager):
         user.set_password(password)
         user.save()
 
+        self.create_user_profile(user)
+
         return user
 
     def create_superuser(
