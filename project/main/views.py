@@ -204,6 +204,8 @@ class ProfileView(LoginRequiredMixin, TemplateView):
         except models.Profile.DoesNotExist:
             profile = self.model.objects.create(user=request.user)
 
+        profile.short_bio = markdown.markdown(profile.short_bio)
+
         projects = models.Project.objects.filter(
             applications__profile__user=request.user,
             applications__status='Accepted')
