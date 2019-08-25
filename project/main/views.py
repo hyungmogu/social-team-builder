@@ -32,6 +32,70 @@ class HomeView(TemplateView):
         return context
 
 
+class FilterByPositionView(ListView):
+    model = models.Project
+    template_name = 'main/home.html'
+
+    def get(self, request):
+        search_position = request.GET.get('q', '')
+
+        if search_position:
+            projects = self.model.objects \
+                .filter(positions__name=search_position)
+        else:
+            projects = self.model.objects.all()
+
+        project_needs = models.Position.objects \
+            .order_by('name').distinct()
+
+        return render(request, self.template_name, {
+            'projects': projects,
+            'project_needs': project_needs,
+            'search_position': search_position})
+
+
+# -----
+# Projects
+# -----
+class ProjectCreateView(
+        PermissionRequiredMixin, LoginRequiredMixin,
+        CreateView):
+
+    model = models.Project
+    form_project = forms.ProjectForm
+    form_positions = forms.PositionFormSet
+    permission_required = 'main.employer'
+
+    template_name = 'main/project_create.html'
+
+    def get(self, request):
+        return render(request, self.template_name, {
+            'form_project': self.form_project(prefix='project'),
+            'form_positions': self.form_positions(prefix='positions')
+        })
+
+    def post(self, request, *args, **kwargs):
+        form_project = self.form_project(request.POST, prefix='project')
+        form_positions = self.form_positions(request.POST, prefix="positions")
+
+        if form_project.is_valid() and form_positions.is_valid():
+            project = form_project.save(commit=False)
+            project.user = request.user
+            project.save()
+
+            positions = form_positions.save(commit=False)
+
+            for position in positions:
+                position.project = project
+                position.save()
+
+            return redirect('project', pk=project.pk)
+
+        return render(request, self.template_name, {
+            'form_project': form_project,
+            "form_positions": form_positions})
+
+
 class ProjectDetailView(DetailView):
     model = models.Project
     template_name = 'main/project.html'
@@ -50,8 +114,10 @@ class ProjectDetailView(DetailView):
 
 
 class ProjectEditView(
-        PermissionRequiredMixin, LoginRequiredMixin,
-        mixins.ProjectMustBeAuthorMixin, UpdateView):
+        PermissionRequiredMixin,
+        LoginRequiredMixin,
+        mixins.ProjectMustBeAuthorMixin,
+        UpdateView):
 
     fields = (
         'title', 'timeline',
@@ -102,45 +168,6 @@ class ProjectEditView(
             "form_positions": form_positions})
 
 
-class ProjectCreateView(
-        PermissionRequiredMixin, LoginRequiredMixin,
-        CreateView):
-
-    model = models.Project
-    form_project = forms.ProjectForm
-    form_positions = forms.PositionFormSet
-    permission_required = 'main.employer'
-
-    template_name = 'main/project_create.html'
-
-    def get(self, request):
-        return render(request, self.template_name, {
-            'form_project': self.form_project(prefix='project'),
-            'form_positions': self.form_positions(prefix='positions')
-        })
-
-    def post(self, request, *args, **kwargs):
-        form_project = self.form_project(request.POST, prefix='project')
-        form_positions = self.form_positions(request.POST, prefix="positions")
-
-        if form_project.is_valid() and form_positions.is_valid():
-            project = form_project.save(commit=False)
-            project.user = request.user
-            project.save()
-
-            positions = form_positions.save(commit=False)
-
-            for position in positions:
-                position.project = project
-                position.save()
-
-            return redirect('project', pk=project.pk)
-
-        return render(request, self.template_name, {
-            'form_project': form_project,
-            "form_positions": form_positions})
-
-
 class ProjectDeleteView(
         LoginRequiredMixin, mixins.ProjectMustBeAuthorMixin,
         DeleteView):
@@ -150,50 +177,52 @@ class ProjectDeleteView(
     success_url = reverse_lazy('home')
 
 
-class SearchView(TemplateView):
-    model = models.Project
-    template_name = 'main/search.html'
+class ApplicationSubmitView(LoginRequiredMixin, CreateView):
+    model = models.Application
 
-    def get(self, request):
-        search_term = request.GET.get('q', '')
+    def get(self, request, *args, **kwargs):
+        user = self.request.user
+        project = get_object_or_404(
+            models.Project,
+            pk=self.kwargs.get('project_pk'))
+        position = get_object_or_404(
+            models.Position,
+            pk=self.kwargs.get('position_pk'))
+        profile = get_object_or_404(
+            models.Profile,
+            user=self.request.user)
+        application = self.model.objects.filter(
+            user=user,
+            project=project,
+            position=position)
 
-        projects = self.model.objects \
-            .prefetch_related('positions') \
-            .filter(
-                Q(title__icontains=search_term) |
-                Q(description__icontains=search_term)) \
-            .order_by('title')
-        project_needs = models.Position.objects \
-            .order_by('name').distinct()
+        if not application:
+            application = self.model.objects.create(
+                user=user,
+                profile=profile,
+                position=position,
+                project=project)
 
-        return render(request, self.template_name, {
-            'projects': projects,
-            'search_term': search_term,
-            'project_needs': project_needs})
+            messages.add_message(
+                request,
+                messages.SUCCESS,
+                'Application has been submitted!',
+                extra_tags='submission')
 
-
-class FilterByPositionView(ListView):
-    model = models.Project
-    template_name = 'main/home.html'
-
-    def get(self, request):
-        search_position = request.GET.get('q', '')
-
-        if search_position:
-            projects = self.model.objects \
-                .filter(positions__name=search_position)
         else:
-            projects = self.model.objects.all()
+            messages.add_message(
+                request,
+                messages.ERROR,
+                'Application has already been submitted!',
+                extra_tags='submission')
 
-        project_needs = models.Position.objects \
-            .order_by('name').distinct()
-
-        return render(request, self.template_name, {
-            'projects': projects,
-            'project_needs': project_needs,
-            'search_position': search_position})
+        return redirect(reverse('project', kwargs={
+            'pk': self.kwargs.get('project_pk')}))
 
 
+# -----
+# Profile
+# -----
 class ProfileView(LoginRequiredMixin, TemplateView):
     model = models.Profile
     template_name = 'main/profile.html'
@@ -290,49 +319,9 @@ class ProfileEditView(
             "projects": projects})
 
 
-class ApplicationSubmitView(LoginRequiredMixin, CreateView):
-    model = models.Application
-
-    def get(self, request, *args, **kwargs):
-        user = self.request.user
-        project = get_object_or_404(
-            models.Project,
-            pk=self.kwargs.get('project_pk'))
-        position = get_object_or_404(
-            models.Position,
-            pk=self.kwargs.get('position_pk'))
-        profile = get_object_or_404(
-            models.Profile,
-            user=self.request.user)
-        application = self.model.objects.filter(
-            user=user,
-            project=project,
-            position=position)
-
-        if not application:
-            application = self.model.objects.create(
-                user=user,
-                profile=profile,
-                position=position,
-                project=project)
-
-            messages.add_message(
-                request,
-                messages.SUCCESS,
-                'Application has been submitted!',
-                extra_tags='submission')
-
-        else:
-            messages.add_message(
-                request,
-                messages.ERROR,
-                'Application has already been submitted!',
-                extra_tags='submission')
-
-        return redirect(reverse('project', kwargs={
-            'pk': self.kwargs.get('project_pk')}))
-
-
+# -----
+# Applications
+# -----
 class ApplicationsView(
         PermissionRequiredMixin, LoginRequiredMixin,
         TemplateView):
@@ -496,3 +485,28 @@ class ApplicantEditView(
             return redirect(reverse(path) + '?q=' + q)
 
         return redirect(reverse('applications'))
+
+
+# -----
+# Search
+# -----
+class SearchView(TemplateView):
+    model = models.Project
+    template_name = 'main/search.html'
+
+    def get(self, request):
+        search_term = request.GET.get('q', '')
+
+        projects = self.model.objects \
+            .prefetch_related('positions') \
+            .filter(
+                Q(title__icontains=search_term) |
+                Q(description__icontains=search_term)) \
+            .order_by('title')
+        project_needs = models.Position.objects \
+            .order_by('name').distinct()
+
+        return render(request, self.template_name, {
+            'projects': projects,
+            'search_term': search_term,
+            'project_needs': project_needs})

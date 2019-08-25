@@ -18,8 +18,7 @@ class UserManager(BaseUserManager):
 
         user = self.model(
             email=self.normalize_email(email),
-            username=username
-        )
+            username=username)
         user.set_password(password)
         user.save()
 
@@ -34,8 +33,7 @@ class UserManager(BaseUserManager):
         user = self.model(
             username=username,
             email=email,
-            **extra_fields
-        )
+            **extra_fields)
         user.set_password(password)
 
         user.is_active = True
@@ -50,8 +48,7 @@ class UserManager(BaseUserManager):
 
     def create_user_profile(self, user):
         mainModel.Profile.objects.create(
-            user=user
-        )
+            user=user)
 
 
 class User (AbstractBaseUser, PermissionsMixin):
