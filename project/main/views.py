@@ -165,17 +165,21 @@ class FilterByPositionView(ListView):
 
     def get(self, request):
         # 1. fetch query params
-        position = request.GET.get('q', '')
+        search_position = request.GET.get('q', '')
 
         # 2. filter projects by position
-        projects = self.model.objects.filter(positions__name=position)
+        if search_position:
+            projects = self.model.objects.filter(positions__name=search_position)
+        else:
+            projects = self.model.objects.all()
+
         project_needs = models.Position.objects.order_by('name').distinct()
 
         # 3. display result on search / home page
         return render(request, self.template_name, {
             'projects': projects,
             'project_needs': project_needs,
-            'search_position': position
+            'search_position': search_position
         })
 
 
