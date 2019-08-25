@@ -63,9 +63,9 @@
         <tbody>
             {% for applicant in filtered_applicants %}
               <tr class="clickable-row">
-                <td data-href="{% url 'profile' pk=applicant.profile.pk %}">
-                  <h3>{{ applicant.profile.name }}</h3>
-                  <p>{{ applicant.project.title }}</p>
+                <td>
+                  <a href="{% url 'profile' pk=applicant.profile.pk %}"><h3>{{ applicant.profile.name }}</h3></a>
+                  <a href="{% url 'project' pk=applicant.project.pk %}"><p>{{ applicant.project.title }}</p></a>
                 </td>
                 <td class="circle--cell--right">
                   <span class="secondary-label">{{ applicant.position.name }}</span>
