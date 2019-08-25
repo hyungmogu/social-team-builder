@@ -288,10 +288,21 @@ class ApplicationSubmitView(LoginRequiredMixin, CreateView):
                 project=project
             )
 
-            messages.add_message(request, messages.SUCCESS, 'Application has been submitted!')
+            messages.add_message(
+                request,
+                messages.SUCCESS,
+                'Application has been submitted!',
+                extra_tags='submission'
+            )
+
         else:
             # 3. if application exists, then add error message
-            messages.add_message(request, messages.ERROR, 'Application has already been submitted!')
+            messages.add_message(
+                request,
+                messages.ERROR,
+                'Application has already been submitted!',
+                extra_tags='submission'
+            )
 
         return redirect(reverse('project', kwargs={
             'pk': self.kwargs.get('project_pk')
