@@ -3,6 +3,8 @@ from django.utils import timezone
 from django.contrib.auth.base_user import BaseUserManager
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
 
+import main.models as mainModel
+
 
 class UserManager(BaseUserManager):
     use_in_migrations = True
@@ -40,7 +42,14 @@ class UserManager(BaseUserManager):
         user.is_superuser = True
         user.save()
 
+        self.create_user_profile(user)
+
         return user
+
+    def create_user_profile(self, user):
+        mainModel.Profile.objects.create(
+            user=user
+        )
 
 
 class User (AbstractBaseUser, PermissionsMixin):
