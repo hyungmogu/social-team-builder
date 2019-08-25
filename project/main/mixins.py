@@ -1,8 +1,8 @@
 from . import models
-from django.shortcuts import redirect
+from django.shortcuts import redirect, get_object_or_404
 from django.core.urlresolvers import reverse
 
-class MustBeProjectAuthorMixin:
+class ProjectMustBeAuthorMixin:
     def get(self, request, *args, **kwargs):
         project = models.Project.objects.get(pk=self.kwargs.get('pk'))
 
@@ -14,7 +14,7 @@ class MustBeProjectAuthorMixin:
         return super().get(request, *args, **kwargs)
 
 
-class MustBeProfileAuthorMixin:
+class ProfileMustBeAuthorMixin:
     def get(self, request, *args, **kwargs):
         profile = models.Profile.objects.get(pk=self.kwargs.get('pk'))
 
@@ -24,3 +24,13 @@ class MustBeProfileAuthorMixin:
             }))
 
         return super().get(request, *args, **kwargs)
+
+
+class ApplicationMustBeForAuthorMixin:
+    def dispatch(self, request, *args, **kwargs):
+        application = get_object_or_404(models.Application, pk=self.kwargs.get('pk'))
+
+        if request.user.pk != application.project.user.pk:
+            return redirect(reverse('applications'))
+
+        return super().dispatch(request, *args, **kwargs)

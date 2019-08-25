@@ -42,7 +42,7 @@ class ProjectDetailView(DetailView):
 class ProjectEditView(
         PermissionRequiredMixin,
         LoginRequiredMixin,
-        mixins.MustBeProjectAuthorMixin,
+        mixins.ProjectMustBeAuthorMixin,
         UpdateView
     ):
     fields = (
@@ -131,7 +131,7 @@ class ProjectCreateView(
 
 class ProjectDeleteView(
         LoginRequiredMixin,
-        mixins.MustBeProjectAuthorMixin,
+        mixins.ProjectMustBeAuthorMixin,
         DeleteView
     ):
     model = models.Project
@@ -205,7 +205,7 @@ class ProfileView(LoginRequiredMixin, TemplateView):
 
 class ProfileEditView(
         LoginRequiredMixin,
-        mixins.MustBeProfileAuthorMixin,
+        mixins.ProfileMustBeAuthorMixin,
         UpdateView
     ):
 
@@ -408,7 +408,12 @@ class ApplicationsByStatusView(PermissionRequiredMixin, LoginRequiredMixin, Temp
         })
 
 
-class ApplicantEditView(PermissionRequiredMixin, LoginRequiredMixin, UpdateView):
+class ApplicantEditView(
+        PermissionRequiredMixin,
+        LoginRequiredMixin,
+        mixins.ApplicationMustBeForAuthorMixin,
+        UpdateView
+    ):
     model = models.Application
     template_name = 'main/applications.html'
     permission_required = 'main.employer'
@@ -417,7 +422,6 @@ class ApplicantEditView(PermissionRequiredMixin, LoginRequiredMixin, UpdateView)
         redirect_path = request.GET.get('redirect','')
         q = request.GET.get('q','')
 
-        # 1. Get applicant
         applicant = self.model.objects.get(pk=self.kwargs.get('pk'))
         applicant.status = request.POST['status']
 
@@ -429,7 +433,6 @@ class ApplicantEditView(PermissionRequiredMixin, LoginRequiredMixin, UpdateView)
         else:
             path = 'applications'
 
-        # 4. redirect user back to appication page
         if q:
             return redirect(reverse(path) + '?q=' + q)
         return redirect(reverse('applications'))
