@@ -6,29 +6,29 @@
     [x]: Add tests for the endpont
         [x]: '/'
 
-[]:Project Page
-    []: Add endpoints
+[x]:Project Page
+    [x]: Add endpoints
         [x]: '/projects/{id}/delete/'
         [x]: '/projects/{id}/edit'
         [x]: '/projects/{id}/'
         [x]: '/projects/create'
             [x]: "The user should be able to create multiple positions for a project. Positions relate to a particular skill."
             [x]: "The user should be able to specify the positions where his/her project needs help with a name, a description, and related skill."
-            []: "The user should be able to use use Markdown for the position description. This Markdown is rendered on the project page."
+            [x]: "The user should be able to use use Markdown for the position description. This Markdown is rendered on the project page."
 
-    []: Add tests for the endpoints
+    [x]: Add tests for the endpoints
         [x]: '/projects/{id}/delete/'
         [x]: '/projects/{id}/edit'
         [x]: '/projects/{id}/'
         [x]: '/projects/create'
 
-[]: Applications page
-    []: Add endpoints
+[x]: Applications page
+    [x]: Add endpoints
         [x]: '/applications'
     [x]: Add tests for the endpoints
         [x]: '/applications'
 
-[]:Profile Page
+[x]:Profile Page
     [x]: Add endpoints
         [x]: '/profile/'
             [x]:
@@ -77,9 +77,9 @@
 
 AUGUST 25th, 2019 (part 2)
     GOAL:
-        []: Fix non-functioning ‘save change’ button ‘/projects/{id}’
-        []: Add tests for Application model
-        []: Remove migrations from repository
+        [x]: Fix non-functioning ‘save change’ button ‘/projects/{id}’
+        [x]: Add tests for Application model
+        [x]: Remove migrations from repository
 
 ==============================
 
