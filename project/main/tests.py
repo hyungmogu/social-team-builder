@@ -2695,6 +2695,196 @@ class ApplicationsFilterByStatusGETRequest(TestCase):
 
 
 """
+/applications/applications/{id}/edit
+"""
+class ApplicationEditPOSTRequest(TestCase):
+    def setUp(self):
+        self.client.post(reverse('accounts:sign_up'), {
+            'email': 'hello@example.com',
+            'password1': 'hello!234',
+            'password2': 'hello!234',
+            'is_employer': 'on'
+        })
+
+        self.client.post(reverse('accounts:sign_up'), {
+            'email': 'hello1@example.com',
+            'password1': 'hello!234',
+            'password2': 'hello!234',
+            'is_employer': 'on'
+        })
+
+        self.client.post(reverse('accounts:sign_up'), {
+            'email': 'hello2@example.com',
+            'password1': 'hello!234',
+            'password2': 'hello!234'
+        })
+
+        self.user1 = User.objects.get(pk=1)
+        self.user2 = User.objects.get(pk=2)
+        self.user3 = User.objects.get(pk=3)
+
+        self.project1 = Project.objects.create(
+            title='Test project 1',
+            user=self.user1,
+            timeline='10 days',
+            applicant_requirements='Test requirement 1',
+            description='Test description 1'
+        )
+
+        self.position1 = Position.objects.create(
+            name='Test position 1',
+            project=self.project1,
+            description='Test description 1'
+        )
+
+        self.position2 = Position.objects.create(
+            name='Test position 2',
+            project=self.project1,
+            description='Test description 2'
+        )
+
+        self.application1 = Application.objects.create(
+            user=self.user2,
+            profile=self.user2.profile,
+            position=self.position1,
+            project=self.project1
+        )
+
+        self.application2 = Application.objects.create(
+            user=self.user2,
+            profile=self.user2.profile,
+            position=self.position2,
+            project=self.project1
+        )
+
+        self.project2 = Project.objects.create(
+            title='Test project 2',
+            user=self.user1,
+            timeline='10 days',
+            applicant_requirements='Test requirement 2',
+            description='Test description 2'
+        )
+
+        self.position3 = Position.objects.create(
+            name='Test position 1',
+            project=self.project2,
+            description='Test description 3'
+        )
+
+        self.position4 = Position.objects.create(
+            name='Test position 4',
+            project=self.project2,
+            description='Test description 4'
+        )
+
+        self.application3 = Application.objects.create(
+            user=self.user2,
+            profile=self.user2.profile,
+            position=self.position3,
+            project=self.project2
+        )
+
+        self.application4 = Application.objects.create(
+            user=self.user3,
+            profile=self.user3.profile,
+            position=self.position4,
+            project=self.project2
+        )
+
+        self.edit_data = {
+            'status': "Rejected"
+        }
+
+    def test_return_to_login_page_if_not_signed_in(self):
+        expected = '{}?next={}'.format(
+            reverse('accounts:login'),
+            reverse('applicant_edit', kwargs={
+                'pk': 1
+            }))
+
+        result = self.client.post(reverse('applicant_edit', kwargs={
+            'pk': 1
+        }), self.edit_data)
+
+        self.assertRedirects(
+            result,
+            expected,
+            fetch_redirect_response=False
+        )
+
+    def test_return_to_login_page_if_not_employer(self):
+        expected = '{}?next={}'.format(
+            reverse('accounts:login'),
+            reverse('applicant_edit', kwargs={
+                'pk': 1
+            }))
+
+        self.client.post(reverse('accounts:login'), {
+            'username': 'hello2@example.com',
+            'password': 'hello!234'
+        })
+
+        result = self.client.post(reverse('applicant_edit', kwargs={
+            'pk': 1
+        }), self.edit_data)
+
+        self.assertRedirects(
+            result,
+            expected,
+            fetch_redirect_response=False
+        )
+
+    def test_return_to_application_page_if_is_not_for_the_user(self):
+        expected = reverse('applications')
+
+        self.client.post(reverse('accounts:login'), {
+            'username': 'hello1@example.com',
+            'password': 'hello!234'
+        })
+
+        result = self.client.post(reverse('applicant_edit', kwargs={
+            'pk': 1
+        }), self.edit_data)
+
+        self.assertRedirects(
+            result,
+            expected,
+            fetch_redirect_response=False)
+
+    def test_return_application_with_original_status_if_is_not_for_the_user(self):
+        expected = 'Pending'
+
+        self.client.post(reverse('accounts:login'), {
+            'username': 'hello1@example.com',
+            'password': 'hello!234'
+        })
+
+        self.client.post(reverse('applicant_edit', kwargs={
+            'pk': 1
+        }), self.edit_data)
+
+        result = Application.objects.get(pk=1).status
+
+        self.assertEqual(result, expected)
+
+    def test_return_status_rejected_if_change_successful(self):
+        expected = 'Rejected'
+
+        self.client.post(reverse('accounts:login'), {
+            'username': 'hello@example.com',
+            'password': 'hello!234'
+        })
+
+        self.client.post(reverse('applicant_edit', kwargs={
+            'pk': 1
+        }), self.edit_data)
+
+        result = Application.objects.get(pk=1).status
+
+        self.assertEqual(result, expected)
+
+
+"""
 /
 """
 class HomeGETRequest(TestCase):
