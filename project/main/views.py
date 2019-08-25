@@ -9,6 +9,7 @@ from django.views.generic import (
     TemplateView, DetailView, UpdateView,
     CreateView, DeleteView, ListView, RedirectView)
 
+import markdown
 from . import models, forms, mixins
 
 
@@ -42,6 +43,7 @@ class ProjectDetailView(DetailView):
             .prefetch_related('positions') \
             .get(pk=self.kwargs.get('pk'))
 
+        project.description = markdown.markdown(project.description)
         context['project'] = project
 
         return context

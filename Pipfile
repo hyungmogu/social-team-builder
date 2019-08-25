@@ -9,6 +9,8 @@ verify_ssl = true
 djangorestframework = "==3.4.1"
 Django = "==1.9.9"
 pillow = "*"
+coverage = "*"
+markdown = "*"
 
 [requires]
 python_version = "3.7"
