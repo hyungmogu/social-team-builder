@@ -2763,16 +2763,135 @@ class HomeGETRequest(TestCase):
 
 
 """
-/search/
+/filter/by_position/
 """
-class SearchGETRequest(TestCase):
-    def test_return_1_project_on_query_with_value_1(self):
-        expected = 1
-
-        response = self.client.get('/search/', kwargs={
-            'q': '1'
+class FilterByPositionGETRequest(TestCase):
+    def setUp(self):
+        self.client.post(reverse('accounts:sign_up'), {
+            'email': 'hello@example.com',
+            'password1': 'hello!234',
+            'password2': 'hello!234',
+            'is_employer': 'on'
         })
 
-        result = response.count()
+        self.client.post(reverse('accounts:sign_up'), {
+            'email': 'hello1@example.com',
+            'password1': 'hello!234',
+            'password2': 'hello!234',
+            'is_employer': 'on'
+        })
+
+        self.user1 = User.objects.get(pk=1)
+        self.user2 = User.objects.get(pk=2)
+
+        self.project1 = Project.objects.create(
+            title='Test project 1',
+            user=self.user1,
+            timeline='10 days',
+            applicant_requirements='Test requirement 1',
+            description='Test description 1'
+        )
+
+        self.position1 = Position.objects.create(
+            name='Test position 1',
+            project=self.project1,
+            description='Test description 1'
+        )
+
+        self.position2 = Position.objects.create(
+            name='Test position 2',
+            project=self.project1,
+            description='Test description 2'
+        )
+
+        self.project2 = Project.objects.create(
+            title='Test project 2',
+            user=self.user2,
+            timeline='10 days',
+            applicant_requirements='Test requirement 2',
+            description='Test description 2'
+        )
+
+        self.position3 = Position.objects.create(
+            name='Test position 1',
+            project=self.project2,
+            description='Test description 3'
+        )
+
+        self.project3 = Project.objects.create(
+            title='Test project 3',
+            user=self.user2,
+            timeline='20 days',
+            applicant_requirements='Test requirement 3',
+            description='Test description 3'
+        )
+
+    def test_return_status_200_on_filter(self):
+        expected = 200
+
+        response = self.client.get('{}?q=Test project 1'.format(reverse('filter_position')))
+        result = response.status_code
+
+        self.assertEqual(result, expected)
+
+    def test_return_layoutHTML_as_template_used(self):
+        expected = 'layout.html'
+
+        result = self.client.get('{}?q=Test project 1'.format(reverse('filter_position')))
+
+        self.assertTemplateUsed(result, expected)
+
+    def test_return_homeHTML_as_template_used(self):
+        expected = 'main/home.html'
+
+        result = self.client.get('{}?q=Test project 1'.format(reverse('filter_position')))
+
+        self.assertTemplateUsed(result, expected)
+
+    def test_return_projets_of_length_3_by_querying_none(self):
+        expected = 3
+
+        response = self.client.get('{}?q='.format(reverse('filter_position')))
+        result = response.context['projects'].count()
+
+        self.assertEqual(result, expected)
+
+    def test_return_projects_of_length_2_by_querying_test_position_1(self):
+        expected = 2
+
+        response = self.client.get('{}?q=Test position 1'.format(reverse('filter_position')))
+        result = response.context['projects'].count()
+
+        self.assertEqual(result, expected)
+
+    def test_return_first_project_with_title_test_project_1_by_querying_test_position_1(self):
+        expected = 'Test project 1'
+
+        response = self.client.get('{}?q=Test position 1'.format(reverse('filter_position')))
+        result = response.context['projects'][0].title
+
+        self.assertEqual(result, expected)
+
+    def test_return_second_project_with_title_test_project_2_by_querying_test_position_1(self):
+        expected = 'Test project 2'
+
+        response = self.client.get('{}?q=Test position 1'.format(reverse('filter_position')))
+        result = response.context['projects'][1].title
+
+        self.assertEqual(result, expected)
+
+    def test_return_projects_of_length_1_by_querying_test_position_2(self):
+        expected = 1
+
+        response = self.client.get('{}?q=Test position 2'.format(reverse('filter_position')))
+        result = response.context['projects'].count()
+
+        self.assertEqual(result, expected)
+
+    def test_return_first_project_with_title_test_project_1_by_querying_test_position_2(self):
+        expected = 'Test project 1'
+
+        response = self.client.get('{}?q=Test position 2'.format(reverse('filter_position')))
+        result = response.context['projects'][0].title
 
         self.assertEqual(result, expected)
