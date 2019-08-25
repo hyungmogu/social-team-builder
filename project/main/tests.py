@@ -242,9 +242,9 @@ class TestSkillModel(TestCase):
         self.assertEqual(result, expected)
 
 
-# """
-# POSITION MODEL
-# """
+"""
+POSITION MODEL
+"""
 class TestPositionModel(TestCase):
     def setUp(self):
         self.user1 = User.objects.create(
@@ -424,7 +424,6 @@ class TestProjectModel(TestCase):
             timeline='10 days',
             applicant_requirements='Test requirement 1',
             description='Test description 1')
-
         self.project2 = Project.objects.create(
             title='Test project 2',
             user=self.user,
@@ -524,6 +523,147 @@ class TestProjectModel(TestCase):
 
         query = Project.objects.get(pk=1)
         result = str(query)
+
+        self.assertEqual(result, expected)
+
+
+"""
+APPLICATION MODEL
+"""
+class TestApplicationModel(TestCase):
+    def setUp(self):
+        self.user1 = User.objects.create(
+            email='test1@test.com',
+            password='hello')
+        self.user2 = User.objects.create(
+            email='test2@test.com',
+            password='world')
+
+        self.profile1 = Profile.objects.create(
+            user=self.user1,
+            name='Test profile 1',
+            short_bio='Bio 1',
+            profile_image='image_1.png')
+        self.profile2 = Profile.objects.create(
+            user=self.user2,
+            name='Test profile 2',
+            short_bio='Bio 2',
+            profile_image='image_2.png')
+
+        self.project1 = Project.objects.create(
+            title='Test project 1',
+            user=self.user1,
+            timeline='10 days',
+            applicant_requirements='Test requirement 1',
+            description='Test description 1')
+
+        self.position1 = Position.objects.create(
+            name='Test position 1',
+            project=self.project1,
+            description='Test description 1')
+        self.position2 = Position.objects.create(
+            name='Test position 2',
+            project=self.project1,
+            description='Test description 2')
+
+        self.project2 = Project.objects.create(
+            title='Test project 2',
+            user=self.user2,
+            timeline='20 days',
+            applicant_requirements='Test requirement 2',
+            description='Test description 2')
+
+        self.position3 = Position.objects.create(
+            name='Test position 3',
+            project=self.project2,
+            description='Test description 3')
+
+        self.application1 = Application.objects.create(
+            user=self.user1,
+            profile=self.profile1,
+            project=self.project1,
+            position=self.position1)
+        self.application2 = Application.objects.create(
+            user=self.user2,
+            profile=self.profile2,
+            project=self.project2,
+            position=self.position3,
+            status='Rejected')
+
+    def test_return_applications_with_length_2_by_querying_all(self):
+        expected = 2
+
+        result = Application.objects.all().count()
+
+        self.assertEqual(result, expected)
+
+    def test_return_user_with_test1_in_email_given_pk_1(self):
+        expected = 'test1@test.com'
+
+        result = Application.objects.get(pk=1).user.email
+
+        self.assertEqual(result, expected)
+
+    def test_return_profile_with_name_test_profile_1_given_pk_1(self):
+        expected = 'Test profile 1'
+
+        result = Application.objects.get(pk=1).profile.name
+
+        self.assertEqual(result, expected)
+
+    def test_return_project_with_title_test_project_1_given_pk_1(self):
+        expected = 'Test project 1'
+
+        result = Application.objects.get(pk=1).project.title
+
+        self.assertEqual(result, expected)
+
+    def test_return_position_with_name_test_position_1_given_pk_1(self):
+        expected = 'Test position 1'
+
+        result = Application.objects.get(pk=1).position.name
+
+        self.assertEqual(result, expected)
+
+    def test_return_position_with_status_pending_given_pk_1(self):
+        expected = 'Pending'
+
+        result = Application.objects.get(pk=1).status
+
+        self.assertEqual(result, expected)
+
+    def test_return_user_with_test2_in_email_given_pk_2(self):
+        expected = 'test2@test.com'
+
+        result = Application.objects.get(pk=2).user.email
+
+        self.assertEqual(result, expected)
+
+    def test_return_profile_with_name_test_profile_2_given_pk_2(self):
+        expected = 'Test profile 2'
+
+        result = Application.objects.get(pk=2).profile.name
+
+        self.assertEqual(result, expected)
+
+    def test_return_project_with_title_test_project_2_given_pk_2(self):
+        expected = 'Test project 2'
+
+        result = Application.objects.get(pk=2).project.title
+
+        self.assertEqual(result, expected)
+
+    def test_return_position_with_name_test_position_3_given_pk_2(self):
+        expected = 'Test position 3'
+
+        result = Application.objects.get(pk=2).position.name
+
+        self.assertEqual(result, expected)
+
+    def test_return_position_with_status_rejected_given_pk_2(self):
+        expected = 'Rejected'
+
+        result = Application.objects.get(pk=2).status
 
         self.assertEqual(result, expected)
 
