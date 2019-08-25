@@ -1,5 +1,6 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
+from django.contrib.auth.mixins import (
+    LoginRequiredMixin, PermissionRequiredMixin)
 from django.contrib import messages
 from django.core.urlresolvers import reverse, reverse_lazy
 from django.db.models import Q
@@ -17,8 +18,12 @@ class HomeView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
-        projects = models.Project.objects.prefetch_related('positions').all()
-        project_needs = models.Position.objects.order_by('name').distinct()
+        projects = models.Project.objects \
+            .prefetch_related('positions') \
+            .all()
+        project_needs = models.Position \
+            .objects.order_by('name') \
+            .distinct()
 
         context['projects'] = projects
         context['project_needs'] = project_needs
@@ -33,18 +38,19 @@ class ProjectDetailView(DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
-        project = models.Project.objects.prefetch_related('positions').get(pk=self.kwargs.get('pk'))
+        project = models.Project.objects \
+            .prefetch_related('positions') \
+            .get(pk=self.kwargs.get('pk'))
+
         context['project'] = project
 
         return context
 
 
 class ProjectEditView(
-        PermissionRequiredMixin,
-        LoginRequiredMixin,
-        mixins.ProjectMustBeAuthorMixin,
-        UpdateView
-    ):
+        PermissionRequiredMixin, LoginRequiredMixin,
+        mixins.ProjectMustBeAuthorMixin, UpdateView):
+
     fields = (
         'title', 'timeline',
         'applicant_requirements', 'description')
@@ -61,17 +67,26 @@ class ProjectEditView(
         positions = models.Position.objects.filter(project=project)
 
         context['project'] = project
-        context['form_project'] = self.form_project(instance=project, prefix="project")
-        context['form_positions'] = self.form_positions(instance=project, prefix="positions")
+        context['form_project'] = self.form_project(
+            instance=project,
+            prefix="project")
+        context['form_positions'] = self.form_positions(
+            instance=project,
+            prefix="positions")
 
         return context
 
     def post(self, request, *args, **kwargs):
-        """Creates Project on save"""
         project = self.model.objects.get(pk=self.kwargs.get('pk'))
 
-        form_project = self.form_project(instance=project, data=request.POST, prefix='project')
-        form_positions = self.form_positions(instance=project, data=request.POST, prefix="positions")
+        form_project = self.form_project(
+            instance=project,
+            data=request.POST,
+            prefix='project')
+        form_positions = self.form_positions(
+            instance=project,
+            data=request.POST,
+            prefix="positions")
 
         if form_project.is_valid() and form_positions.is_valid():
             form_project.save()
@@ -82,15 +97,12 @@ class ProjectEditView(
         return render(request, self.template_name, {
             'project': project,
             'form_project': form_project,
-            "form_positions": form_positions
-        })
+            "form_positions": form_positions})
 
 
 class ProjectCreateView(
-        PermissionRequiredMixin,
-        LoginRequiredMixin,
-        CreateView
-    ):
+        PermissionRequiredMixin, LoginRequiredMixin,
+        CreateView):
 
     model = models.Project
     form_project = forms.ProjectForm
@@ -102,12 +114,11 @@ class ProjectCreateView(
     def get(self, request):
         return render(request, self.template_name, {
             'form_project': self.form_project(prefix='project'),
-            'form_positions':self.form_positions(prefix='positions')
+            'form_positions': self.form_positions(prefix='positions')
         })
 
     def post(self, request, *args, **kwargs):
-        """Creates Project on save"""
-        form_project = self.form_project(request.POST,prefix='project')
+        form_project = self.form_project(request.POST, prefix='project')
         form_positions = self.form_positions(request.POST, prefix="positions")
 
         if form_project.is_valid() and form_positions.is_valid():
@@ -125,17 +136,15 @@ class ProjectCreateView(
 
         return render(request, self.template_name, {
             'form_project': form_project,
-            "form_positions": form_positions
-        })
+            "form_positions": form_positions})
 
 
 class ProjectDeleteView(
-        LoginRequiredMixin,
-        mixins.ProjectMustBeAuthorMixin,
-        DeleteView
-    ):
+        LoginRequiredMixin, mixins.ProjectMustBeAuthorMixin,
+        DeleteView):
+
     model = models.Project
-    template_name= 'main/project_delete.html'
+    template_name = 'main/project_delete.html'
     success_url = reverse_lazy('home')
 
 
@@ -144,19 +153,21 @@ class SearchView(TemplateView):
     template_name = 'main/search.html'
 
     def get(self, request):
-        # 1. fetch query params
         search_term = request.GET.get('q', '')
 
-        # 2. filter projects based by title or description
-        projects = self.model.objects.prefetch_related('positions').filter(Q(title__icontains=search_term)|Q(description__icontains=search_term)).order_by('title')
-        project_needs = models.Position.objects.order_by('name').distinct()
+        projects = self.model.objects \
+            .prefetch_related('positions') \
+            .filter(
+                Q(title__icontains=search_term) |
+                Q(description__icontains=search_term)) \
+            .order_by('title')
+        project_needs = models.Position.objects \
+            .order_by('name').distinct()
 
-        # 3. return results on view
         return render(request, self.template_name, {
             'projects': projects,
             'search_term': search_term,
-            'project_needs': project_needs
-        })
+            'project_needs': project_needs})
 
 
 class FilterByPositionView(ListView):
@@ -164,23 +175,21 @@ class FilterByPositionView(ListView):
     template_name = 'main/home.html'
 
     def get(self, request):
-        # 1. fetch query params
         search_position = request.GET.get('q', '')
 
-        # 2. filter projects by position
         if search_position:
-            projects = self.model.objects.filter(positions__name=search_position)
+            projects = self.model.objects \
+                .filter(positions__name=search_position)
         else:
             projects = self.model.objects.all()
 
-        project_needs = models.Position.objects.order_by('name').distinct()
+        project_needs = models.Position.objects \
+            .order_by('name').distinct()
 
-        # 3. display result on search / home page
         return render(request, self.template_name, {
             'projects': projects,
             'project_needs': project_needs,
-            'search_position': search_position
-        })
+            'search_position': search_position})
 
 
 class ProfileView(LoginRequiredMixin, TemplateView):
@@ -199,21 +208,18 @@ class ProfileView(LoginRequiredMixin, TemplateView):
 
         return render(request, self.template_name, {
             'profile': profile,
-            'projects': projects
-        })
+            'projects': projects})
 
 
 class ProfileEditView(
-        LoginRequiredMixin,
-        mixins.ProfileMustBeAuthorMixin,
-        UpdateView
-    ):
+        LoginRequiredMixin, mixins.ProfileMustBeAuthorMixin,
+        UpdateView):
 
     fields = ('name', 'short_bio', 'profile_image')
     model = models.Profile
     form_profile = forms.ProfileForm
     form_user_projects = forms.UserProjectFormSet
-    form_skills =  forms.SkillFormSet
+    form_skills = forms.SkillFormSet
     template_name = 'main/profile_edit.html'
 
     def get_past_projects(self):
@@ -234,82 +240,99 @@ class ProfileEditView(
         projects = self.get_past_projects()
 
         context['projects'] = projects
-        context['form_profile'] = self.form_profile(instance=profile, prefix="profile")
-        context['form_user_projects'] = self.form_user_projects(instance=profile, prefix="user_projects")
-        context['form_skills'] = self.form_skills(instance=profile, prefix="skills")
+        context['form_profile'] = self.form_profile(
+            instance=profile,
+            prefix="profile")
+        context['form_user_projects'] = self.form_user_projects(
+            instance=profile,
+            prefix="user_projects")
+        context['form_skills'] = self.form_skills(
+            instance=profile,
+            prefix="skills")
 
         return context
 
     def post(self, request, *args, **kwargs):
-        """Creates Project on save"""
         profile = self.model.objects.get(user=request.user)
         projects = self.get_past_projects()
 
-        form_profile = self.form_profile(request.POST, request.FILES, instance=profile, prefix='profile')
-        form_user_projects = self.form_user_projects(instance=profile, data=request.POST, prefix="user_projects")
-        form_skills = self.form_skills(instance=profile, data=request.POST, prefix="skills")
+        form_profile = self.form_profile(
+            request.POST, request.FILES,
+            instance=profile,
+            prefix='profile')
+        form_user_projects = self.form_user_projects(
+            instance=profile,
+            data=request.POST,
+            prefix="user_projects")
+        form_skills = self.form_skills(
+            instance=profile, data=request.POST,
+            prefix="skills")
 
-        if form_profile.is_valid() and form_user_projects.is_valid() and form_skills.is_valid():
+        if (form_profile.is_valid() and
+                form_user_projects.is_valid() and
+                form_skills.is_valid()):
+
             profile = form_profile.save()
             form_user_projects.save()
             form_skills.save()
 
             return redirect(reverse('profile', kwargs={
-                'pk': profile.pk
-            }))
+                'pk': profile.pk}))
 
         return render(request, self.template_name, {
             'form_profile': form_profile,
             "form_user_projects": form_user_projects,
             "form_skills": form_skills,
-            "projects": projects
-        })
+            "projects": projects})
 
 
 class ApplicationSubmitView(LoginRequiredMixin, CreateView):
     model = models.Application
 
     def get(self, request, *args, **kwargs):
-        # 1. fetch project position and user
         user = self.request.user
-        project = get_object_or_404(models.Project, pk=self.kwargs.get('project_pk'))
-        position = get_object_or_404(models.Position, pk=self.kwargs.get('position_pk'))
-        profile= get_object_or_404(models.Profile, user=self.request.user)
+        project = get_object_or_404(
+            models.Project,
+            pk=self.kwargs.get('project_pk'))
+        position = get_object_or_404(
+            models.Position,
+            pk=self.kwargs.get('position_pk'))
+        profile = get_object_or_404(
+            models.Profile,
+            user=self.request.user)
+        application = self.model.objects.filter(
+            user=user,
+            project=project,
+            position=position)
 
-        # 2. try to fetch application. if application exists, then raise error message
-        application = self.model.objects.filter(user=user,project=project,position=position)
-
-        # 3. if application does not exist, then create an application, set it to pending, and
         if not application:
             application = self.model.objects.create(
                 user=user,
                 profile=profile,
                 position=position,
-                project=project
-            )
+                project=project)
 
             messages.add_message(
                 request,
                 messages.SUCCESS,
                 'Application has been submitted!',
-                extra_tags='submission'
-            )
+                extra_tags='submission')
 
         else:
-            # 3. if application exists, then add error message
             messages.add_message(
                 request,
                 messages.ERROR,
                 'Application has already been submitted!',
-                extra_tags='submission'
-            )
+                extra_tags='submission')
 
         return redirect(reverse('project', kwargs={
-            'pk': self.kwargs.get('project_pk')
-        }))
+            'pk': self.kwargs.get('project_pk')}))
 
 
-class ApplicationsView(PermissionRequiredMixin, LoginRequiredMixin, TemplateView):
+class ApplicationsView(
+        PermissionRequiredMixin, LoginRequiredMixin,
+        TemplateView):
+
     model = models.Application
     template_name = 'main/applications.html'
     permission_required = 'main.employer'
@@ -318,21 +341,25 @@ class ApplicationsView(PermissionRequiredMixin, LoginRequiredMixin, TemplateView
         form_status = forms.ApplicationForm()
         redirect = ''
 
-        # 1. get all types of queries
-        filtered_applicants = self.model.objects.filter(project__user=request.user)
+        filtered_applicants = self.model.objects \
+            .filter(project__user=request.user)
+        my_projects = models.Project.objects \
+            .filter(user=request.user)
+        my_proj_needs = models.Position.objects \
+            .filter(Q(project__user=request.user)).distinct()
 
-        my_projects = models.Project.objects.filter(user=request.user)
-        my_proj_needs = models.Position.objects.filter(Q(project__user=request.user)).distinct()
         return render(request, self.template_name, {
             'my_projects': my_projects,
             'my_proj_needs': my_proj_needs,
             'filtered_applicants': filtered_applicants,
             'form_status': form_status,
-            'redirect': redirect
-        })
+            'redirect': redirect})
 
 
-class ApplicationsByProjectNeedView(PermissionRequiredMixin, LoginRequiredMixin, TemplateView):
+class ApplicationsByProjectNeedView(
+        PermissionRequiredMixin, LoginRequiredMixin,
+        TemplateView):
+
     model = models.Application
     template_name = 'main/applications.html'
     permission_required = 'main.employer'
@@ -340,104 +367,121 @@ class ApplicationsByProjectNeedView(PermissionRequiredMixin, LoginRequiredMixin,
     def get(self, request):
         form_status = forms.ApplicationForm()
         redirect = 'proj_need'
-
-        # 1. get all types of queries
         q = request.GET.get('q', '')
 
         if q:
-            filtered_applicants = self.model.objects.filter(Q(project__user=request.user)&Q(position__name__iexact=q))
+            filtered_applicants = self.model.objects \
+                .filter(Q(project__user=request.user) &
+                        Q(position__name__iexact=q))
         else:
-            filtered_applicants = self.model.objects.filter(project__user=request.user)
+            filtered_applicants = self.model.objects \
+                .filter(project__user=request.user)
 
-        my_projects = models.Project.objects.filter(user=request.user)
-        my_proj_needs = models.Position.objects.filter(Q(project__user=request.user)).distinct()
+        my_projects = models.Project.objects \
+            .filter(user=request.user)
+        my_proj_needs = models.Position.objects \
+            .filter(Q(project__user=request.user)).distinct()
+
         return render(request, self.template_name, {
             'q': q,
             'my_projects': my_projects,
             'my_proj_needs': my_proj_needs,
             'filtered_applicants': filtered_applicants,
             'form_status': form_status,
-            'redirect': redirect
-        })
+            'redirect': redirect})
 
 
-class ApplicationsByProjectView(PermissionRequiredMixin, LoginRequiredMixin, TemplateView):
+class ApplicationsByProjectView(
+        PermissionRequiredMixin, LoginRequiredMixin,
+        TemplateView):
+
     model = models.Application
     template_name = 'main/applications.html'
     permission_required = 'main.employer'
 
     def get(self, request):
         form_status = forms.ApplicationForm()
-        redirect='project'
-
-        # 1. get all types of queries
+        redirect = 'project'
         q = request.GET.get('q', '')
 
         if q:
-            filtered_applicants = self.model.objects.filter(Q(project__title__iexact=q)&Q(project__user=request.user))
+            filtered_applicants = self.model.objects \
+                .filter(Q(project__title__iexact=q) &
+                        Q(project__user=request.user))
         else:
-            filtered_applicants = self.model.objects.filter(project__user=request.user)
+            filtered_applicants = self.model.objects \
+                .filter(project__user=request.user)
 
-        my_projects = models.Project.objects.filter(user=request.user)
-        my_proj_needs = models.Position.objects.filter(Q(project__user=request.user)).distinct()
+        my_projects = models.Project.objects \
+            .filter(user=request.user)
+        my_proj_needs = models.Position.objects \
+            .filter(Q(project__user=request.user)) \
+            .distinct()
+
         return render(request, self.template_name, {
             'q': q,
             'my_projects': my_projects,
             'my_proj_needs': my_proj_needs,
             'filtered_applicants': filtered_applicants,
             'form_status': form_status,
-            'redirect': redirect
-        })
+            'redirect': redirect})
 
 
-class ApplicationsByStatusView(PermissionRequiredMixin, LoginRequiredMixin, TemplateView):
+class ApplicationsByStatusView(
+        PermissionRequiredMixin, LoginRequiredMixin,
+        TemplateView):
+
     model = models.Application
     template_name = 'main/applications.html'
     permission_required = 'main.employer'
 
     def get(self, request):
         form_status = forms.ApplicationForm()
-        redirect='status'
-
-        # 1. get all types of queries
+        redirect = 'status'
         q = request.GET.get('q', '')
 
         if q:
-            filtered_applicants = self.model.objects.filter(Q(project__user=request.user)&Q(status__iexact=q))
+            filtered_applicants = self.model.objects \
+                .filter(Q(project__user=request.user) &
+                        Q(status__iexact=q))
         else:
-            filtered_applicants = self.model.objects.filter(project__user=request.user)
+            filtered_applicants = self.model.objects \
+                .filter(project__user=request.user)
 
-        my_projects = models.Project.objects.filter(user=request.user)
-        my_proj_needs = models.Position.objects.filter(Q(project__user=request.user)).distinct()
+        my_projects = models.Project.objects \
+            .filter(user=request.user)
+        my_proj_needs = models.Position.objects \
+            .filter(Q(project__user=request.user)).distinct()
+
         return render(request, self.template_name, {
             'q': q,
             'my_projects': my_projects,
             'my_proj_needs': my_proj_needs,
             'filtered_applicants': filtered_applicants,
             'form_status': form_status,
-            'redirect': redirect
-        })
+            'redirect': redirect})
 
 
 class ApplicantEditView(
-        PermissionRequiredMixin,
-        LoginRequiredMixin,
+        PermissionRequiredMixin, LoginRequiredMixin,
         mixins.ApplicationMustBeForAuthorMixin,
-        UpdateView
-    ):
+        UpdateView):
+
     model = models.Application
     template_name = 'main/applications.html'
     permission_required = 'main.employer'
 
     def post(self, request, *args, **kwargs):
-        redirect_path = request.GET.get('redirect','')
-        q = request.GET.get('q','')
+        redirect_path = request.GET.get('redirect', '')
+        q = request.GET.get('q', '')
 
         applicant = self.model.objects.get(pk=self.kwargs.get('pk'))
         applicant.status = request.POST['status']
-
         applicant.save()
-        messages.add_message(request, messages.INFO, "Application status has been changed successfully")
+        messages.add_message(
+            request,
+            messages.INFO,
+            "Application status has been changed successfully")
 
         if redirect:
             path = 'applications_' + redirect_path
@@ -446,4 +490,5 @@ class ApplicantEditView(
 
         if q:
             return redirect(reverse(path) + '?q=' + q)
+
         return redirect(reverse('applications'))

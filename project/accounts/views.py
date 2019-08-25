@@ -8,6 +8,7 @@ from django.contrib.auth.models import Group, Permission
 import main.models as mainModel
 from . import forms, models
 
+
 class LoginView(FormView):
     form_class = forms.SignInForm
     success_url = reverse_lazy('home')
@@ -22,12 +23,14 @@ class LoginView(FormView):
         login(self.request, form.get_user())
         return super().form_valid(form)
 
+
 class LogOutView(RedirectView):
     url = reverse_lazy('home')
 
     def get(self, request, *args, **kwargs):
         logout(request)
         return super().get(request, *args, **kwargs)
+
 
 class SignUpView(CreateView):
     form_class = forms.SignUpForm
@@ -53,8 +56,8 @@ class SignUpView(CreateView):
         except Group.DoesNotExist:
             employer_group = Group.objects.create(name='Employer')
 
-        employer_group.permissions.add(Permission.objects.get(codename="employer"))
-
+        employer_group.permissions \
+            .add(Permission.objects.get(codename="employer"))
         user.groups.add(employer_group)
         user.save()
 
