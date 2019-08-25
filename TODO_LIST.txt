@@ -75,12 +75,29 @@
 
 ==============================
 
+AUGUST 25th, 2019 (part 2)
+    GOAL:
+        []: Fix non-functioning ‘save change’ button ‘/projects/{id}’
+        []: Add tests for Application model
+        []: Remove migrations from repository
+
+==============================
+
+AUGUST 25th, 2019 (part 1)
+    GOAL:
+        [x]: Add markdown feature in 'about me' section '/profile/{id}'
+        [x]: Add markdown feature in 'project description' section '/project/{id}'
+        [x]: Fix missing profile for superusers
+        [x]: Clean code
+
+==============================
+
 AUGUST 25th, 2019
     GOAL:
-        []: Add markdown feature in 'about me' section '/profile/{id}/edit'
-        []: Add markdown feature in 'project description' section '/project/{id}/create', '/project/{id}/edit'
-        []: Fix missing profile for superusers
-        []: Clean code
+        [x]: Add markdown feature in 'about me' section '/profile/{id}'
+        [x]: Add markdown feature in 'project description' section '/project/{id}'
+        [x]: Fix missing profile for superusers
+        [x]: Clean code
 
 ==============================
 
