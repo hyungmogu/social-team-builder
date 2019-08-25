@@ -76,15 +76,24 @@
 
 ==============================
 
+AUGUST 24th, 2019 (part 3)
+    GOAL:
+        []: Replace get() with dispatch() in mixin for consistency
+        []: Fix global showing of messages on ‘/projects/{id}/’
+        []: Fix non-responsive link ‘/applications’
+        []: Clean code
+
+==============================
+
 AUGUST 24th, 2019 (part 2)
     GOAL:
-        []: Add permissions and tests to the following
-            []: '/profile'
-            []: '/profile/edits'
-            []: '/filter/by_position'
-            []: '/applications/applicants/{id}/edit/'
+        [x]: Add permissions and tests to the following
+            [x]: '/profile'
+            [x]: '/profile/edits'
+            [x]: '/filter/by_position'
+            [x]: '/applications/applicants/{id}/edit/'
 
-        []: Change variables 'res' and 'resp' to 'response' (tests.py)
+        [x]: Change variables 'res' and 'resp' to 'response' (tests.py)
 
 ==============================
 
