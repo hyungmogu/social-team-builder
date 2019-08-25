@@ -5,7 +5,7 @@
   <div class="circle--actions--bar">
     <div class="bounds">
       <div class="grid-100">
-        <a class="button button-primary" href="{% url 'project' pk=project.pk %}">Save Changes</a>
+        <button class="button button-primary" form="form--project--edit" type="submit">Save Changes</button>
         <a class="button button-text" href="{% url 'project_delete' pk=project.pk %}">Delete Project</a>
       </div>
     </div>
@@ -15,7 +15,7 @@
 
 {% block body_content %}
 <div class="bounds circle--page circle--article">
-    <form method="POST">
+    <form id="form--project--edit" method="POST">
       {% csrf_token %}
       <div class="grid-70">
         <div class="circle--article--body">
