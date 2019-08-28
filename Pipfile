@@ -11,6 +11,7 @@ Django = "==1.9.9"
 pillow = "*"
 coverage = "*"
 markdown = "*"
+whitenoise = "*"
 
 [requires]
 python_version = "3.7"
