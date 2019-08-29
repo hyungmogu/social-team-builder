@@ -11,13 +11,6 @@ import os
 
 from django.core.wsgi import get_wsgi_application
 
-from whitenoise.django import DjangoWhiteNoise
-
-path = "/home/__ACOUNT__/social-team-builder/project/"
-if path not in sys.path:
-    sys.path.append(path)
-
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "project.settings")
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "project.deploy_settings")
 
 application = get_wsgi_application()
-application = DjangoWhiteNoise(application)
