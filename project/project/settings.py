@@ -20,7 +20,7 @@ def get_env_variable(var_name):
         error_msg = "Set the {} env variable".format(var_name)
 
         if DEBUG:
-            warnings.warn(error_msg)
+            print(error_msg)
         else:
             raise ImproperlyConfigured(error_msg)
 
@@ -62,6 +62,7 @@ MIDDLEWARE_CLASSES = [
     'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
 ROOT_URLCONF = 'project.urls'
