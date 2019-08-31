@@ -81,6 +81,15 @@ AUGUST 25th, 2019 (part 2)
         [x]: Add tests for Application model
         [x]: Remove migrations from repository
 
+
+==============================
+
+AUGUST 25th, 2019 (part 2)
+    GOAL:
+        [x]: Fix non-functioning ‘save change’ button ‘/projects/{id}’
+        [x]: Add tests for Application model
+        [x]: Remove migrations from repository
+
 ==============================
 
 AUGUST 25th, 2019 (part 1)
