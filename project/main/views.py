@@ -1,6 +1,7 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.mixins import (
     LoginRequiredMixin, PermissionRequiredMixin)
+from notifications.signals import notify
 from django.contrib import messages
 from django.core.urlresolvers import reverse, reverse_lazy
 from django.db.models import Q
@@ -239,7 +240,12 @@ class ProfileView(LoginRequiredMixin, TemplateView):
             applications__profile__user=request.user,
             applications__status='Accepted')
 
+        unread_notifications = request.user.notifications.unread()
+        notifications = [str(x) for x in request.user.notifications.unread()]
+        unread_notifications.mark_all_as_read()
+
         return render(request, self.template_name, {
+            'notifications': notifications,
             'profile': profile,
             'projects': projects})
 
@@ -471,10 +477,23 @@ class ApplicantEditView(
         applicant = self.model.objects.get(pk=self.kwargs.get('pk'))
         applicant.status = request.POST['status']
         applicant.save()
-        messages.add_message(
-            request,
-            messages.INFO,
-            "Application status has been changed successfully")
+
+        if applicant.status == 'Accepted':
+            notify.send(
+                request.user,
+                recipient=applicant.user,
+                verb=(
+                    'Your application for position {} for project {} has been '
+                    'accepted'.format(
+                        applicant.position.name, applicant.project.title)))
+        elif applicant.status == 'Rejected':
+            notify.send(
+                request.user,
+                recipient=applicant.user,
+                verb=(
+                    'Your application for position {} for project {} has been '
+                    'rejected'.format(
+                        applicant.position.name, applicant.project.title)))
 
         if redirect:
             path = 'applications_' + redirect_path

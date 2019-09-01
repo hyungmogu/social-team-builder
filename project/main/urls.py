@@ -1,9 +1,12 @@
-from django.conf.urls import url
+from django.conf.urls import url, include
+
 
 import main.views as views
+import notifications.urls
 
 # API endpoints
 urlpatterns = [
+    url(r'^inbox/notifications/', include(notifications.urls, namespace='notifications')),
     url(r'^projects/(?P<project_pk>\d+)/positions/(?P<position_pk>\d+)/apply/$', views.ApplicationSubmitView.as_view(), name="apply"),
     url(r'^projects/(?P<pk>\d+)/delete/$', views.ProjectDeleteView.as_view(), name="project_delete"),
     url(r'^projects/(?P<pk>\d+)/edit/$', views.ProjectEditView.as_view(), name="project_edit"),

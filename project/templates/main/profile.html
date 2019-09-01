@@ -18,6 +18,11 @@
 
 {% block body_content %}
   <div class="bounds circle--page">
+    <ul>
+      {% for notification in notifications %}
+        <li>{{ notification }}</li>
+      {% endfor %}
+    </ul>
     <div class="circle--page--header circle--fluid">
       <div class="circle--fluid--cell circle--fluid--primary">
         <h2>Profile</h2>
@@ -41,6 +46,7 @@
           <tr>
             <th>Project Title</th>
             <th class="circle--cell--right">Project Needs</th>
+            <th class="circle--cell--right">Status</th>
           </tr>
         </thead>
         <tbody>
@@ -51,6 +57,9 @@
               </td>
               <td class="circle--cell--right">
                 <span class="secondary-label">{{ project.positions.all|join:", " }}</span>
+              </td>
+              <td class="circle--cell--right">
+                <span class="secondary-label">{{ project.application.status|title }}</span>
               </td>
             </tr>
           {% endfor %}
