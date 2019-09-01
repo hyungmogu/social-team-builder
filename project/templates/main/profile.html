@@ -18,6 +18,11 @@
 
 {% block body_content %}
   <div class="bounds circle--page">
+    <ul>
+      {% for notification in notifications %}
+        <li>{{ notification }}</li>
+      {% endfor %}
+    </ul>
     <div class="circle--page--header circle--fluid">
       <div class="circle--fluid--cell circle--fluid--primary">
         <h2>Profile</h2>
